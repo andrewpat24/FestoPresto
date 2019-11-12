@@ -1,5 +1,5 @@
 {
-  "name": "expensify",
+  "name": "festivus",
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
@@ -14,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/andrewpat24/indecision.git"
+    "url": "git+https://github.com/Festivus-Music/web-app.git"
   },
   "author": "Andrew Patterson",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/andrewpat24/indecision/issues"
+    "url": "https://github.com/Festivus-Music/web-app/issues"
   },
-  "homepage": "https://github.com/andrewpat24/indecision#readme",
+  "homepage": "https://github.com/Festivus-Music/web-app/blob/master/README.md",
   "dependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.25.0",
