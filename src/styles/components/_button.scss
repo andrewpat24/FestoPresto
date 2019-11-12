@@ -1,0 +1,27 @@
+.btn {
+  display: inline-block;
+  border: none;
+  padding: $s-size;
+  text-decoration: none;
+  line-height: 1;
+  font-weight: 100;
+}
+
+.md {
+  font-size: $font-size-lg;
+}
+
+.blue-bg {
+  background-color: $blue;
+  color: white;
+}
+
+.blue-secondary-bg {
+  background-color: $blue-secondary;
+  color: white;
+}
+
+.transparent-bg {
+  background: none;
+  color: white;
+}
