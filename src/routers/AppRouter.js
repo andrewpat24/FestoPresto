@@ -9,15 +9,17 @@ import PublicRoute from "./PublicRoute";
 import NotFound from "../components/NotFound";
 import Home from "../components/Home";
 import Search from "../components/Search";
+import Header from "../components/Header";
 
 export const history = createHistory();
 
 const AppRouter = () => (
   <Router history={history}>
     <div>
+      <Header />
       <Switch>
         <PublicRoute exact path="/" component={Home} />
-        <PrivateRoute exact path="/search" component={Search} />
+        <PublicRoute exact path="/search" component={Search} />
 
         <Route component={NotFound} />
       </Switch>
