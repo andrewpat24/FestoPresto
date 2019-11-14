@@ -39,9 +39,10 @@ firebase.auth().onAuthStateChanged(user => {
     store.dispatch(login(user.uid));
     store.dispatch(startSetExpenses()).then(() => {
       renderApp();
-      if (history.location.pathname === "/") {
-        history.push("/dashboard");
-      }
+      // Uncomment if you want automatic redirects from home to another route
+      // if (history.location.pathname === "/") {
+      //   history.push("/dashboard");
+      // }
     });
   } else {
     store.dispatch(logout());
