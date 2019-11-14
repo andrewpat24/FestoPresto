@@ -5,7 +5,6 @@ import { Provider } from "react-redux";
 import AppRouter, { history } from "./routers/AppRouter";
 // Redux
 import configureStore from "./store/configureStore";
-import { startSetExpenses } from "./actions/expenses";
 import { login, logout } from "./actions/auth";
 // Styles
 import "./styles/styles.scss";
@@ -37,12 +36,11 @@ ReactDOM.render(<Loading />, document.getElementById("app"));
 firebase.auth().onAuthStateChanged(user => {
   if (user) {
     store.dispatch(login(user.uid));
-    store.dispatch(startSetExpenses()).then(() => {
-      renderApp();
-      if (history.location.pathname === "/") {
-        history.push("/dashboard");
-      }
-    });
+    renderApp();
+    // Uncomment if you want automatic redirects from home to another route
+    // if (history.location.pathname === "/") {
+    //   history.push("/dashboard");
+    // }
   } else {
     store.dispatch(logout());
     renderApp();

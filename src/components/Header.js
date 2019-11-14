@@ -7,8 +7,8 @@ export const Header = ({ startLogout }) => (
   <header className="header">
     <div className="content-container">
       <div className="header__content">
-        <Link className="header__title" to="/dashboard">
-          <h1>Expensify</h1>
+        <Link className="header__title" to="/">
+          <h1>Festivus</h1>
         </Link>
         <button className="btn transparent-bg md" onClick={startLogout}>
           Logout
@@ -22,7 +22,4 @@ const mapDispatchToProps = dispatch => ({
   startLogout: () => dispatch(startLogout())
 });
 
-export default connect(
-  undefined,
-  mapDispatchToProps
-)(Header);
+export default connect(undefined, mapDispatchToProps)(Header);
