@@ -5,8 +5,8 @@ import { startLogin } from "../actions/auth";
 export const Login = ({ startLogin }) => (
   <div className="box-layout">
     <div className="box-layout__box">
-      <h1 className="box-layout__title">Expensify</h1>
-      <p>Manage your expenses.</p>
+      <h1 className="box-layout__title">Festivus</h1>
+      <p>Find your vibe.</p>
       <button className=" btn md blue-bg" onClick={startLogin}>
         Login with Google
       </button>
@@ -18,7 +18,4 @@ const mapDispatchToProps = dispatch => ({
   startLogin: () => dispatch(startLogin())
 });
 
-export default connect(
-  undefined,
-  mapDispatchToProps
-)(Login);
+export default connect(undefined, mapDispatchToProps)(Login);
