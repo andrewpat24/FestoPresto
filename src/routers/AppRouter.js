@@ -5,6 +5,7 @@ import { createBrowserHistory as createHistory } from "history";
 // Custom Routes
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
+import PublicOnlyRoute from "./PublicOnlyRoute";
 // Components
 import NotFound from "../components/NotFound";
 import Home from "../components/Home";
@@ -20,7 +21,7 @@ const AppRouter = () => (
       <Header />
       <Switch>
         <PublicRoute exact path="/search" component={Search} />
-        <PublicRoute exact path="/login" component={Login} />
+        <PublicOnlyRoute exact path="/login" component={Login} />
         <PublicRoute exact path="/" component={Home} />
 
         <Route component={NotFound} />
