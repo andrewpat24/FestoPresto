@@ -8,7 +8,7 @@ export const Login = ({ startLogin }) => (
       <h1 className="box-layout__title">Festivus</h1>
       <p>Find your vibe.</p>
       <button className=" btn md blue-bg" onClick={startLogin}>
-        Login with Google
+        Login with Spotify
       </button>
     </div>
   </div>
