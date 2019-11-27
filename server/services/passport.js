@@ -17,9 +17,10 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((userID, done) => {
   console.log("userID:", userID);
-  User.findById(userID).then(user => {
-    done(null, user);
-  });
+  return done(null, userID);
+  // User.findById(userID).then(user => {
+  //   done(null, user);
+  // });
 });
 
 passport.use(
@@ -30,13 +31,15 @@ passport.use(
       callbackURL: redirect_uri
     },
     function(accessToken, refreshToken, expires_in, profile, done) {
-      console.log({
-        accessToken,
-        refreshToken,
-        expires_in,
-        profile
-      });
-      return done();
+      console.log(
+        JSON.stringify({
+          accessToken,
+          refreshToken,
+          expires_in,
+          profile
+        })
+      );
+      return done(null, profile);
       // TODO: make a function for this in the user models file
       //   User.findOrCreate({ spotify_uid: profile.id }, function(err, user) {
       //     return done(err, user);

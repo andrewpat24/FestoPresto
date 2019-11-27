@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { startLogin } from "../actions/auth";
+import { startLogin, fetchUser } from "../actions/auth";
 
 export const Login = ({ startLogin }) => (
   <div className="box-layout">
@@ -9,6 +9,9 @@ export const Login = ({ startLogin }) => (
       <p>Find your vibe.</p>
       <button className=" btn md blue-bg" onClick={startLogin}>
         Login with Spotify
+      </button>
+      <button className=" btn md blue-bg" onClick={fetchUser}>
+        Get User
       </button>
     </div>
   </div>

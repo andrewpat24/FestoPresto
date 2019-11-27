@@ -2,8 +2,12 @@ require("dotenv").config();
 
 const path = require("path");
 const express = require("express");
-var cookieParser = require("cookie-parser");
+const cookieParser = require("cookie-parser");
 const app = express();
+
+// Parsers
+app.use(require("cookie-parser")());
+app.use(require("body-parser").urlencoded({ extended: true }));
 
 // Cors
 const cors = require("cors");
@@ -20,13 +24,6 @@ require("./models/Users");
 // Logging
 const pino = require("express-pino-logger")();
 app.use(pino);
-
-const publicPath = path.join(__dirname, "../public");
-app.use(express.static(publicPath));
-
-// Routes
-const authRouter = require("./routes/auth-passport");
-app.use("/auth", authRouter);
 
 // Middleware
 require("./middleware/passport");
@@ -45,6 +42,14 @@ const passport = require("passport");
 require("./services/passport");
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Routes
+const authRouter = require("./routes/auth-passport");
+app.use("/auth", authRouter);
+
+// React routes
+const publicPath = path.join(__dirname, "../public");
+app.use(express.static(publicPath));
 
 // Port
 const port = process.env.PORT || 3000;

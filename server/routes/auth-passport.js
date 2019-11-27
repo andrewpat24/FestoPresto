@@ -13,8 +13,13 @@ router.get("/account", function(req, res) {
   res.send({ user: req.user });
 });
 
+router.get("/current_user", function(req, res) {
+  res.send({ user: req.user });
+});
+
 router.get("/login", function(req, res) {
   res.send({ user: req.user });
+  // res.redirect("/search");
 });
 
 // GET /auth/spotify
@@ -43,7 +48,7 @@ router.get(
   "/callback",
   passport.authenticate("spotify", { failureRedirect: "/auth/login" }),
   function(req, res) {
-    res.redirect("/auth/login");
+    res.redirect("/api/auth/current_user");
   }
 );
 
