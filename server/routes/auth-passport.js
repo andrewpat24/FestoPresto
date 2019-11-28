@@ -46,15 +46,15 @@ router.get(
 //   which, in this example, will redirect the user to the home page.
 router.get(
   "/callback",
-  passport.authenticate("spotify", { failureRedirect: "/auth/login" }),
+  passport.authenticate("spotify", { failureRedirect: "/login" }),
   function(req, res) {
-    res.redirect("/api/auth/current_user");
+    res.redirect("/");
   }
 );
 
 router.get("/logout", function(req, res) {
   req.logout();
-  res.redirect("/auth/login");
+  res.redirect("/");
 });
 
 module.exports = router;

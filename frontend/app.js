@@ -13,8 +13,17 @@ import "react-dates/initialize";
 import "react-dates/lib/css/_datepicker.css";
 // Components
 import Loading from "./components/Loading";
+// Axios - debug
+import { getUserID } from "./services/passport";
 
 const store = configureStore();
+store.subscribe(() => {
+  console.log(store.getState().auth.uid, typeof store.getState().auth.uid);
+});
+
+getUserID().then(id => {
+  store.dispatch(login(id));
+});
 
 const jsx = (
   <Provider store={store}>

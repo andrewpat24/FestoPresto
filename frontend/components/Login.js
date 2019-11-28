@@ -1,8 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
-import { startLogin, fetchUser } from "../actions/auth";
+import { startLogin, logout } from "../actions/auth";
 
-export const Login = ({ startLogin }) => (
+export const Login = ({ startLogin, logout }) => (
   <div className="box-layout">
     <div className="box-layout__box">
       <h1 className="box-layout__title">Festivus</h1>
@@ -10,15 +10,17 @@ export const Login = ({ startLogin }) => (
       <button className=" btn md blue-bg" onClick={startLogin}>
         Login with Spotify
       </button>
-      <button className=" btn md blue-bg" onClick={fetchUser}>
-        Get User
+      <p />
+      <button className=" btn md blue-bg" onClick={logout}>
+        Logout
       </button>
     </div>
   </div>
 );
 
 const mapDispatchToProps = dispatch => ({
-  startLogin: () => dispatch(startLogin())
+  startLogin: () => dispatch(startLogin()),
+  logout: () => dispatch(logout())
 });
 
-export default connect(undefined, mapDispatchToProps)(Login);
+export default connect(null, mapDispatchToProps)(Login);

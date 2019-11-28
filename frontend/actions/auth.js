@@ -1,4 +1,4 @@
-import axios from "axios";
+import { logoutUser } from "../services/passport";
 
 export const startLogin = () => {
   return () => {
@@ -6,27 +6,26 @@ export const startLogin = () => {
   };
 };
 
-export const fetchUser = () => {
-  // return async dispatch => {
-  //   const res = await axios.get("/api/auth/current_user");
-  //   dispatch({
-  //     type: "FETCH_USER",
-  //     payload: res.data
-  //   });
-  // };
-  return dispatch => {
-    return dispatch({
-      type: "fetch_user",
-      payload: { thing: "thing" }
-    });
-  };
-};
+// export const login = () => {
+//   const uid = (async () => {
+//     const res = await axios.get("/api/auth/current_user");
+//     return res.data.user;
+//   })();
+
+//   return {
+//     type: "LOGIN",
+//     uid
+//   };
+// };
 
 export const login = uid => ({
   type: "LOGIN",
   uid
 });
 
-export const logout = () => ({
-  type: "LOGOUT"
-});
+export const logout = () => {
+  logoutUser();
+  return {
+    type: "LOGOUT"
+  };
+};
