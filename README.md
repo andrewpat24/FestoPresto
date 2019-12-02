@@ -4,10 +4,6 @@
 - npm start
 - npm run dev
 
-# Attribution
-
-Backend auth derived from [web-api-auth-examples](https://github.com/spotify/web-api-auth-examples)
-
 # Spotify Accounts Authentication Examples
 
 This project contains basic demos showing the different OAuth 2.0 flows for [authenticating against the Spotify Web API](https://developer.spotify.com/web-api/authorization-guide/).
