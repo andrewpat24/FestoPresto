@@ -17,10 +17,9 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((userID, done) => {
   console.log("userID:", userID);
-  return done(null, userID);
-  // User.findById(userID).then(user => {
-  //   done(null, user);
-  // });
+  User.findOne({ spotify_uid: userID }, (err, user) => {
+    return done(null, userID);
+  });
 });
 
 passport.use(
@@ -30,20 +29,29 @@ passport.use(
       clientSecret: client_secret,
       callbackURL: redirect_uri
     },
-    function(accessToken, refreshToken, expires_in, profile, done) {
-      console.log(
-        JSON.stringify({
-          accessToken,
-          refreshToken,
-          expires_in,
-          profile
-        })
-      );
-      return done(null, profile);
-      // TODO: make a function for this in the user models file
-      //   User.findOrCreate({ spotify_uid: profile.id }, function(err, user) {
-      //     return done(err, user);
-      //   });
+    (accessToken, refreshToken, expires_in, profile, done) => {
+      User.findOne({ spotify_uid: profile.id }, (err, user) => {
+        if (!user) {
+          const newUser = new User({
+            spotify_uid: profile.id,
+            spotify_access_token: accessToken,
+            spotify_refresh_token: refreshToken,
+            display_name: profile.displayName,
+            email: profile.emails[0].value,
+            photos: profile.photos
+          });
+          try {
+            newUser.save(err => {
+              if (err) throw new Error(err);
+              return done(null, profile);
+            });
+          } catch (err) {
+            console.log("Error saving new user.. : ", err);
+          }
+        } else {
+          return done(null, profile);
+        }
+      });
     }
   )
 );

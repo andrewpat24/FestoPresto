@@ -13,7 +13,18 @@ const userSchema = new Schema({
   spotify_refresh_token: {
     type: String,
     unique: true
-  }
+  },
+  display_name: {
+    type: String
+  },
+  email: {
+    type: String
+  },
+  photos: [
+    {
+      type: String
+    }
+  ]
 });
 
 mongoose.model("users", userSchema);
