@@ -10,10 +10,6 @@ export const Login = ({ startLogin, logout }) => (
       <button className=" btn md blue-bg" onClick={startLogin}>
         Login with Spotify
       </button>
-      <p />
-      <button className=" btn md blue-bg" onClick={logout}>
-        Logout
-      </button>
     </div>
   </div>
 );
