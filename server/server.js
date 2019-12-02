@@ -44,7 +44,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Routes
-const authRouter = require("./routes/auth-passport");
+const authRouter = require("./routes/auth");
 app.use("/auth", authRouter);
 
 // React routes
