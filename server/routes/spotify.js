@@ -25,13 +25,14 @@ router.get("/", (req, res) => {
 
 // TODO: Issue #23
 router.post("/followed_artists", validateAccessToken, (req, res) => {
-  spotifyApi.setAccessToken("TODO: put req.accessToken here");
+  const { access_token, refresh_token } = req.body;
+  spotifyApi.setAccessToken(access_token);
 
-  spotifyApi.getFollowedArtists({ limit: 50 }).then(
+  spotifyApi.getFollowedArtists({ limit: 4 }).then(
     function(data) {
       res.send({
         path: "/followed_artists",
-        data: data.body
+        data: data.body.artists.items[0].name
       });
     },
     function(err) {
