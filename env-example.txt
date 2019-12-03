@@ -1,5 +1,6 @@
-// create new .env (only include the spotify credentials for this one) && .env.development && .env.test files. 
+// create new .env && .env.development && .env.test files. 
 SPOTIFY_CLIENT_ID=
 SPOTIFY_CLIENT_SECRET=
 SPOTIFY_REDIRECT_URI=
 MONGO_URI=
+COOKIE_KEY=

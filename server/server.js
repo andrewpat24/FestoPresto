@@ -45,7 +45,10 @@ app.use(passport.session());
 
 // Routes
 const authRouter = require("./routes/auth");
+const spotifyRouter = require("./routes/spotify");
+
 app.use("/auth", authRouter);
+app.use("/spotify", spotifyRouter);
 
 // React routes
 const publicPath = path.join(__dirname, "../public");

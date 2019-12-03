@@ -2,8 +2,21 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 
-const spotifyAccessScope =
-  "user-read-private user-read-email user-read-playback-state";
+// Mongoose
+const mongoose = require("mongoose");
+const User = mongoose.model("users");
+
+const spotifyAccessScope = [
+  "user-top-read",
+  "user-follow-read",
+  "user-read-email",
+  "user-read-private",
+  "user-library-modify",
+  "playlist-read-private",
+  "playlist-modify-public",
+  "playlist-modify-private",
+  "playlist-read-collaborative"
+];
 
 router.get("/", function(req, res) {
   res.send({ user: req.user });
@@ -14,12 +27,12 @@ router.get("/account", function(req, res) {
 });
 
 router.get("/current_user", function(req, res) {
-  res.send({ user: req.user });
+  const spotify_uid = req.user;
+  res.send({ user: spotify_uid });
 });
 
 router.get("/login", function(req, res) {
   res.send({ user: req.user });
-  // res.redirect("/search");
 });
 
 // GET /auth/spotify
