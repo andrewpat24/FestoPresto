@@ -1,7 +1,5 @@
 # Startup
 
-- open 2 tabs in terminal
-- npm start
 - npm run dev
 
 # Spotify Accounts Authentication Examples
