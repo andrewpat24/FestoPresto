@@ -1,12 +1,6 @@
 # Startup
 
-- open 2 tabs in terminal
-- npm start
 - npm run dev
-
-# Attribution
-
-Backend auth derived from [web-api-auth-examples](https://github.com/spotify/web-api-auth-examples)
 
 # Spotify Accounts Authentication Examples
 

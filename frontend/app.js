@@ -11,12 +11,19 @@ import "./styles/styles.scss";
 import "normalize.css/normalize.css";
 import "react-dates/initialize";
 import "react-dates/lib/css/_datepicker.css";
-// Firebase
-import { firebase } from "./firebase/firebase";
 // Components
 import Loading from "./components/Loading";
+// Axios - debug
+import { getUserID } from "./services/passport";
 
 const store = configureStore();
+store.subscribe(() => {
+  console.log(store.getState().auth.uid, typeof store.getState().auth.uid);
+});
+
+getUserID().then(id => {
+  store.dispatch(login(id));
+});
 
 const jsx = (
   <Provider store={store}>
@@ -32,18 +39,4 @@ const renderApp = () => {
   }
 };
 ReactDOM.render(<Loading />, document.getElementById("app"));
-
-firebase.auth().onAuthStateChanged(user => {
-  if (user) {
-    store.dispatch(login(user.uid));
-    renderApp();
-    // Uncomment if you want automatic redirects from home to another route
-    // if (history.location.pathname === "/") {
-    //   history.push("/dashboard");
-    // }
-  } else {
-    store.dispatch(logout());
-    renderApp();
-    history.push("/");
-  }
-});
+renderApp();
