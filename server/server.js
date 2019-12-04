@@ -26,6 +26,7 @@ app
 const mongoose = require("mongoose");
 mongoose.connect(process.env.MONGO_URI);
 require("./models/Users");
+require("./models/FollowedArtists");
 
 // Logging
 const pino = require("express-pino-logger")();
