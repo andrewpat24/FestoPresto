@@ -59,13 +59,26 @@ router.post("/refresh_followed_artists", validateAccessToken, (req, res) => {
   );
 });
 
-// TODO: Issue #23
 router.post("/followed_artists", async (req, res) => {
   const { spotify_uid } = req.body;
   const followerList = await FollowedArtists.findOne({ spotify_uid });
   res.send({
     path: "/followed_artists",
     artists: followerList.artists
+  });
+});
+
+router.post("/get_artist_by_id", async (req, res) => {
+  const { access_token, artist_id } = req.body;
+  spotifyApi.setAccessToken(access_token);
+  spotifyApi.getArtist(artist_id, function(err, data) {
+    res.send({
+      path: "/get_artist_by_id",
+      response: {
+        data,
+        err
+      }
+    });
   });
 });
 
