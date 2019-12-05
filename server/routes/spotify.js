@@ -68,7 +68,7 @@ router.post("/followed_artists", async (req, res) => {
   });
 });
 
-router.post("/get_artist_by_id", async (req, res) => {
+router.post("/get_artist_by_id", validateAccessToken, async (req, res) => {
   const { access_token, artist_id } = req.body;
   spotifyApi.setAccessToken(access_token);
   spotifyApi.getArtist(artist_id, function(err, data) {
