@@ -102,7 +102,7 @@ router.post("/generate_playlist", validateAccessToken, async (req, res) => {
   }
 
   const newPlaylist = await spotifyApi.createPlaylist(spotify_uid, event_name, {
-    public: false
+    public: true
   });
   const newPlaylistId = newPlaylist.body.id;
   spotifyApi
