@@ -83,7 +83,7 @@ router.post("/get_artist_by_id", validateAccessToken, async (req, res) => {
 });
 
 router.post("/generate_playlist", validateAccessToken, async (req, res) => {
-  const { access_token, spotify_uid, artist_list } = req.body;
+  const { access_token, spotify_uid, artist_list, event_name } = req.body;
   spotifyApi.setAccessToken(access_token);
 
   const trackList = [];
@@ -94,27 +94,28 @@ router.post("/generate_playlist", validateAccessToken, async (req, res) => {
       let artistTopTracks = await spotifyApi.getArtistTopTracks(artistId, "GB");
       artistTopTracks = artistTopTracks.body.tracks;
       for (let jj = 0; jj < 5; jj++) {
-        trackList.push(artistTopTracks[jj].name);
+        trackList.push(artistTopTracks[jj].uri);
       }
     } catch (e) {
       console.log(e);
     }
   }
 
-  // Issue #24
-  // Active Bug: '{ [WebapiError: Not Found] name: 'WebapiError', message: 'Not Found', statusCode: 404 }'
-
-  // spotifyApi.createPlaylist("My Cool Playlist", { public: false }).then(
-  //   function(data) {
-  //     console.log("Created playlist!");
-  //     res.send(data.body);
-  //   },
-  //   function(err) {
-  //     console.log("Something went wrong!", err);
-  //   }
-  // );
-
-  res.send(trackList);
+  const newPlaylist = await spotifyApi.createPlaylist(spotify_uid, event_name, {
+    public: false
+  });
+  const newPlaylistId = newPlaylist.body.id;
+  spotifyApi
+    .addTracksToPlaylist(newPlaylistId, trackList)
+    .then(() => {
+      res.send({
+        path: "/generate_playlists",
+        message: `Playlist '${event_name}' has been successfully created with ${trackList.length} songs!`
+      });
+    })
+    .catch(e => {
+      console.log(e);
+    });
 });
 
 module.exports = router;
