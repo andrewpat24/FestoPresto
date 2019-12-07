@@ -9,14 +9,14 @@ const mongoose = require("mongoose");
 const FollowedArtists = mongoose.model("followed_Artists");
 
 // .env imports
-const client_id = process.env.SPOTIFY_CLIENT_ID; // Your client id
-const client_secret = process.env.SPOTIFY_CLIENT_SECRET; // Your secret
-const redirect_uri = process.env.SPOTIFY_REDIRECT_URI; // Your redirect uri
+const clientId = process.env.SPOTIFY_CLIENT_ID; // Your client id
+const clientSecret = process.env.SPOTIFY_CLIENT_SECRET; // Your secret
+const redirectUri = process.env.SPOTIFY_REDIRECT_URI; // Your redirect uri
 
 const spotifyApi = new SpotifyWebApi({
-  client_id,
-  client_secret,
-  redirect_uri
+  clientId,
+  clientSecret,
+  redirectUri
 });
 
 router.get("/", (req, res) => {
@@ -80,6 +80,41 @@ router.post("/get_artist_by_id", validateAccessToken, async (req, res) => {
       }
     });
   });
+});
+
+router.post("/generate_playlist", validateAccessToken, async (req, res) => {
+  const { access_token, spotify_uid, artist_list } = req.body;
+  spotifyApi.setAccessToken(access_token);
+
+  const trackList = [];
+
+  for (let ii = 0; ii < artist_list.length; ii++) {
+    const artistId = artist_list[ii];
+    try {
+      let artistTopTracks = await spotifyApi.getArtistTopTracks(artistId, "GB");
+      artistTopTracks = artistTopTracks.body.tracks;
+      for (let jj = 0; jj < 5; jj++) {
+        trackList.push(artistTopTracks[jj].name);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  // Issue #24
+  // Active Bug: '{ [WebapiError: Not Found] name: 'WebapiError', message: 'Not Found', statusCode: 404 }'
+
+  // spotifyApi.createPlaylist("My Cool Playlist", { public: false }).then(
+  //   function(data) {
+  //     console.log("Created playlist!");
+  //     res.send(data.body);
+  //   },
+  //   function(err) {
+  //     console.log("Something went wrong!", err);
+  //   }
+  // );
+
+  res.send(trackList);
 });
 
 module.exports = router;
