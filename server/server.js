@@ -3,11 +3,17 @@ require("dotenv").config();
 const path = require("path");
 const express = require("express");
 const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
 const app = express();
 
 // Parsers
 app.use(require("cookie-parser")());
-app.use(require("body-parser").urlencoded({ extended: true }));
+app.use(
+  bodyParser.urlencoded({
+    extended: true
+  })
+);
+app.use(bodyParser.json());
 
 // Cors
 const cors = require("cors");
@@ -20,6 +26,7 @@ app
 const mongoose = require("mongoose");
 mongoose.connect(process.env.MONGO_URI);
 require("./models/Users");
+require("./models/FollowedArtists");
 
 // Logging
 const pino = require("express-pino-logger")();

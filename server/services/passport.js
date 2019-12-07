@@ -10,6 +10,7 @@ const redirect_uri = process.env.SPOTIFY_REDIRECT_URI; // Your redirect uri
 // Mongoose
 const mongoose = require("mongoose");
 const User = mongoose.model("users");
+const FollowedArtists = mongoose.model("followed_Artists");
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
@@ -40,10 +41,18 @@ passport.use(
             email: profile.emails[0].value,
             photos: profile.photos
           });
+          const followedArtists = new FollowedArtists({
+            spotify_uid: profile.id
+          });
+
           try {
-            newUser.save(err => {
+            followedArtists.save(err => {
               if (err) throw new Error(err);
-              return done(null, profile);
+
+              newUser.save(err => {
+                if (err) throw new Error(err);
+                return done(null, profile);
+              });
             });
           } catch (err) {
             console.log("Error saving new user.. : ", err);
