@@ -19,13 +19,6 @@ const spotifyApi = new SpotifyWebApi({
   redirectUri
 });
 
-router.get("/", (req, res) => {
-  console.log(req.test);
-  res.send({
-    path: "/"
-  });
-});
-
 router.post("/refresh_followed_artists", validateAccessToken, (req, res) => {
   const { access_token, refresh_token, spotify_uid } = req.body;
   spotifyApi.setAccessToken(access_token);
