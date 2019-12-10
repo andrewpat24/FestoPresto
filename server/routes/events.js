@@ -41,7 +41,15 @@ router.post("/get_events", (req, res) => {
 });
 
 router.post("/my_events", (req, res) => {
-  // spotify_uid
+  const { spotify_uid } = req.body;
+  Events.find({ creator_uid: spotify_uid }, (err, events) => {
+    if (err)
+      res.status(500).send({
+        message: "There was an error finding events."
+      });
+
+    res.send(events);
+  });
 });
 
 router.post("/edit_event", (req, res) => {
