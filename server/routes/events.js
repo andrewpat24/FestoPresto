@@ -64,11 +64,39 @@ router.post("/edit_event", (req, res) => {
   // spotify_uid
   // event_id
   // Edited properties
+  const { spotify_uid, event_id, properties } = req.body;
+  Events.update(
+    { _id: event_id, creator_uid: spotify_uid },
+    { ...properties },
+    (err, event) => {
+      if (err)
+        res.status(500).end({
+          message: "An error occurred while updating this event",
+          error: err
+        });
+      res.status(200).send(event);
+    }
+  );
 });
 
-router.post("/delete_event", (req, res) => {
+router.post("/delete_event", async (req, res) => {
   // spotify_uid
   // event_id
+  const { event_id, spotify_uid } = req.body;
+
+  const deletedEvent = await Events.deleteOne({
+    _id: event_id,
+    creator_uid: spotify_uid
+  });
+
+  if (deletedEvent.deletedCount === 0)
+    res
+      .status(500)
+      .send({ message: "There was an error deleting this document" });
+
+  res
+    .status(200)
+    .send({ message: "Event successfully deleted!", response: deletedEvent });
 });
 
 router.post("/followed_events", (req, res) => {
