@@ -27,6 +27,7 @@ const mongoose = require("mongoose");
 mongoose.connect(process.env.MONGO_URI);
 require("./models/Users");
 require("./models/FollowedArtists");
+require("./models/Events");
 
 // Logging
 const pino = require("express-pino-logger")();
@@ -53,9 +54,11 @@ app.use(passport.session());
 // Routes
 const authRouter = require("./routes/auth");
 const spotifyRouter = require("./routes/spotify");
+const eventsRouter = require("./routes/events");
 
 app.use("/auth", authRouter);
 app.use("/spotify", spotifyRouter);
+app.use("/events", eventsRouter);
 
 // React routes
 const publicPath = path.join(__dirname, "../public");
