@@ -27,6 +27,13 @@ const eventsSchema = new Schema({
   location: {
     type: String
   },
+  followers: [
+    {
+      spotify_uid: {
+        type: String
+      }
+    }
+  ],
   lineup: [
     {
       name: {
