@@ -4,6 +4,7 @@ const router = express.Router();
 // Mongoose
 const mongoose = require("mongoose");
 const Events = mongoose.model("events");
+const FollowedEvents = mongoose.model("followed_events");
 
 router.get("/", (req, res) => {
   res.send({
@@ -24,7 +25,7 @@ router.post("/create_event", async (req, res) => {
     lineup
   });
 
-  const event = await newEvent.save(err => {
+  await newEvent.save(err => {
     if (err) {
       res.status(500).send({
         message: "An error occurred while saving this event.",
@@ -37,36 +38,114 @@ router.post("/create_event", async (req, res) => {
 });
 
 router.post("/get_events", (req, res) => {
-  // search filter
+  // TODO: implement search filter. get_events only returns all events currently.
+  Events.find({}, (err, events) => {
+    if (err)
+      res.status(500).send({
+        message: "There was an error finding events."
+      });
+
+    res.send(events);
+  });
 });
 
 router.post("/my_events", (req, res) => {
-  // spotify_uid
+  const { spotify_uid } = req.body;
+  Events.find({ creator_uid: spotify_uid }, (err, events) => {
+    if (err)
+      res.status(500).send({
+        message: "There was an error finding events."
+      });
+
+    res.send(events);
+  });
 });
 
 router.post("/edit_event", (req, res) => {
-  // spotify_uid
-  // event_id
-  // Edited properties
+  const { spotify_uid, event_id, properties } = req.body;
+  Events.update(
+    { _id: event_id, creator_uid: spotify_uid },
+    { ...properties },
+    (err, event) => {
+      if (err)
+        res.status(500).end({
+          message: "An error occurred while updating this event",
+          error: err
+        });
+      res.status(200).send(event);
+    }
+  );
 });
 
-router.post("/delete_event", (req, res) => {
-  // spotify_uid
-  // event_id
+router.post("/delete_event", async (req, res) => {
+  const { event_id, spotify_uid } = req.body;
+
+  const deletedEvent = await Events.deleteOne({
+    _id: event_id,
+    creator_uid: spotify_uid
+  });
+
+  if (deletedEvent.deletedCount === 0)
+    res
+      .status(500)
+      .send({ message: "There was an error deleting this document" });
+
+  res
+    .status(200)
+    .send({ message: "Event successfully deleted!", response: deletedEvent });
 });
 
 router.post("/followed_events", (req, res) => {
-  // spotify_uid
+  const { spotify_uid } = req.body;
+  FollowedEvents.find({ spotify_uid }, (err, followedEvents) => {
+    if (err)
+      res.status(500).send({
+        err,
+        message: "An error occurred while retrieving a user's followed events."
+      });
+    res.status(200).send(followedEvents);
+  });
 });
 
-router.post("/follow_event", (req, res) => {
-  // spotify_uid
-  // event_id
+router.post("/follow_event", async (req, res) => {
+  const { spotify_uid, event_id } = req.body;
+  if (event_id === undefined)
+    res.status(500).send({
+      message: "event_id must not be undefined."
+    });
+
+  const identifier = spotify_uid + "_" + event_id;
+
+  const newFollowedEvent = new FollowedEvents({
+    spotify_uid,
+    event_id,
+    identifier
+  });
+
+  try {
+    const saveFollowedEvent = await newFollowedEvent.save();
+    res.status(201).send(saveFollowedEvent);
+  } catch (error) {
+    res.status(500).send({
+      error,
+      message: "An error occurred or the user has already followed this event."
+    });
+  }
 });
 
-router.post("/unfollow_event", (req, res) => {
-  // spotify_uid
-  // event_id
+router.post("/unfollow_event", async (req, res) => {
+  const { spotify_uid, event_id } = req.body;
+  const unfollowedEvent = await FollowedEvents.deleteOne({
+    spotify_uid,
+    event_id
+  });
+
+  if (unfollowedEvent.deletedCount === 0)
+    res
+      .status(500)
+      .send({ message: "The event has not been unfollowed", unfollowedEvent });
+
+  res.status(200).send({ unfollowedEvent });
 });
 
 module.exports = router;
