@@ -37,7 +37,15 @@ router.post("/create_event", async (req, res) => {
 });
 
 router.post("/get_events", (req, res) => {
-  // search filter
+  // TODO: implement search filter. get_events only returns all events currently.
+  Events.find({}, (err, events) => {
+    if (err)
+      res.status(500).send({
+        message: "There was an error finding events."
+      });
+
+    res.send(events);
+  });
 });
 
 router.post("/my_events", (req, res) => {
