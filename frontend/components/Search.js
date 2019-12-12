@@ -1,48 +1,33 @@
 import React from "react";
 import CardView from "./CardView";
+import { getEvents } from "../services/events";
 
-const osl = {
-  id: "234we234red",
-  name: "Outside Lands",
-  location: "San Francisco",
-  date: "August 10th",
-  cardType: "event"
-};
+class Search extends React.Component {
+  async getAllEvents() {
+    const events = await getEvents();
+    return events.data;
+  }
 
-const snowglobe = {
-  id: "gof32ref09io",
-  name: "Snowglobe",
-  location: "Tahoe",
-  date: "December 25th",
-  cardType: "event"
-};
+  render() {
+    const events = this.getAllEvents();
+    console.log(events);
+    return (
+      <section className="search-area-container" component="Search">
+        <div className="search-area">
+          <CardView colWidth="4" cards={events} />
+        </div>
+      </section>
+    );
+  }
+}
 
-const tomorrowland = {
-  id: "09324jdnvksd",
-  name: "Tomorrowland",
-  location: "Europe",
-  date: "July 8th",
-  cardType: "event"
-};
+// export const Search = async () => {
+//   const events = await getEvents();
+//   // console.log(events.data);
 
-const eventList = [
-  osl,
-  snowglobe,
-  tomorrowland,
-  osl,
-  snowglobe,
-  tomorrowland,
-  osl,
-  snowglobe,
-  tomorrowland
-];
+//   return (
 
-export const Search = () => (
-  <section className="search-area-container" component="Search">
-    <div className="search-area">
-      <CardView colWidth="4" cards={eventList} />
-    </div>
-  </section>
-);
+//   );
+// };
 
 export default Search;
