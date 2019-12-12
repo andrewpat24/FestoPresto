@@ -1,7 +1,10 @@
 import React from "react";
+import moment from "moment";
 
 export const EventCard = props => {
-  const { id, name, location, date, cardType } = props;
+  const { _id, name, location, event_date } = props;
+  const date = moment(event_date[0]).format("MMM Do");
+
   return (
     <div>
       <div className="uk-card uk-card-default">

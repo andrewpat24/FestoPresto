@@ -10,24 +10,14 @@ class Search extends React.Component {
 
   render() {
     const events = this.getAllEvents();
-    console.log(events);
     return (
       <section className="search-area-container" component="Search">
         <div className="search-area">
-          <CardView colWidth="4" cards={events} />
+          <CardView cardType="event" colWidth="4" cards={events} />
         </div>
       </section>
     );
   }
 }
-
-// export const Search = async () => {
-//   const events = await getEvents();
-//   // console.log(events.data);
-
-//   return (
-
-//   );
-// };
 
 export default Search;

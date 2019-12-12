@@ -26,8 +26,6 @@ class CardView extends React.Component {
     const { cardType, resolvedCards, colWidth = 4 } = this.state;
     const cssClasses = `uk-child-width-1-${colWidth}@m uk-child-width-1-2@s uk-grid-small uk-grid-match uk-grid`;
 
-    console.log(this.state);
-
     return (
       <div className={cssClasses} uk-grid="">
         {cardType === "event"

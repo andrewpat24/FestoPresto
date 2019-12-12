@@ -1,7 +1,8 @@
 import React from "react";
 
-export const Card = props => {
-  const { id, name, location, date, cardType } = props;
+export const ArtistCard = props => {
+  const { _id, name, location, date, cardType } = props;
+
   return (
     <div>
       <div className="uk-card uk-card-default">
@@ -23,4 +24,4 @@ export const Card = props => {
   );
 };
 
-export default Card;
+export default ArtistCard;
