@@ -13,12 +13,28 @@ router.get("/", (req, res) => {
   });
 });
 
+router.post("/get_event_by_id", async (req, res) => {
+  const { event_id } = req.body;
+
+  const event_data = await Events.findOne({ _id: event_id });
+  res.send(event_data);
+});
+
 router.post("/create_event", async (req, res) => {
-  const { creator_uid, name, links, event_date, location, lineup } = req.body;
+  const {
+    creator_uid,
+    name,
+    description,
+    links,
+    event_date,
+    location,
+    lineup
+  } = req.body;
 
   const newEvent = new Events({
     creator_uid,
     name,
+    description,
     links,
     event_date,
     location,

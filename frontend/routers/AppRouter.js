@@ -12,6 +12,7 @@ import Home from "../components/Home";
 import Search from "../components/Search";
 import Header from "../components/Header";
 import Login from "../components/Login";
+import Event from "../components/Event";
 
 export const history = createHistory();
 
@@ -20,8 +21,9 @@ const AppRouter = () => (
     <div>
       <Header />
       <Switch>
-        <PublicRoute exact path="/search" component={Search} />
         <PublicOnlyRoute exact path="/login" component={Login} />
+        <PublicRoute exact path="/search" component={Search} />
+        <PublicRoute exact path="/event/:id" component={Event} />
         <PublicRoute exact path="/" component={Home} />
 
         <Route component={NotFound} />

@@ -13,7 +13,7 @@ class CardView extends React.Component {
     this.resolveCardList(this.state.cards);
   }
 
-  // Cards come in as a promise, so we need to resolve the promise to dynamically access the card data.
+  // Cards come in as a promise, we need to resolve the promise to access card data.
   resolveCardList(unresolvedCards) {
     unresolvedCards.then(resolvedCards => {
       this.setState({

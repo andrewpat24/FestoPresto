@@ -8,6 +8,9 @@ const eventsSchema = new Schema({
   name: {
     type: String
   },
+  description: {
+    type: String
+  },
   links: [
     {
       title: {
