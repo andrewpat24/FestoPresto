@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const getUserID = () => {
   return axios.get("/api/auth/current_user").then(res => {
-    return res.data.user;
+    return res.data;
   });
 };
 
