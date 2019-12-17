@@ -13,14 +13,17 @@ const User = mongoose.model("users");
 const FollowedArtists = mongoose.model("followed_Artists");
 
 passport.serializeUser((user, done) => {
-  done(null, user.id);
+  done(null, { id: user.id, access_token: user.accessToken });
 });
 
-passport.deserializeUser((userID, done) => {
-  console.log("userID:", userID);
-  User.findOne({ spotify_uid: userID }, (err, user) => {
-    return done(null, userID);
-  });
+passport.deserializeUser((spotify_user, done) => {
+  try {
+    User.findOne({ spotify_uid: spotify_user.id }, (err, user) => {
+      return done(null, spotify_user);
+    });
+  } catch (e) {
+    console.log("err:", e);
+  }
 });
 
 passport.use(
@@ -51,14 +54,14 @@ passport.use(
 
               newUser.save(err => {
                 if (err) throw new Error(err);
-                return done(null, profile);
+                return done(null, { ...profile, accessToken });
               });
             });
           } catch (err) {
             console.log("Error saving new user.. : ", err);
           }
         } else {
-          return done(null, profile);
+          return done(null, { ...profile, accessToken });
         }
       });
     }
