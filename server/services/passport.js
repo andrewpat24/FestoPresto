@@ -19,7 +19,10 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((spotify_user, done) => {
   try {
     User.findOne({ spotify_uid: spotify_user.id }, (err, user) => {
-      return done(null, spotify_user);
+      return done(null, {
+        id: user.spotify_uid,
+        access_token: user.spotify_access_token
+      });
     });
   } catch (e) {
     console.log("err:", e);
