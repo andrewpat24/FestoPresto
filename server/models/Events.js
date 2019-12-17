@@ -57,6 +57,9 @@ const eventsSchema = new Schema({
       popularity: {
         type: Number
       },
+      artist_id: {
+        type: String
+      },
       artist_uri: {
         type: String
       },

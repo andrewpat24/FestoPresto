@@ -6,18 +6,6 @@ export const startLogin = () => {
   };
 };
 
-// export const login = () => {
-//   const uid = (async () => {
-//     const res = await axios.get("/api/auth/current_user");
-//     return res.data.user;
-//   })();
-
-//   return {
-//     type: "LOGIN",
-//     uid
-//   };
-// };
-
 export const login = uid => ({
   type: "LOGIN",
   uid

@@ -3,6 +3,8 @@ import React from "react";
 import { getEventById } from "../services/events";
 // Components
 import CardView from "./CardView";
+import GeneratePlaylist from "./GeneratePlaylist";
+// Services
 
 class Event extends React.Component {
   constructor(props) {
@@ -13,13 +15,25 @@ class Event extends React.Component {
       ...this.props.computedMatch.params
     };
 
-    getEventById(this.state.id).then(event => {
-      this.setState({
-        eventData: {
-          ...event.data
-        }
+    // TODO: Have .then and .catch generate appropriate markup.
+    // Before then or catch is triggered show loading animation
+    // then: event markup
+    // catch: 404 markup
+    getEventById(this.state.id)
+      .then(event => {
+        console.log("event:", event);
+
+        this.setState({
+          eventData: {
+            ...event.data
+          }
+        });
+
+        // console.log(this.state);
+      })
+      .catch(e => {
+        console.log("eventERR:", e);
       });
-    });
   }
 
   generateLinksMarkup(links) {
@@ -32,8 +46,15 @@ class Event extends React.Component {
     });
   }
 
+  getLineupIds(lineupArray) {
+    return lineupArray.map(artist => {
+      console.log(artist);
+      return artist.artist_id;
+    });
+  }
+
   render() {
-    console.log(this.state.eventData);
+    console.log("EventData:", this.state.eventData);
     return (
       <section className="Event-container" component="Event">
         <div className="Event">
@@ -108,6 +129,20 @@ class Event extends React.Component {
                 </div>
                 <div className="event-dates"></div>
               </div>
+              <div className="event-playlist-container">
+                <div className="event-playlist">
+                  {this.state.eventData ? (
+                    <GeneratePlaylist
+                      eventName={this.state.eventData.name}
+                      lineupArray={this.getLineupIds(
+                        this.state.eventData.lineup
+                      )}
+                    />
+                  ) : (
+                    ""
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -119,3 +154,11 @@ class Event extends React.Component {
 }
 
 export default Event;
+
+// const mapStateToProps = state => {
+//   return {
+//     isAuthenticated: !!state.auth.uid
+//   };
+// };
+
+// export default connect(mapStateToProps, mapDispatchToProps)(Header);

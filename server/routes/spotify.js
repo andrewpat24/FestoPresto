@@ -83,9 +83,11 @@ router.post("/generate_playlist", validateAccessToken, async (req, res) => {
 
   for (let ii = 0; ii < artist_list.length; ii++) {
     const artistId = artist_list[ii];
+
     try {
       let artistTopTracks = await spotifyApi.getArtistTopTracks(artistId, "GB");
       artistTopTracks = artistTopTracks.body.tracks;
+
       for (let jj = 0; jj < 5; jj++) {
         trackList.push(artistTopTracks[jj].uri);
       }
