@@ -13,7 +13,7 @@ const User = mongoose.model("users");
 const FollowedArtists = mongoose.model("followed_Artists");
 
 passport.serializeUser((user, done) => {
-  done(null, user.id);
+  done(null, { user: { id: user.id, access_token: user.accessToken } });
 });
 
 passport.deserializeUser((userID, done) => {
@@ -51,14 +51,14 @@ passport.use(
 
               newUser.save(err => {
                 if (err) throw new Error(err);
-                return done(null, profile);
+                return done(null, { ...profile, accessToken });
               });
             });
           } catch (err) {
             console.log("Error saving new user.. : ", err);
           }
         } else {
-          return done(null, profile);
+          return done(null, { ...profile, accessToken });
         }
       });
     }

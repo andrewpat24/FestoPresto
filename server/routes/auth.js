@@ -22,17 +22,9 @@ router.get("/", function(req, res) {
   res.send({ user: req.user });
 });
 
-router.get("/account", function(req, res) {
-  res.send({ user: req.user });
-});
-
 router.get("/current_user", function(req, res) {
-  const spotify_uid = req.user;
-  res.send({ user: spotify_uid });
-});
-
-router.get("/login", function(req, res) {
-  res.send({ user: req.user });
+  const spotify_user_data = req.user;
+  res.send(spotify_user_data);
 });
 
 // GET /auth/spotify

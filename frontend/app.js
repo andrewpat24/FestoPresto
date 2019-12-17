@@ -21,8 +21,11 @@ store.subscribe(() => {
   console.log(store.getState().auth.uid, typeof store.getState().auth.uid);
 });
 
-getUserID().then(id => {
-  store.dispatch(login(id));
+getUserID().then(spotify_credentials => {
+  console.log(spotify_credentials);
+  store.dispatch(
+    login(spotify_credentials.id, spotify_credentials.access_token)
+  );
 });
 
 const jsx = (

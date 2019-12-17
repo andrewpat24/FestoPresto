@@ -18,9 +18,10 @@ export const startLogin = () => {
 //   };
 // };
 
-export const login = uid => ({
+export const login = (uid, access_token) => ({
   type: "LOGIN",
-  uid
+  uid,
+  access_token
 });
 
 export const logout = () => {
