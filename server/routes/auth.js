@@ -107,22 +107,6 @@ router.post("/refresh_access_token", async (req, res) => {
       message: "An error occurred while updating the user's access token."
     });
   }
-
-  // spotifyApi.refreshAccessToken().then(
-  //   data => {
-  //     console.log("The access token has been refreshed!");
-  //     const newAccessToken = data.body.access_token;
-  //     // Save the access token so that it's used in future calls
-  //     spotifyApi.setAccessToken(newAccessToken);
-  //   },
-  //   function(err) {
-  //     console.log("Could not refresh access token", err);
-  //     res.status(400).send({
-  //       err,
-  //       message: "An error occurred while trying to refresh the access token."
-  //     });
-  //   }
-  // );
 });
 
 module.exports = router;
