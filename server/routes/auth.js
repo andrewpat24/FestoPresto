@@ -6,6 +6,17 @@ const passport = require("passport");
 const mongoose = require("mongoose");
 const User = mongoose.model("users");
 
+// .env imports
+const clientId = process.env.SPOTIFY_CLIENT_ID; // Your client id
+const clientSecret = process.env.SPOTIFY_CLIENT_SECRET; // Your secret
+
+// Spotify initialization
+const SpotifyWebApi = require("spotify-web-api-node");
+const spotifyApi = new SpotifyWebApi({
+  clientId: clientId,
+  clientSecret: clientSecret
+});
+
 const spotifyAccessScope = [
   "user-top-read",
   "user-follow-read",
@@ -60,6 +71,58 @@ router.get(
 router.get("/logout", function(req, res) {
   req.logout();
   res.redirect("/");
+});
+
+router.post("/refresh_access_token", async (req, res) => {
+  const { spotify_uid, access_token } = req.body;
+  const query = User.findOne({
+    spotify_uid,
+    spotify_access_token: access_token
+  });
+
+  query.select("spotify_refresh_token");
+  const user = await query.exec();
+  const refreshToken = user.spotify_refresh_token;
+
+  spotifyApi.setClientId(clientId);
+  spotifyApi.setClientSecret(clientSecret);
+  spotifyApi.setRefreshToken(refreshToken);
+
+  const refreshTokenRequest = await spotifyApi.refreshAccessToken();
+  const newAccessToken = refreshTokenRequest.body.access_token;
+  const filter = { spotify_uid, spotify_access_token: access_token };
+  const update = { spotify_access_token: newAccessToken };
+  try {
+    await User.findOneAndUpdate(filter, update);
+    res.status(200).send({
+      message: "The user's access token has been successfully updated!",
+      user: {
+        spotify_uid,
+        newAccessToken
+      }
+    });
+  } catch (err) {
+    res.status(400).send({
+      err,
+      message: "An error occurred while updating the user's access token."
+    });
+  }
+
+  // spotifyApi.refreshAccessToken().then(
+  //   data => {
+  //     console.log("The access token has been refreshed!");
+  //     const newAccessToken = data.body.access_token;
+  //     // Save the access token so that it's used in future calls
+  //     spotifyApi.setAccessToken(newAccessToken);
+  //   },
+  //   function(err) {
+  //     console.log("Could not refresh access token", err);
+  //     res.status(400).send({
+  //       err,
+  //       message: "An error occurred while trying to refresh the access token."
+  //     });
+  //   }
+  // );
 });
 
 module.exports = router;
