@@ -3,10 +3,7 @@ import { connect } from "react-redux";
 
 import { generatePlaylist } from "../services/spotify";
 
-const accessToken = "";
-
 export const GeneratePlaylist = props => {
-  console.log("generatePlaylist uid:", props.uid);
   return (
     <div className="Generate-Playlist-Container">
       <button
@@ -15,7 +12,7 @@ export const GeneratePlaylist = props => {
           const response = await generatePlaylist(
             // accessToken is currently hardcoded.
             // TODO: add accessToken to getUser stuff
-            accessToken,
+            props.access_token,
             props.uid,
             props.lineupArray,
             `Top Five ${props.eventName}`
@@ -32,7 +29,8 @@ export const GeneratePlaylist = props => {
 
 const mapStateToProps = state => {
   return {
-    uid: state.auth.uid
+    uid: state.auth.uid,
+    access_token: state.auth.access_token
   };
 };
 

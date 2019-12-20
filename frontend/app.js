@@ -22,7 +22,6 @@ store.subscribe(() => {
 });
 
 getUserID().then(spotify_credentials => {
-  console.log(spotify_credentials);
   store.dispatch(
     login(spotify_credentials.id, spotify_credentials.access_token)
   );

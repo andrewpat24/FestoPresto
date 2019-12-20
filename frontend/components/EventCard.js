@@ -1,12 +1,13 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import moment from "moment";
 
 export const EventCard = props => {
   const { _id, name, location, event_date } = props;
   const date = moment(event_date[0]).format("MMM Do");
-
+  const eventPageUrl = `/event/${_id}`;
   return (
-    <div>
+    <Link to={eventPageUrl}>
       <div className="uk-card uk-card-default">
         <div className="uk-card-media-top">
           <img src="/images/uikit-test-img.jpg" alt="" />
@@ -22,7 +23,7 @@ export const EventCard = props => {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

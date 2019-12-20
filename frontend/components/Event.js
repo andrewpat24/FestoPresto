@@ -21,15 +21,11 @@ class Event extends React.Component {
     // catch: 404 markup
     getEventById(this.state.id)
       .then(event => {
-        console.log("event:", event);
-
         this.setState({
           eventData: {
             ...event.data
           }
         });
-
-        // console.log(this.state);
       })
       .catch(e => {
         console.log("eventERR:", e);
@@ -48,13 +44,11 @@ class Event extends React.Component {
 
   getLineupIds(lineupArray) {
     return lineupArray.map(artist => {
-      console.log(artist);
       return artist.artist_id;
     });
   }
 
   render() {
-    console.log("EventData:", this.state.eventData);
     return (
       <section className="Event-container" component="Event">
         <div className="Event">
