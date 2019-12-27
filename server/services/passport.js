@@ -53,18 +53,11 @@ passport.use(
             email: profile.emails[0].value,
             photos: profile.photos
           });
-          const followedArtists = new FollowedArtists({
-            spotify_uid: profile.id
-          });
 
           try {
-            followedArtists.save(err => {
+            newUser.save(err => {
               if (err) throw new Error(err);
-
-              newUser.save(err => {
-                if (err) throw new Error(err);
-                return done(null, { ...profile, accessToken });
-              });
+              return done(null, { ...profile, accessToken });
             });
           } catch (err) {
             console.log("Error saving new user.. : ", err);

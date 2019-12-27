@@ -52,96 +52,116 @@ class Event extends React.Component {
     return (
       <section className="Event-container" component="Event">
         <div className="Event">
-          <div className="event-content-container">
-            <div className="event-content">
-              <div className="header-area-container">
-                <div className="header-area">
-                  <div className="header-title">
-                    <h1>
-                      {this.state.eventData ? this.state.eventData.name : ""}
-                    </h1>
-                  </div>
-                  <div className="header-subtitle">
-                    <h2>
-                      {this.state.eventData
-                        ? this.state.eventData.location
-                        : ""}
-                    </h2>
-                  </div>
-                </div>
+          <div className="header-area-container uk-heading-divider">
+            <div className="header-area">
+              <div className="header-title uk-heading-medium">
+                {this.state.eventData ? this.state.eventData.name : ""}
               </div>
-              <div className="about-area-container">
-                <div className="about-area">
-                  <div className="about-content">
-                    <h3>
-                      {this.state.eventData
-                        ? this.state.eventData.description
-                        : ""}
-                    </h3>
-                  </div>
-                </div>
-              </div>
-              <div className="event-lineup-container">
-                <div className="event-lineup">
-                  <h2>Lineup.</h2>
-                  <div className="event-user-lineup-container">
-                    <div className="event-user-lineup">
-                      <h3>Artists you follow</h3>
-                    </div>
-                  </div>
-                  <div className="event-all-lineup-container">
-                    <div className="event-all-lineup">
-                      <h3>All artists</h3>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <div className="header-subtitle"></div>
             </div>
           </div>
 
-          <div className="event-information-container">
-            <div className="event-information">
-              <div className="event-links-container">
-                <div className="event-links-header">
-                  <h2>More Info.</h2>
+          <div className="event-content-container">
+            <div className="event-content">
+              <div uk-grid="">
+                <div className="uk-width-expand@m">
+                  <div className="main-content-container">
+                    <div className="main-content">
+                      <div className="about-area-container section-container">
+                        <div className="about-area">
+                          <div className="about-header uk-heading-small">
+                            About.
+                          </div>
+                          <div className="about-content">
+                            {this.state.eventData
+                              ? this.state.eventData.description
+                              : ""}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="event-lineup-container section-container">
+                        <div className="event-lineup">
+                          <div className="uk-heading-small">Lineup.</div>
+                          <div className="event-user-lineup-container">
+                            <div className="event-user-lineup">
+                              <h3>Artists you follow</h3>
+                            </div>
+                          </div>
+                          <div className="event-all-lineup-container">
+                            <div className="event-all-lineup">
+                              <h3>All artists</h3>
+                              {this.state.eventData ? (
+                                <CardView
+                                  cardType="artist"
+                                  colWidth="4"
+                                  cards={this.state.eventData.lineup}
+                                />
+                              ) : (
+                                ""
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="event-links">
-                  {this.state.eventData
-                    ? this.generateLinksMarkup(this.state.eventData.links)
-                    : ""}
-                </div>
-              </div>
-              <div className="event-details-container">
-                <div className="event-details-header">
-                  <h2>Details.</h2>
-                </div>
-                <div className="event-details"></div>
-              </div>
-              <div className="event-dates-container">
-                <div className="event-dates-header">
-                  <h2>Event Dates.</h2>
-                </div>
-                <div className="event-dates"></div>
-              </div>
-              <div className="event-playlist-container">
-                <div className="event-playlist">
-                  {this.state.eventData ? (
-                    <GeneratePlaylist
-                      eventName={this.state.eventData.name}
-                      lineupArray={this.getLineupIds(
-                        this.state.eventData.lineup
-                      )}
-                    />
-                  ) : (
-                    ""
-                  )}
+                <div className="uk-width-1-4@s">
+                  <div className="sidebar-content-container">
+                    <div className="sidebar-content">
+                      <div className="event-information-container">
+                        <div className="event-information">
+                          <div className="event-links-container section-container">
+                            <div className="event-links-header sidebar-header uk-text-lead">
+                              More Info.
+                            </div>
+                            <div className="event-links">
+                              {this.state.eventData
+                                ? this.generateLinksMarkup(
+                                    this.state.eventData.links
+                                  )
+                                : ""}
+                            </div>
+                          </div>
+                          <div className="event-details-container section-container">
+                            <div className="event-details-header sidebar-header uk-text-lead">
+                              Details.
+                            </div>
+                            <div className="event-details">
+                              {this.state.eventData
+                                ? this.state.eventData.location
+                                : ""}
+                            </div>
+                          </div>
+                          <div className="event-dates-container section-container">
+                            <div className="event-dates-header sidebar-header uk-text-lead">
+                              Event Dates.
+                            </div>
+                            <div className="event-dates"></div>
+                          </div>
+                          <div className="event-playlist-container section-container">
+                            <div className="event-playlist">
+                              {this.state.eventData ? (
+                                <GeneratePlaylist
+                                  eventName={this.state.eventData.name}
+                                  lineupArray={this.getLineupIds(
+                                    this.state.eventData.lineup
+                                  )}
+                                />
+                              ) : (
+                                ""
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
-        <h2>{this.state.id}</h2>
       </section>
     );
   }
