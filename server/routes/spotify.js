@@ -88,6 +88,32 @@ router.post("/get_artist_by_id", validateAccessToken, async (req, res) => {
   });
 });
 
+router.post("/get_matching_followed_artists", (req, res) => {
+  const { identifiers } = req.body;
+  console.log(identifiers);
+  FollowedArtists.find(
+    {
+      identifier: {
+        $in: [...identifiers]
+      }
+    },
+    (err, artists) => {
+      if (err)
+        res.status(500).send({
+          path: "/get_matching_followed_artists",
+          message: "Failed retrieving matching followed artists!",
+          err
+        });
+
+      res.status(200).send({
+        path: "/get_matching_followed_artists",
+        message: "Artists successfully recieved!",
+        artists
+      });
+    }
+  );
+});
+
 router.post("/generate_playlist", validateAccessToken, async (req, res) => {
   const { access_token, spotify_uid, artist_list, event_name } = req.body;
   spotifyApi.setAccessToken(access_token);
