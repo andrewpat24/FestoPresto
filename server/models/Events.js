@@ -8,6 +8,9 @@ const eventsSchema = new Schema({
   name: {
     type: String
   },
+  description: {
+    type: String
+  },
   links: [
     {
       title: {
@@ -53,6 +56,9 @@ const eventsSchema = new Schema({
       },
       popularity: {
         type: Number
+      },
+      artist_id: {
+        type: String
       },
       artist_uri: {
         type: String

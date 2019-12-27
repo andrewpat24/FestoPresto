@@ -19,38 +19,51 @@ const spotifyApi = new SpotifyWebApi({
   redirectUri
 });
 
-router.post("/refresh_followed_artists", validateAccessToken, (req, res) => {
-  const { access_token, refresh_token, spotify_uid } = req.body;
-  spotifyApi.setAccessToken(access_token);
+router.post(
+  "/refresh_followed_artists",
+  validateAccessToken,
+  async (req, res) => {
+    const { access_token, spotify_uid } = req.body;
+    spotifyApi.setAccessToken(access_token);
 
-  spotifyApi.getFollowedArtists({ limit: 50 }).then(
-    async data => {
+    await FollowedArtists.deleteMany({ spotify_uid }, err => {
+      if (err)
+        res.status(500).send({
+          message: "An error occurred while deleting old followed artists!",
+          err
+        });
+    });
+
+    spotifyApi.getFollowedArtists({ limit: 50 }).then(data => {
       const items = data.body.artists.items;
-      const artistArray = [];
+      const followedArtistArray = [];
 
       items.forEach(artist => {
-        const current_artist = {
-          name: artist.name,
-          artist_id: artist.id
-        };
-        artistArray.push(current_artist);
+        const { id, name } = artist;
+        followedArtistArray.push({
+          artist_id: id,
+          artist_name: name,
+          spotify_uid,
+          identifier: spotify_uid + "_" + id
+        });
       });
 
-      const followerList = await FollowedArtists.findOneAndUpdate(
-        { spotify_uid },
-        { artists: artistArray }
-      );
+      FollowedArtists.create(followedArtistArray, err => {
+        if (err)
+          res.status(500).send({
+            path: "/refresh_followed_artists",
+            message: "An error occurred while refreshing followed artists",
+            err
+          });
 
-      res.send({
-        path: "/refresh_followed_artists",
-        data: followerList.spotify_uid
+        res.status(201).send({
+          path: "/refresh_followed_artists",
+          message: "Followed artists successfully populated!"
+        });
       });
-    },
-    function(err) {
-      console.log("Something went wrong!", err);
-    }
-  );
-});
+    });
+  }
+);
 
 router.post("/followed_artists", async (req, res) => {
   const { spotify_uid } = req.body;
@@ -83,9 +96,11 @@ router.post("/generate_playlist", validateAccessToken, async (req, res) => {
 
   for (let ii = 0; ii < artist_list.length; ii++) {
     const artistId = artist_list[ii];
+
     try {
       let artistTopTracks = await spotifyApi.getArtistTopTracks(artistId, "GB");
       artistTopTracks = artistTopTracks.body.tracks;
+
       for (let jj = 0; jj < 5; jj++) {
         trackList.push(artistTopTracks[jj].uri);
       }

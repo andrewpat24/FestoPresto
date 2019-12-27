@@ -74,10 +74,9 @@ router.get("/logout", function(req, res) {
 });
 
 router.post("/refresh_access_token", async (req, res) => {
-  const { spotify_uid, access_token } = req.body;
+  const { spotify_uid } = req.body;
   const query = User.findOne({
-    spotify_uid,
-    spotify_access_token: access_token
+    spotify_uid
   });
 
   query.select("spotify_refresh_token");
@@ -90,7 +89,7 @@ router.post("/refresh_access_token", async (req, res) => {
 
   const refreshTokenRequest = await spotifyApi.refreshAccessToken();
   const newAccessToken = refreshTokenRequest.body.access_token;
-  const filter = { spotify_uid, spotify_access_token: access_token };
+  const filter = { spotify_uid };
   const update = { spotify_access_token: newAccessToken };
   try {
     await User.findOneAndUpdate(filter, update);
