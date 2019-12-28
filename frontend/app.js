@@ -17,9 +17,6 @@ import Loading from "./components/Loading";
 import { getUserID } from "./services/passport";
 
 const store = configureStore();
-store.subscribe(() => {
-  console.log(store.getState().auth.uid, typeof store.getState().auth.uid);
-});
 
 getUserID().then(spotify_credentials => {
   store.dispatch(

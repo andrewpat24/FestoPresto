@@ -5,7 +5,7 @@ const followedArtistsSchema = new Schema({
   artist_id: {
     type: String
   },
-  artist_name: {
+  name: {
     type: String
   },
   spotify_uid: {

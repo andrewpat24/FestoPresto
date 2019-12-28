@@ -11,7 +11,6 @@ class CardView extends React.Component {
     super(props);
     this.state = { ...props, resolvedCards: [] };
     if (this.state.cardType === "event") this.resolveCardList(this.state.cards);
-    console.log(this.state);
   }
 
   // Cards come in as a promise, we need to resolve the promise to access card data.
@@ -24,17 +23,22 @@ class CardView extends React.Component {
   }
 
   render() {
-    const { cardType, resolvedCards, cards, colWidth = 4 } = this.state;
+    const {
+      section,
+      cardType,
+      resolvedCards,
+      cards,
+      colWidth = 4
+    } = this.state;
     const cssClasses = `uk-child-width-1-${colWidth}@m uk-child-width-1-2@s uk-grid-small uk-grid-match uk-grid`;
-
     return (
       <div className={cssClasses} uk-grid="">
         {cardType === "event"
           ? resolvedCards.map(cardItem => {
-              return <EventCard {...cardItem} key={cardItem._id} />;
+              return <EventCard {...cardItem} key={section + cardItem._id} />;
             })
           : cards.map(cardItem => {
-              return <ArtistCard {...cardItem} key={cardItem._id} />;
+              return <ArtistCard {...cardItem} key={section + cardItem._id} />;
             })}
       </div>
     );

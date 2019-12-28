@@ -1,10 +1,11 @@
 import React from "react";
+import { connect } from "react-redux";
 // Services
 import { getEventById } from "../services/events";
+import { getArtistsYouFollow } from "../services/spotify";
 // Components
 import CardView from "./CardView";
 import GeneratePlaylist from "./GeneratePlaylist";
-// Services
 
 class Event extends React.Component {
   constructor(props) {
@@ -12,7 +13,8 @@ class Event extends React.Component {
 
     this.state = {
       ...props,
-      ...this.props.computedMatch.params
+      ...this.props.computedMatch.params,
+      followedArtists: []
     };
 
     // TODO: Have .then and .catch generate appropriate markup.
@@ -21,15 +23,41 @@ class Event extends React.Component {
     // catch: 404 markup
     getEventById(this.state.id)
       .then(event => {
-        this.setState({
-          eventData: {
-            ...event.data
-          }
+        console.log(this.props.spotify_uid);
+        this.getFollowedArtists(event.data.lineup).then(followedArtists => {
+          this.setState({
+            eventData: {
+              ...event.data
+            },
+            followedArtists
+          });
         });
       })
       .catch(e => {
         console.log("eventERR:", e);
       });
+  }
+
+  async getFollowedArtists(eventLineup) {
+    const eventLineupIdentifiers = [];
+    const spotify_uid = this.props.spotify_uid;
+    eventLineup.forEach(artist => {
+      eventLineupIdentifiers.push(spotify_uid + "_" + artist.artist_id);
+    });
+
+    const followedArtists = await getArtistsYouFollow(eventLineupIdentifiers);
+
+    const followedArtistsArray = followedArtists.data.artists.map(artist => {
+      const { name, artist_id, spotify_uid, identifier } = artist;
+      return {
+        name,
+        artist_id,
+        spotify_uid,
+        identifier
+      };
+    });
+
+    return followedArtistsArray;
   }
 
   generateLinksMarkup(links) {
@@ -82,12 +110,25 @@ class Event extends React.Component {
                       <div className="event-lineup-container section-container">
                         <div className="event-lineup">
                           <div className="uk-heading-small">Lineup.</div>
-                          <div className="event-user-lineup-container">
-                            <div className="event-user-lineup">
-                              <h3>Artists you follow</h3>
+                          {this.state.followedArtists.length > 0 ? (
+                            <div className="event-user-lineup-container section-container">
+                              <div className="event-user-lineup">
+                                <h3>Artists you follow</h3>
+                                {
+                                  <CardView
+                                    cardType="artist"
+                                    colWidth="4"
+                                    cards={this.state.followedArtists}
+                                    section="followed_artists"
+                                  />
+                                }
+                              </div>
                             </div>
-                          </div>
-                          <div className="event-all-lineup-container">
+                          ) : (
+                            ""
+                          )}
+
+                          <div className="event-all-lineup-container section-container">
                             <div className="event-all-lineup">
                               <h3>All artists</h3>
                               {this.state.eventData ? (
@@ -95,6 +136,7 @@ class Event extends React.Component {
                                   cardType="artist"
                                   colWidth="4"
                                   cards={this.state.eventData.lineup}
+                                  section="all_artists"
                                 />
                               ) : (
                                 ""
@@ -167,12 +209,8 @@ class Event extends React.Component {
   }
 }
 
-export default Event;
+const mapStateToProps = state => {
+  return { spotify_uid: state.auth.uid };
+};
 
-// const mapStateToProps = state => {
-//   return {
-//     isAuthenticated: !!state.auth.uid
-//   };
-// };
-
-// export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(mapStateToProps)(Event);
