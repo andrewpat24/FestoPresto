@@ -13,3 +13,9 @@ export const generatePlaylist = async (
     event_name
   });
 };
+
+export const getArtistsYouFollow = (identifiers = []) => {
+  return axios.post("/api/spotify/get_matching_followed_artists", {
+    identifiers
+  });
+};
