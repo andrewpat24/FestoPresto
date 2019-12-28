@@ -48,8 +48,9 @@ class Event extends React.Component {
     const followedArtists = await getArtistsYouFollow(eventLineupIdentifiers);
 
     const followedArtistsArray = followedArtists.data.artists.map(artist => {
-      const { name, artist_id, spotify_uid, identifier } = artist;
+      const { _id, name, artist_id, spotify_uid, identifier } = artist;
       return {
+        _id,
         name,
         artist_id,
         spotify_uid,
