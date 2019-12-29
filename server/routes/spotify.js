@@ -117,12 +117,10 @@ router.post("/get_artist_by_id", validateAccessToken, async (req, res) => {
 router.post("/generate_playlist", validateAccessToken, async (req, res) => {
   const { access_token, spotify_uid, artist_list, event_name } = req.body;
   spotifyApi.setAccessToken(access_token);
-
   const trackList = [];
 
   for (let ii = 0; ii < artist_list.length; ii++) {
     const artistId = artist_list[ii];
-
     try {
       let artistTopTracks = await spotifyApi.getArtistTopTracks(artistId, "GB");
       artistTopTracks = artistTopTracks.body.tracks;
