@@ -10,6 +10,9 @@ const userSchema = new Schema({
     type: String,
     unique: true
   },
+  spotify_access_token_expiration: {
+    type: String
+  },
   spotify_refresh_token: {
     type: String,
     unique: true

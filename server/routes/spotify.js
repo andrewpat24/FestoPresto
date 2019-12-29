@@ -102,6 +102,7 @@ router.post("/get_matching_followed_artists", (req, res) => {
 
 router.post("/get_artist_by_id", validateAccessToken, async (req, res) => {
   const { access_token, artist_id } = req.body;
+
   spotifyApi.setAccessToken(access_token);
   spotifyApi.getArtist(artist_id, function(err, data) {
     res.send({
