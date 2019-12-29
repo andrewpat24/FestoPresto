@@ -67,16 +67,16 @@ router.post(
 
 router.post("/followed_artists", async (req, res) => {
   const { spotify_uid } = req.body;
-  const followerList = await FollowedArtists.findOne({ spotify_uid });
+  const followerList = await FollowedArtists.find({ spotify_uid });
   res.send({
     path: "/followed_artists",
-    artists: followerList.artists
+    artists: followerList.artists,
+    followerList
   });
 });
 
 router.post("/get_matching_followed_artists", (req, res) => {
   const { identifiers } = req.body;
-  console.log(identifiers);
   FollowedArtists.find(
     {
       identifier: {
@@ -117,12 +117,10 @@ router.post("/get_artist_by_id", validateAccessToken, async (req, res) => {
 router.post("/generate_playlist", validateAccessToken, async (req, res) => {
   const { access_token, spotify_uid, artist_list, event_name } = req.body;
   spotifyApi.setAccessToken(access_token);
-
   const trackList = [];
 
   for (let ii = 0; ii < artist_list.length; ii++) {
     const artistId = artist_list[ii];
-
     try {
       let artistTopTracks = await spotifyApi.getArtistTopTracks(artistId, "GB");
       artistTopTracks = artistTopTracks.body.tracks;

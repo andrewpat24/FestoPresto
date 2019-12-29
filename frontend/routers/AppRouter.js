@@ -9,6 +9,7 @@ import PublicOnlyRoute from "./PublicOnlyRoute";
 // Components
 import NotFound from "../components/NotFound";
 import Home from "../components/Home";
+import Profile from "../components/Profile";
 import Search from "../components/Search";
 import Header from "../components/Header";
 import Login from "../components/Login";
@@ -22,6 +23,7 @@ const AppRouter = () => (
       <Header />
       <Switch>
         <PublicOnlyRoute exact path="/login" component={Login} />
+        <PrivateRoute exact path="/profile" component={Profile} />
         <PublicRoute exact path="/search" component={Search} />
         <PublicRoute exact path="/event/:id" component={Event} />
         <PublicRoute exact path="/" component={Home} />

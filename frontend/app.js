@@ -19,9 +19,11 @@ import { getUserID } from "./services/passport";
 const store = configureStore();
 
 getUserID().then(spotify_credentials => {
-  store.dispatch(
-    login(spotify_credentials.id, spotify_credentials.access_token)
-  );
+  spotify_credentials.length === 0
+    ? store.dispatch(login("logged out", "no access token"))
+    : store.dispatch(
+        login(spotify_credentials.id, spotify_credentials.access_token)
+      );
 });
 
 const jsx = (

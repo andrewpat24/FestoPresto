@@ -19,3 +19,16 @@ export const getArtistsYouFollow = (identifiers = []) => {
     identifiers
   });
 };
+
+export const refreshFollowedArtists = (spotify_uid, access_token) => {
+  return axios.post("/api/spotify/refresh_followed_artists", {
+    spotify_uid,
+    access_token
+  });
+};
+
+export const refreshAccessToken = spotify_uid => {
+  return axios.post("/api/auth/refresh_access_token", {
+    spotify_uid
+  });
+};

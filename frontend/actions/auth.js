@@ -15,6 +15,8 @@ export const login = (uid, access_token) => ({
 export const logout = () => {
   logoutUser();
   return {
-    type: "LOGOUT"
+    type: "LOGOUT",
+    uid: "logged out",
+    access_token: "no access token"
   };
 };
