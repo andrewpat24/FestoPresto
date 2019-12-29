@@ -20,6 +20,13 @@ export const Header = ({ logout, isAuthenticated }) => (
             Login
           </Link>
         )}
+        {isAuthenticated ? (
+          <Link className="btn transparent-bg md" to="/profile">
+            Profile
+          </Link>
+        ) : (
+          <div></div>
+        )}
         <Link className="btn transparent-bg md" to="/search">
           Search
         </Link>
@@ -34,7 +41,7 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = state => {
   return {
-    isAuthenticated: !!state.auth.uid
+    isAuthenticated: state.auth.uid !== "logged out"
   };
 };
 

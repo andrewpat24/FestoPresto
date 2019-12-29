@@ -7,7 +7,11 @@ export default (state = {}, action) => {
         access_token: action.access_token
       };
     case "LOGOUT":
-      return {};
+      return {
+        ...state,
+        uid: action.uid,
+        access_token: action.access_token
+      };
     case "FETCH_USER":
       return action.payload;
     case "SET_VALUE":

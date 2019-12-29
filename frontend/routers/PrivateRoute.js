@@ -5,25 +5,29 @@ import { Route, Redirect } from "react-router-dom";
 
 export const PrivateRoute = ({
   isAuthenticated,
+  uid,
   component: Component,
   ...rest
-}) => (
-  <Route
-    {...rest}
-    component={props =>
-      isAuthenticated ? (
-        <div>
-          <Component {...props} />
-        </div>
-      ) : (
-        <Redirect to="/" />
-      )
-    }
-  />
-);
+}) => {
+  return (
+    <Route
+      {...rest}
+      component={props =>
+        isAuthenticated || uid === undefined ? (
+          <div>
+            <Component {...props} />
+          </div>
+        ) : (
+          <Redirect to="/" />
+        )
+      }
+    />
+  );
+};
 
 const mapStateToProps = state => ({
-  isAuthenticated: !!state.auth.uid
+  uid: state.auth.uid,
+  isAuthenticated: state.auth.uid !== "logged out"
 });
 
 export default connect(mapStateToProps)(PrivateRoute);

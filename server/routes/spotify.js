@@ -67,16 +67,16 @@ router.post(
 
 router.post("/followed_artists", async (req, res) => {
   const { spotify_uid } = req.body;
-  const followerList = await FollowedArtists.findOne({ spotify_uid });
+  const followerList = await FollowedArtists.find({ spotify_uid });
   res.send({
     path: "/followed_artists",
-    artists: followerList.artists
+    artists: followerList.artists,
+    followerList
   });
 });
 
 router.post("/get_matching_followed_artists", (req, res) => {
   const { identifiers } = req.body;
-  console.log(identifiers);
   FollowedArtists.find(
     {
       identifier: {

@@ -23,7 +23,6 @@ class Event extends React.Component {
     // catch: 404 markup
     getEventById(this.state.id)
       .then(event => {
-        console.log(this.props.spotify_uid);
         this.getFollowedArtists(event.data.lineup).then(followedArtists => {
           this.setState({
             eventData: {
@@ -46,7 +45,6 @@ class Event extends React.Component {
     });
 
     const followedArtists = await getArtistsYouFollow(eventLineupIdentifiers);
-
     const followedArtistsArray = followedArtists.data.artists.map(artist => {
       const { _id, name, artist_id, spotify_uid, identifier } = artist;
       return {
