@@ -48,7 +48,6 @@ passport.use(
       const accessTokenExpirationDate = moment().add(expires_in, "seconds");
       User.findOne({ spotify_uid: profile.id }, (err, user) => {
         if (!user) {
-          console.log("NEW USER______:", expires_in);
           const newUser = new User({
             spotify_uid: profile.id,
             spotify_access_token: accessToken,
