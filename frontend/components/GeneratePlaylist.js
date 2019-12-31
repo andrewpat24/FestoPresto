@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-
+// Services
 import { generatePlaylist } from "../services/spotify";
 
 export const GeneratePlaylist = props => {
@@ -10,15 +10,14 @@ export const GeneratePlaylist = props => {
         className="uk-button uk-button-primary"
         onClick={async () => {
           const response = await generatePlaylist(
-            // accessToken is currently hardcoded.
-            // TODO: add accessToken to getUser stuff
             props.access_token,
             props.uid,
             props.lineupArray,
             `Top Five ${props.eventName}`
           );
 
-          console.log(response);
+          const hasNewAccessToken = response.data.has_new_access_token;
+          if (hasNewAccessToken) window.location.reload();
         }}
       >
         Make Playlist
