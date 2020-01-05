@@ -63,7 +63,17 @@ router.post("/create_event", async (req, res) => {
 
 router.post("/get_events", (req, res) => {
   // TODO: implement search filter. get_events only returns all events currently.
-  Events.find({}, (err, events) => {
+  const { name } = req.body;
+  const filterBuilder = (() => {
+    const filter = {};
+    if (name) {
+      filter.name = { $regex: ".*" + name + ".*" };
+    }
+
+    return filter;
+  })();
+
+  Events.find(filterBuilder, (err, events) => {
     if (err)
       res.status(500).send({
         message: "There was an error finding events."
