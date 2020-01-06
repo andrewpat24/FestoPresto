@@ -1,20 +1,43 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
+
+// Services
+import { createEvent } from "../services/events";
 
 class EventForm extends React.Component {
   constructor(props) {
     super(props);
     this.onFormSubmit = this.onFormSubmit.bind(this);
-
+    console.log(props);
     this.state = {
+      redirect: "",
       eventName: "New Event",
       description: "",
-      location: "",
-      searchValue: ""
+      location: ""
     };
   }
 
-  onFormSubmit = e => {};
+  onFormSubmit = e => {
+    e.preventDefault();
+    console.log(this.state);
+
+    createEvent({
+      creator_uid: this.props.spotify_uid,
+      name: this.state.eventName,
+      description: this.state.description,
+      location: this.state.location
+    })
+      .then(event => {
+        console.log(event);
+        const redirect = `/event/${event.data._id}`;
+        console.log(redirect);
+        this.setState({ redirect });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
 
   onNameChange = e => {
     this.setState({
@@ -37,6 +60,11 @@ class EventForm extends React.Component {
   render() {
     return (
       <section component="EventForm">
+        {this.state.redirect.length > 0 ? (
+          <Redirect to={this.state.redirect} />
+        ) : (
+          <span />
+        )}
         <div className="event-form-container">
           <div className="event-form">
             <form onSubmit={this.onFormSubmit}>
@@ -78,6 +106,9 @@ class EventForm extends React.Component {
                 {/** Stages */}
 
                 {/** Links */}
+
+                {/**Submit */}
+                <button className="uk-button uk-button-default">Submit</button>
               </fieldset>
             </form>
           </div>

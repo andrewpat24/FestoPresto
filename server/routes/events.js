@@ -49,16 +49,19 @@ router.post("/create_event", async (req, res) => {
     lineup
   });
 
-  await newEvent.save(err => {
-    if (err) {
+  newEvent
+    .save()
+    .then(event => {
+      console.log(event);
+
+      res.status(201).send({ creator_uid, name, _id: event._id });
+    })
+    .catch(err =>
       res.status(500).send({
         message: "An error occurred while saving this event.",
         error: err
-      });
-    }
-  });
-
-  res.status(201).send({ creator_uid, name });
+      })
+    );
 });
 
 router.post("/get_events", (req, res) => {
