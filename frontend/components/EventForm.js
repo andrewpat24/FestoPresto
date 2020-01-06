@@ -9,29 +9,29 @@ class EventForm extends React.Component {
   constructor(props) {
     super(props);
     this.onFormSubmit = this.onFormSubmit.bind(this);
-    console.log(props);
     this.state = {
       redirect: "",
       eventName: "New Event",
       description: "",
-      location: ""
+      location: "",
+      links: []
     };
   }
 
-  onFormSubmit = e => {
+  preventDefault = e => {
     e.preventDefault();
-    console.log(this.state);
+  };
 
+  onFormSubmit = e => {
     createEvent({
       creator_uid: this.props.spotify_uid,
       name: this.state.eventName,
       description: this.state.description,
-      location: this.state.location
+      location: this.state.location,
+      links: this.state.links
     })
       .then(event => {
-        console.log(event);
         const redirect = `/event/${event.data._id}`;
-        console.log(redirect);
         this.setState({ redirect });
       })
       .catch(err => {
@@ -57,6 +57,81 @@ class EventForm extends React.Component {
     });
   };
 
+  //   <LINKS LOGIC AND MARKUP >
+  onLinkFieldChange = e => {
+    const elementKey = e.target.getAttribute("parentkey");
+    const fieldType = e.target.getAttribute("fieldname");
+
+    const links = this.state.links;
+    const fieldValue = e.target.value;
+    links[elementKey][fieldType] = fieldValue;
+
+    this.setState({
+      links
+    });
+  };
+
+  addLink = () => {
+    const links = this.state.links;
+    links.push({
+      name: "",
+      url: ""
+    });
+
+    this.setState({
+      links
+    });
+  };
+
+  removeLink = e => {
+    const links = [...this.state.links];
+    const index = e.target.getAttribute("parentkey");
+    links.splice(index, 1);
+
+    this.setState({
+      links: [...links]
+    });
+  };
+
+  linkMarkup = (data, index) => {
+    return (
+      <div key={index}>
+        <div className="uk-grid uk-margin" uk-grid="">
+          <div className="uk-width-1-2@s">
+            <input
+              className="uk-input"
+              type="text"
+              placeholder="Name"
+              value={data.name}
+              fieldname="name"
+              parentkey={index}
+              onChange={this.onLinkFieldChange}
+            />
+          </div>
+          <div className="uk-width-1-2@s">
+            <input
+              className="uk-input"
+              type="text"
+              placeholder="Url"
+              value={data.url}
+              fieldname="url"
+              parentkey={index}
+              onChange={this.onLinkFieldChange}
+            />
+          </div>
+        </div>
+        <button
+          className="uk-button uk-button-danger"
+          onClick={this.removeLink}
+          parentkey={index}
+        >
+          Remove {index}
+        </button>
+      </div>
+    );
+  };
+  //   <LINKS LOGIC AND MARKUP />
+
   render() {
     return (
       <section component="EventForm">
@@ -67,7 +142,7 @@ class EventForm extends React.Component {
         )}
         <div className="event-form-container">
           <div className="event-form">
-            <form onSubmit={this.onFormSubmit}>
+            <form onSubmit={this.preventDefault}>
               <fieldset className="uk-fieldset uk-form-width-large">
                 {/** TODO: Change the legend title to whatever's written in the name once there's input. If it's empty, change it back to New Event.*/}
                 <legend className="uk-legend">New Event</legend>
@@ -101,14 +176,34 @@ class EventForm extends React.Component {
                     onChange={this.onLocationChange}
                   />
                 </div>
+
                 {/** Event Dates */}
 
                 {/** Stages */}
 
                 {/** Links */}
-
+                <button
+                  className="uk-margin uk-button uk-button-default"
+                  onClick={this.addLink}
+                >
+                  Add Link
+                </button>
+                {this.state.links.length > 0 ? (
+                  this.state.links.map((data, index) => {
+                    return this.linkMarkup(data, index);
+                  })
+                ) : (
+                  <span />
+                )}
                 {/**Submit */}
-                <button className="uk-button uk-button-default">Submit</button>
+                <div className="uk-margin">
+                  <button
+                    className="uk-button uk-button-default"
+                    onClick={this.onFormSubmit}
+                  >
+                    Submit
+                  </button>
+                </div>
               </fieldset>
             </form>
           </div>
