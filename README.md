@@ -1,3 +1,11 @@
+[![Festivus-Music](https://circleci.com/gh/Festivus-Music/web-app.svg?style=svg)](https://circleci.com/gh/festivus-music/web-app)
+
+# Startup
+
+- npm run dev
+
+- Navigate to: http://localhost:8080/
+
 # Setup
 
 ## npm install
@@ -86,7 +94,3 @@ You can tell that devDependencies haven't been installed if during startup (kick
 ## Cookie Key
 
 - This can be anything
-
-# Startup
-
-- npm run dev
