@@ -1,6 +1,6 @@
-// create new .env && .env.development && .env.test files. 
+// create new .env file
 SPOTIFY_CLIENT_ID=
 SPOTIFY_CLIENT_SECRET=
-SPOTIFY_REDIRECT_URI=
+SPOTIFY_REDIRECT_URI="http://localhost:8080/api/auth/callback"
 MONGO_URI=
 COOKIE_KEY=

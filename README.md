@@ -1,41 +1,92 @@
+# Setup
+
+## npm install
+
+- run 'npm install' in your command line.
+
+On the install, be sure that devDependencies have also been downloaded into node_modules. If you're on a windows computer it's likely that production mode is turned on. Turn off production mode and re-run npm install.
+
+https://stackoverflow.com/a/35098833/2303395
+
+You can tell that devDependencies haven't been installed if during startup (kicked off by 'npm run dev') the values from process.env are undefined.
+
+## Spotify Keys and Configuration
+
+- [Go to the spotify api dashboard.](https://developer.spotify.com/dashboard/)
+- Click "Create an app"
+
+  ![](https://i.imgur.com/mZuEBd6.png)
+
+- Fill out the form.
+
+  ![](https://i.imgur.com/MXxDN8a.png)
+
+- This is a hobby project (for now!), say no for commercial integration.
+
+- Client ID and Client Secret
+
+  ![](https://i.imgur.com/MCbM9Hf.png)
+
+- Click 'Edit Settings'
+
+  - Fill in the following fields, then scroll to the bottom and click Save.
+
+  - Website
+
+    - http://localhost:3000/
+
+  - Redirect URLs
+
+    - http://localhost:3000/auth/callback
+    - http://localhost:8080/api/auth/callback
+
+  - MAKE SURE YOU SCROLL TO THE BOTTOM AND CLICK SAVE
+
+  - ARE YOU SURE YOU SCROLLED TO THE BOTTOM TO CLICK SAVE?!
+
+  ![](https://i.imgur.com/gJMnRTX.png)
+
+## MongoDB Keys and Configuration
+
+- [Create an account for mongoDB atlas](mongodb.com/cloud/atlas)
+
+- Select the starter clusters
+
+  ![](https://i.imgur.com/CWvGsnr.png)
+
+- Set the project name to 'festivus' and click 'create cluster'.
+
+  ![](https://i.imgur.com/oii5sRW.png)
+
+- Click connect
+
+  ![](https://i.imgur.com/8pVcHpf.png)
+
+- Connecting
+
+  - Add the following IP: 0.0.0.0
+
+    - 0.0.0.0 whitelists every IP. If you set this up for prod, remove this and replace it with the specific IP's that'll be accessing MongoDB.
+
+  - Create a MongoDB User
+
+  ![](https://imgur.com/GI6G4k2.png)
+
+- Click 'Connect Your Application'
+
+  ![](https://imgur.com/PbMWrJY.png)
+
+- Get the connection string for the MONGO_URI field in .env
+
+  - MAKE SURE YOU UPDATE \<password> WITH YOUR PASSWORD
+  - ARE YOU SURE YOU DELETED \<password> FROM THE STRING AND REPLACED IT WITH THE DB USER PASSWORD??
+
+  ![](https://imgur.com/6hwn039.png)
+
+## Cookie Key
+
+- This can be anything
+
 # Startup
 
 - npm run dev
-
-# Spotify Accounts Authentication Examples
-
-This project contains basic demos showing the different OAuth 2.0 flows for [authenticating against the Spotify Web API](https://developer.spotify.com/web-api/authorization-guide/).
-
-These examples cover:
-
-- Authorization Code flow
-- Client Credentials flow
-- Implicit Grant flow
-
-## Installation
-
-These examples run on Node.js. On [its website](http://www.nodejs.org/download/) you can find instructions on how to install it. You can also follow [this gist](https://gist.github.com/isaacs/579814) for a quick and easy way to install Node.js and npm.
-
-Once installed, clone the repository and install its dependencies running:
-
-    $ npm install
-
-### Using your own credentials
-
-You will need to register your app and get your own credentials from the Spotify for Developers Dashboard.
-
-To do so, go to [your Spotify for Developers Dashboard](https://beta.developer.spotify.com/dashboard) and create your application. For the examples, we registered these Redirect URIs:
-
-- http://localhost:3000 (needed for the implicit grant flow)
-- http://localhost:3000/callback
-
-Once you have created your app, replace the `client_id`, `redirect_uri` and `client_secret` in the examples with the ones you get from My Applications.
-
-## Running the examples
-
-In order to run the different examples, open the folder with the name of the flow you want to try out, and run its `app.js` file. For instance, to run the Authorization Code example do:
-
-    $ cd authorization_code
-    $ node app.js
-
-Then, open `http://localhost:8888` in a browser.
