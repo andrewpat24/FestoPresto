@@ -1,3 +1,5 @@
+[![Festivus-Music](https://circleci.com/<VCS>/Festivus-Music/web-app.svg?style=svg)](https://circleci.com/gh/festivus-music/web-app)
+
 # Startup
 
 - npm run dev
