@@ -23,7 +23,7 @@ router.post(
   "/refresh_followed_artists",
   validateAccessToken,
   async (req, res) => {
-    const { access_token, spotify_uid } = req.body;
+    const { access_token, spotify_uid, has_new_access_token } = req.body;
     spotifyApi.setAccessToken(access_token);
 
     await FollowedArtists.deleteMany({ spotify_uid }, err => {
@@ -58,7 +58,9 @@ router.post(
 
         res.status(201).send({
           path: "/refresh_followed_artists",
-          message: "Followed artists successfully populated!"
+          message: "Followed artists successfully populated!",
+          access_token,
+          has_new_access_token
         });
       });
     });
@@ -101,13 +103,15 @@ router.post("/get_matching_followed_artists", (req, res) => {
 });
 
 router.post("/get_artist_by_id", validateAccessToken, async (req, res) => {
-  const { access_token, artist_id } = req.body;
+  const { access_token, artist_id, has_new_access_token } = req.body;
 
   spotifyApi.setAccessToken(access_token);
   spotifyApi.getArtist(artist_id, function(err, data) {
     res.send({
       path: "/get_artist_by_id",
       response: {
+        access_token,
+        has_new_access_token,
         data,
         err
       }
@@ -116,7 +120,13 @@ router.post("/get_artist_by_id", validateAccessToken, async (req, res) => {
 });
 
 router.post("/generate_playlist", validateAccessToken, async (req, res) => {
-  const { access_token, spotify_uid, artist_list, event_name } = req.body;
+  const {
+    access_token,
+    spotify_uid,
+    artist_list,
+    event_name,
+    has_new_access_token
+  } = req.body;
   spotifyApi.setAccessToken(access_token);
   const trackList = [];
 
@@ -143,7 +153,9 @@ router.post("/generate_playlist", validateAccessToken, async (req, res) => {
     .then(() => {
       res.send({
         path: "/generate_playlists",
-        message: `Playlist '${event_name}' has been successfully created with ${trackList.length} songs!`
+        message: `Playlist '${event_name}' has been successfully created with ${trackList.length} songs!`,
+        access_token,
+        has_new_access_token
       });
     })
     .catch(e => {

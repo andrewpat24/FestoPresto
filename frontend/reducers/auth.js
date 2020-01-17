@@ -12,6 +12,11 @@ export default (state = {}, action) => {
         uid: action.uid,
         access_token: action.access_token
       };
+    case "UPDATE_ACCESS_TOKEN":
+      return {
+        ...state,
+        access_token: action.access_token
+      };
     case "FETCH_USER":
       return action.payload;
     case "SET_VALUE":
