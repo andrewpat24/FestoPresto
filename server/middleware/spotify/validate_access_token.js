@@ -55,6 +55,7 @@ module.exports = async (req, res, next) => {
     try {
       await User.findOneAndUpdate(filter, update);
       req.body.access_token = newAccessToken;
+      req.body.has_new_access_token = true;
       console.log("Access token has been updated!");
     } catch (err) {
       req.body.access_token = "EXPIRED";
