@@ -1,4 +1,4 @@
-[![Festivus-Music](https://circleci.com/gh/Festivus-Music/web-app.svg?style=svg)](https://circleci.com/gh/festivus-music/web-app)
+[![Festivus-Music](https://circleci.com/gh/Festivus-Music/web-app.svg?style=shield)](https://circleci.com/gh/festivus-music/web-app)
 
 # Startup
 
