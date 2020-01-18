@@ -5,6 +5,8 @@
 
 Let's make some playlists for your favorite festivals! 
 
+![](https://i.imgur.com/0TAW4Zw.jpg)
+
 # Startup
 
 - npm run dev
