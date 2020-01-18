@@ -1,5 +1,8 @@
 [![Festivus-Music](https://circleci.com/gh/Festivus-Music/web-app.svg?style=shield)](https://circleci.com/gh/festivus-music/web-app)
 
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+
+
 # Startup
 
 - npm run dev
