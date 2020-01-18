@@ -7,7 +7,7 @@ const Events = mongoose.model("events");
 const FollowedEvents = mongoose.model("followed_events");
 
 router.get("/", (req, res) => {
-  res.send({
+  res.status(200).send({
     path: "/",
     message: "Root GET working on /routes"
   });
