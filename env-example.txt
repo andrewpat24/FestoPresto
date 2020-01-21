@@ -1,6 +1,8 @@
-// create new .env file
+// create new .env and .env.test file with the following fields (EXCLUDE THE COMMENTED LINES) 
+// ONLY INCLUDE THE PORT VALUE IN .env.test
 SPOTIFY_CLIENT_ID=
 SPOTIFY_CLIENT_SECRET=
 SPOTIFY_REDIRECT_URI="http://localhost:8080/api/auth/callback"
 MONGO_URI=
 COOKIE_KEY=
+PORT=
