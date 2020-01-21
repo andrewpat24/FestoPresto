@@ -106,7 +106,6 @@ describe("Should test /my_events route", () => {
   });
 
   // TODO: #78
-
   // it.only("Should POST incorrect user id and recieve 500", () => {
   //   const wrongId = "Wrong ID";
   //   return request(server)
