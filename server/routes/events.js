@@ -15,15 +15,16 @@ router.get("/", (req, res) => {
 
 router.post("/get_event_by_id", async (req, res) => {
   const { event_id } = req.body;
-
   try {
     const event_data = await Events.findOne({ _id: event_id });
-    res.send(event_data);
+    res.status(200).send(event_data);
   } catch (e) {
     res.status(404).send({
       err: e,
       message:
-        "Something went wrong retrieving this event or this event does not exist."
+        "Something went wrong retrieving this event or this event does not exist.",
+      requestObj: req.body,
+      _id: event_id
     });
   }
 });

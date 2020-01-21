@@ -78,6 +78,7 @@
     "enzyme-to-json": "^3.3.5",
     "express-pino-logger": "^4.0.0",
     "jest": "^20.0.4",
+    "jest-express": "^1.10.2",
     "nodemon": "^2.0.2",
     "pino-colada": "^1.5.0",
     "react-test-renderer": "^16.8.6",
