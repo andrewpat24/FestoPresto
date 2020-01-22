@@ -1,17 +1,22 @@
-import { login, startLogin, logout, startLogout } from "../../actions/auth";
+import { login, logout } from "../../actions/auth";
 
 test("Setup login", () => {
   const fakeUID = "sdfjw32erfdivj";
-  const action = login(fakeUID);
+  const fakeAccessToken = "kjfdgnkdfxvbjxckngsdfjknsdf";
+  const action = login(fakeUID, fakeAccessToken);
+
   expect(action).toEqual({
     type: "LOGIN",
-    uid: fakeUID
+    uid: fakeUID,
+    access_token: fakeAccessToken
   });
 });
 
 test("setup logout", () => {
   const action = logout();
   expect(action).toEqual({
-    type: "LOGOUT"
+    type: "LOGOUT",
+    uid: "logged out",
+    access_token: "no access token"
   });
 });
