@@ -1,9 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
-
+// Actions
+import { newEvent } from "../actions/event";
 // Services
 import { createEvent } from "../services/events";
+// Components
+import DateField from "./DateField";
+import StageField from "./StageField";
 
 class EventForm extends React.Component {
   constructor(props) {
@@ -16,6 +20,7 @@ class EventForm extends React.Component {
       location: "",
       links: []
     };
+    this.props.newEvent();
   }
 
   preventDefault = e => {
@@ -125,7 +130,7 @@ class EventForm extends React.Component {
           onClick={this.removeLink}
           parentkey={index}
         >
-          Remove {index}
+          Remove
         </button>
       </div>
     );
@@ -178,8 +183,10 @@ class EventForm extends React.Component {
                 </div>
 
                 {/** Event Dates */}
+                <DateField />
 
                 {/** Stages */}
+                <StageField />
 
                 {/** Links */}
                 <button
@@ -213,8 +220,12 @@ class EventForm extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return { spotify_uid: state.auth.uid };
+const mapDispatchToProps = dispatch => ({
+  newEvent: () => dispatch(newEvent())
+});
+
+const mapStateToProps = store => {
+  return { spotify_uid: store.auth.uid };
 };
 
-export default connect(mapStateToProps)(EventForm);
+export default connect(mapStateToProps, mapDispatchToProps)(EventForm);
