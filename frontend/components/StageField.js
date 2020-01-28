@@ -25,7 +25,6 @@ class StageField extends React.Component {
   };
 
   removeStage = e => {
-    // debugger;
     const eventData = { ...this.state.event };
     const index = parseInt(e.target.getAttribute("parentkey"));
     eventData.stages.splice(index, 1);
@@ -35,7 +34,6 @@ class StageField extends React.Component {
   };
 
   fieldMarkup = (name, index) => {
-    if (!!name) debugger;
     return (
       <div key={index}>
         <div className="uk-grid uk-margin" uk-grid="">

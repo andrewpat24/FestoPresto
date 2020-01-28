@@ -13,52 +13,85 @@ class DateField extends React.Component {
 
   onDateFieldChange = e => {
     const elementKey = e.target.getAttribute("parentkey");
-    const fieldType = e.target.getAttribute("fieldname");
 
-    const links = this.state.links;
+    const eventData = { ...this.state.event };
     const fieldValue = e.target.value;
+    eventData.dates[elementKey] = fieldValue;
+
+    this.props.editEvent(this.state.event, eventData);
+    this.setState({
+      event: { ...eventData }
+    });
   };
 
-  generateFieldMarkdown = () => {
+  addDate = () => {
+    const eventData = this.state.event;
+    eventData.dates.push("");
+    debugger;
+    this.props.editEvent(this.state.event, eventData);
+    this.setState({
+      event: { ...eventData }
+    });
+    console.log(this.state);
+  };
+
+  removeDate = e => {
+    const eventData = { ...this.state.event };
+    const index = parseInt(e.target.getAttribute("parentkey"));
+    eventData.dates.splice(index, 1);
+
+    this.props.editEvent(this.state.event, eventData);
+    this.setState({ event: { ...eventData } });
+  };
+
+  fieldMarkup = (name, index) => {
     return (
-      <div key={1}>
+      <div key={index}>
         <div className="uk-grid uk-margin" uk-grid="">
           <div className="uk-width-1-2@s">
             <input
               className="uk-input"
               type="text"
-              placeholder="Name"
-              value={1}
+              placeholder="Date"
               fieldname="name"
-              parentkey={1}
-              onChange={() => {}}
+              parentkey={index}
+              value={name}
+              onChange={this.onDateFieldChange}
             />
           </div>
           <div className="uk-width-1-2@s">
-            <input
-              className="uk-input"
-              type="text"
-              placeholder="Url"
-              value={1}
-              fieldname="url"
-              parentkey={1}
-              onChange={() => {}}
-            />
+            <button
+              className="uk-button uk-button-danger"
+              onClick={this.removeDate}
+              parentkey={index}
+            >
+              Remove
+            </button>
           </div>
         </div>
-        <button
-          className="uk-button uk-button-danger"
-          onClick={() => {}}
-          parentkey={1}
-        >
-          Remove
-        </button>
       </div>
     );
   };
 
   render() {
-    return <div></div>;
+    return (
+      <div>
+        <button
+          className="uk-margin uk-button uk-button-default"
+          onClick={this.addDate}
+        >
+          Add Date
+        </button>
+
+        {this.state.event ? (
+          this.state.event.dates.map((name, index) => {
+            return this.fieldMarkup(name, index);
+          })
+        ) : (
+          <span />
+        )}
+      </div>
+    );
   }
 }
 
@@ -66,8 +99,8 @@ const mapDispatchToProps = dispatch => ({
   editEvent: (oldFields, newFields) => dispatch(editEvent(oldFields, newFields))
 });
 
-const mapStateToProps = store => ({
-  event: store.event
+const mapStateToProps = state => ({
+  event: state.event
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DateField);

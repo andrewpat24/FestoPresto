@@ -6,6 +6,8 @@ import { newEvent } from "../actions/event";
 // Services
 import { createEvent } from "../services/events";
 // Components
+// TODO: Issue #82
+// Make "DynamicField" component so we don't have 5 files with really similar code..
 import DateField from "./DateField";
 import StageField from "./StageField";
 
