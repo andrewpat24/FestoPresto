@@ -13,10 +13,11 @@ class DateField extends React.Component {
 
   onDateFieldChange = e => {
     const elementKey = e.target.getAttribute("parentkey");
+    const fieldType = e.target.getAttribute("fieldname");
 
     const eventData = { ...this.state.event };
     const fieldValue = e.target.value;
-    eventData.dates[elementKey] = fieldValue;
+    eventData.dates[elementKey][fieldType] = fieldValue;
 
     this.props.editEvent(this.state.event, eventData);
     this.setState({
@@ -26,13 +27,15 @@ class DateField extends React.Component {
 
   addDate = () => {
     const eventData = this.state.event;
-    eventData.dates.push("");
-    debugger;
+    eventData.dates.push({
+      starttime: "",
+      endtime: "",
+      day: ""
+    });
     this.props.editEvent(this.state.event, eventData);
     this.setState({
       event: { ...eventData }
     });
-    console.log(this.state);
   };
 
   removeDate = e => {
@@ -44,7 +47,7 @@ class DateField extends React.Component {
     this.setState({ event: { ...eventData } });
   };
 
-  fieldMarkup = (name, index) => {
+  fieldMarkup = (data, index) => {
     return (
       <div key={index}>
         <div className="uk-grid uk-margin" uk-grid="">
@@ -52,10 +55,30 @@ class DateField extends React.Component {
             <input
               className="uk-input"
               type="text"
-              placeholder="Date"
-              fieldname="name"
+              placeholder="Start Time"
+              fieldname="starttime"
               parentkey={index}
-              value={name}
+              value={data["starttime"]}
+              onChange={this.onDateFieldChange}
+            />
+
+            <input
+              className="uk-input"
+              type="text"
+              placeholder="End Time"
+              fieldname="endtime"
+              parentkey={index}
+              value={data["endtime"]}
+              onChange={this.onDateFieldChange}
+            />
+
+            <input
+              className="uk-input"
+              type="text"
+              placeholder="Day"
+              fieldname="day"
+              parentkey={index}
+              value={data["day"]}
               onChange={this.onDateFieldChange}
             />
           </div>
@@ -84,8 +107,8 @@ class DateField extends React.Component {
         </button>
 
         {this.state.event ? (
-          this.state.event.dates.map((name, index) => {
-            return this.fieldMarkup(name, index);
+          this.state.event.dates.map((data, index) => {
+            return this.fieldMarkup(data, index);
           })
         ) : (
           <span />
