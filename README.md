@@ -3,7 +3,37 @@
 [![Festivus-Music](https://circleci.com/gh/Festivus-Music/web-app.svg?style=shield)](https://circleci.com/gh/festivus-music/web-app)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
-Let's make some playlists for your favorite festivals! 
+Let's make some playlists for your favorite festivals!
+
+Festivus (name pending) is a web application that'll serve as a spotify discover for festivals you're already going to.
+
+### v1
+
+It's for streamlining playlist generation.
+
+- Create pre-filtered playlists based on genre, up and coming, hot, or what you might like at your festival
+
+### v2
+
+It's for finding out who has the best performances:
+
+- Review artist's live performances
+
+- Your favorite artists might be terrible live, one you might have never heard of might be one of the best live performers touring.
+
+### v3
+
+It's for helping you make a schedule:
+
+- Select who you're going to see and based off of your taste get suggested a schedule for the day or weekend.
+
+- Get text/email alerts for where you should be and when.
+
+### vNan
+
+It's for doing fun and creative things with the spotify and songkick API's.
+
+### v0 specs that the frontend will be loosely inspired from
 
 ![](https://i.imgur.com/0TAW4Zw.jpg)
 
