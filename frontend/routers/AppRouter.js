@@ -14,6 +14,7 @@ import Search from "../components/Search";
 import Header from "../components/Header";
 import Login from "../components/Login";
 import Event from "../components/Event";
+import EventForm from "../components/EventForm";
 
 export const history = createHistory();
 
@@ -24,8 +25,12 @@ const AppRouter = () => (
       <Switch>
         <PublicOnlyRoute exact path="/login" component={Login} />
         <PrivateRoute exact path="/profile" component={Profile} />
+
         <PublicRoute exact path="/search" component={Search} />
+
+        <PrivateRoute exact path="/event/new" component={EventForm} />
         <PublicRoute exact path="/event/:id" component={Event} />
+
         <PublicRoute exact path="/" component={Home} />
 
         <Route component={NotFound} />
