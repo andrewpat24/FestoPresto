@@ -65,10 +65,4 @@ app.use("/events", eventsRouter);
 const publicPath = path.join(__dirname, "../public");
 app.use(express.static(publicPath));
 
-// Port
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`server is running on port ${port} .`);
-});
-
 module.exports = app;

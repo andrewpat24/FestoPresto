@@ -6,3 +6,4 @@ SPOTIFY_REDIRECT_URI="http://localhost:8080/api/auth/callback"
 MONGO_URI=
 COOKIE_KEY=
 PORT=
+SONGKICK_KEY=
