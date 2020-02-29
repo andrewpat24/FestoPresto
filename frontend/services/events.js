@@ -1,7 +1,14 @@
 import axios from 'axios';
 
 export const findFestivals = async (filters = {}) => {
-  return axios.post('api/events/find_festivals', filters);
+  return axios.post('/api/events/find_festivals', filters);
+};
+
+export const festivalDetails = async (festivalID, access_token) => {
+  return axios.post('/api/events/festival_details', {
+    festivalID,
+    access_token
+  });
 };
 
 // export const getEventById = async (event_id = "0") => {

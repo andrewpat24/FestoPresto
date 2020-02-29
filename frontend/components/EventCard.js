@@ -7,7 +7,7 @@ export const EventCard = props => {
   const date = moment(start.date).format('MMM Do');
   const eventPageUrl = `/event/${id}`;
   return (
-    <Link to={eventPageUrl}>
+    <Link to={eventPageUrl} style={{ textDecoration: 'none' }}>
       <div className="uk-card uk-card-default uk-card-hover">
         <div className="uk-card-body">
           <div className="card-title-area uk-flex-center uk-flex">
