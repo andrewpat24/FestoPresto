@@ -1,6 +1,6 @@
-import React from "react";
-import EventCard from "./EventCard";
-import ArtistCard from "./ArtistCard";
+import React from 'react';
+import EventCard from './EventCard';
+import ArtistCard from './ArtistCard';
 
 const CardView = props => {
   const { section, cardType, cards, colWidth = 4 } = props;
@@ -8,9 +8,9 @@ const CardView = props => {
 
   return (
     <div className={cssClasses} uk-grid="">
-      {cardType === "event"
+      {cardType === 'event'
         ? cards.map(cardItem => {
-            return <EventCard {...cardItem} key={section + cardItem._id} />;
+            return <EventCard {...cardItem} key={section + cardItem.id} />;
           })
         : cards.map(cardItem => {
             return <ArtistCard {...cardItem} key={section + cardItem._id} />;

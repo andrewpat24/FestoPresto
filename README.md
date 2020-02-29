@@ -15,14 +15,6 @@ It's for streamlining playlist generation.
 
 ### v2
 
-It's for finding out who has the best performances:
-
-- Review artist's live performances
-
-- Your favorite artists might be terrible live, one you might have never heard of might be one of the best live performers touring.
-
-### v3
-
 It's for helping you make a schedule:
 
 - Select who you're going to see and based off of your taste get suggested a schedule for the day or weekend.
