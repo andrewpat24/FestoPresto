@@ -8,6 +8,7 @@ import moment from 'moment';
 import CardView from './CardView';
 import GeneratePlaylist from './GeneratePlaylist';
 import Loading from './Loading';
+import Attribution from './Attribution';
 
 class Event extends React.Component {
   constructor(props) {
@@ -82,6 +83,7 @@ class Event extends React.Component {
         ) : (
           <span />
         )}
+        <Attribution />
       </section>
     );
   }
