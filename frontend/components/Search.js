@@ -2,6 +2,7 @@ import React from 'react';
 // Components
 import CardView from './CardView';
 import Loading from './Loading';
+import Attribution from './Attribution';
 // Services
 import { findFestivals } from '../services/events';
 
@@ -109,6 +110,7 @@ class Search extends React.Component {
               ) : (
                 <span />
               )}
+              <Attribution />
             </div>
           </div>
         </div>
