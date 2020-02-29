@@ -1,44 +1,51 @@
-import React from "react";
+import React from 'react';
 // Components
-import CardView from "./CardView";
+import CardView from './CardView';
 // Services
-import { getEvents } from "../services/events";
-// Selectors
-import getVisibleExpenses from "../selectors/events";
+import { findFestivals } from '../services/events';
 
 class Search extends React.Component {
   constructor(props) {
     super(props);
-    // this.searchInput = React.createRef();
-    // this.textInput = React.createRef();
     this.onFormSubmit = this.onFormSubmit.bind(this);
 
     this.state = {
       ...props,
-      searchValue: ""
+      searchValue: '',
+      loading: false
     };
-
-    this.getEventsWithFilter({}).then(events => {
-      this.setState({
-        events
-      });
-    });
   }
 
-  async getEventsWithFilter(filter = {}) {
-    const events = await getEvents(filter);
-    return events.data;
+  async findFestivals(filter = {}) {
+    const festivals = await findFestivals(filter);
+    return festivals.data;
   }
 
-  onFormSubmit(event) {
-    event.preventDefault();
+  onFormSubmit(e) {
+    e.preventDefault();
     const searchQuery = this.state.searchValue;
-    this.getEventsWithFilter({ name: searchQuery }).then(events => {
-      console.log(events);
-      this.setState({
-        events
-      });
-    });
+
+    this.setState(
+      {
+        festivals: [],
+        location_name: '',
+        loading: true
+      },
+      () => {
+        this.findFestivals({ location: searchQuery }).then(locationData => {
+          this.setState(
+            {
+              location_name: locationData.location_name,
+              festivals: locationData.festivals,
+              loading: false
+            },
+            () => {
+              console.log(this.state);
+            }
+          );
+        });
+      }
+    );
   }
 
   onChange = e => {
@@ -48,7 +55,7 @@ class Search extends React.Component {
   };
 
   generateCardView(cards) {
-    console.log("GENERATECARDVIEW", cards);
+    console.log('GENERATECARDVIEW', cards);
     return this.state.events ? (
       <CardView cardType="event" colWidth="4" cards={cards} />
     ) : (
@@ -72,7 +79,7 @@ class Search extends React.Component {
                     <input
                       className="uk-search-input"
                       type="search"
-                      placeholder="Search..."
+                      placeholder="Name the city.."
                       name="searchInput"
                       onChange={this.onChange}
                     />
@@ -82,12 +89,20 @@ class Search extends React.Component {
             </div>
           </div>
           <div className="search-results-container container">
+            <div className="search-results-region-name">
+              {this.state.location_name ? (
+                <h2>{this.state.location_name}</h2>
+              ) : (
+                ''
+              )}
+            </div>
             <div className="search-results">
-              {this.state.events ? (
+              {this.state.festivals ? (
                 <CardView
                   cardType="event"
                   colWidth="4"
-                  cards={this.state.events}
+                  cards={this.state.festivals}
+                  section="search-results"
                 />
               ) : (
                 <span />
