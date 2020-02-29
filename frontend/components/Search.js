@@ -1,6 +1,7 @@
 import React from 'react';
 // Components
 import CardView from './CardView';
+import Loading from './Loading';
 // Services
 import { findFestivals } from '../services/events';
 
@@ -88,6 +89,7 @@ class Search extends React.Component {
               </nav>
             </div>
           </div>
+          {this.state.loading ? <Loading /> : <span />}
           <div className="search-results-container container">
             <div className="search-results-region-name">
               {this.state.location_name ? (
