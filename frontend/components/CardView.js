@@ -5,7 +5,6 @@ import ArtistCard from './ArtistCard';
 const CardView = props => {
   const { section, cardType, cards, colWidth = 4 } = props;
   const cssClasses = `uk-child-width-1-${colWidth}@m uk-child-width-1-2@s uk-grid-small uk-grid-match uk-grid`;
-
   return (
     <div className={cssClasses} uk-grid="">
       {cardType === 'event'

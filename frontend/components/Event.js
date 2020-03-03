@@ -49,10 +49,9 @@ class Event extends React.Component {
       .catch(e => {});
   }
 
-  generateFestivalMarkup(festivalData) {
+  generateFestivalMarkup(festivalData, artistData) {
     const startDate = moment(festivalData.start.date).format('MMM Do YYYY');
     const endDate = moment(festivalData.end.date).format('MMM Do YYYY');
-
     return (
       <div className="Event">
         <div className="Event-Header-Container">
@@ -71,9 +70,11 @@ class Event extends React.Component {
                 </button>
               </div>
               <div>
-                <button className="uk-button uk-button-secondary buy-tickets-btn">
-                  Buy Tickets
-                </button>
+                <a href={festivalData.uri} target="_blank">
+                  <button className="uk-button uk-button-secondary buy-tickets-btn">
+                    Buy Tickets
+                  </button>
+                </a>
               </div>
             </div>
             <div className="Event-Header-Filter header-section">
@@ -82,15 +83,24 @@ class Event extends React.Component {
               </button>
             </div>
             <div className="Event-Header-Playlist header-section">
-              <button className="uk-button uk-button-secondary make-playlist-btn">
-                Make Playlist
-              </button>
+              <GeneratePlaylist
+                eventName={festivalData.displayName}
+                lineupArray={artistData.map(artist => {
+                  return artist.spotify_id;
+                })}
+              />
             </div>
           </div>
         </div>
         <div className="Event-Body-Container">
           <div className="Event-Body">
             <h1>Cards</h1>
+            <CardView
+              cardType="artist"
+              colWidth="4"
+              cards={artistData}
+              section="festival-lineup"
+            />
           </div>
         </div>
       </div>
@@ -109,7 +119,10 @@ class Event extends React.Component {
         )}
 
         {this.state.festival_data ? (
-          this.generateFestivalMarkup(this.state.festival_data)
+          this.generateFestivalMarkup(
+            this.state.festival_data,
+            this.state.artist_data
+          )
         ) : (
           <span />
         )}
@@ -120,7 +133,7 @@ class Event extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return { access_token: state.auth.access_token };
+  return { access_token: state.auth.access_token, spotify_uid: state.auth.uid };
 };
 
 export default connect(mapStateToProps)(Event);

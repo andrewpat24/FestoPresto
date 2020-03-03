@@ -5,6 +5,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const Events = mongoose.model('events');
 const FollowedEvents = mongoose.model('followed_events');
+const CachedArtists = mongoose.model('cached_artists');
 
 // Middleware
 const validateAccessToken = require('../middleware/spotify/validate_access_token');
@@ -110,19 +111,66 @@ router.post('/festival_details', validateAccessToken, async (req, res) => {
 
   const response_getEvent = await getEvent();
   festivalData = response_getEvent.resultsPage.results.event;
-  const artist = response_getEvent.resultsPage.results.event.performance[0];
 
-  spotifyApi.searchArtists(artist.displayName).then(
-    function(data) {
-      console.log(`Search artists by "${artist.displayName}"`, data.body);
-      return res
-        .status(200)
-        .send({ artist_data: data.body, festival_data: festivalData });
-    },
-    function(err) {
-      console.error(err);
+  const artistList = response_getEvent.resultsPage.results.event.performance;
+
+  const artistIds = artistList.map(artist => {
+    return artist.artist.id;
+  });
+
+  const cachedArtists = await CachedArtists.find({
+    songkick_id: { $in: [...artistIds] }
+  });
+
+  if (cachedArtists.length === artistIds.length)
+    return res
+      .status(200)
+      .send({ artist_data: cachedArtists, festival_data: festivalData });
+
+  const cachedArtistIdHash = (cachedArtists => {
+    const hash = {};
+
+    cachedArtists.forEach(artist => {
+      hash[artist.songkick_id] = true;
+    });
+
+    return hash;
+  })(cachedArtists);
+
+  // TODO: Functionalize the following code:
+  const artist_data = [];
+
+  for (let ii = 0; ii < artistList.length; ii++) {
+    const currentArtist = artistList[ii];
+    if (!!cachedArtistIdHash[currentArtist.id]) continue;
+
+    const data = await spotifyApi.searchArtists(currentArtist.displayName);
+    const returnedArtist = data.body.artists.items[0];
+
+    const newArtistData = {
+      artist_name: currentArtist.displayName,
+      songkick_id: currentArtist.artist.id,
+      songkick_url: currentArtist.artist.uri
+    };
+
+    if (!!returnedArtist) {
+      newArtistData.spotify_id = returnedArtist.id;
+      newArtistData.spotify_url = returnedArtist.external_urls.spotify;
+      newArtistData.genres = returnedArtist.genres;
+      newArtistData.popularity = returnedArtist.popularity;
+      newArtistData.followers = returnedArtist.followers.total;
     }
-  );
+    console.log(newArtistData);
+    artist_data.push(newArtistData);
+  }
+
+  console.log(`Inserting ${artist_data.length} new artists to the database...`);
+  await CachedArtists.collection.insertMany(artist_data);
+  cachedArtists.push(...artist_data);
+
+  return res
+    .status(200)
+    .send({ artist_data: cachedArtists, festival_data: festivalData });
 });
 
 router.post('/followed_events', (req, res) => {
