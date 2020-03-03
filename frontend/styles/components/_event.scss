@@ -18,3 +18,30 @@
   height: 80vh;
   width: 100vw;
 }
+
+.Event-Header-Container {
+  padding: 5%;
+}
+
+.Event-Header {
+  text-align: center;
+}
+
+.Event-Header-Actions.uk-grid {
+  display: flex;
+  justify-content: center;
+}
+
+button.buy-tickets-btn {
+  background-color: #f80046;
+  color: #edf2f4;
+}
+
+.header-section {
+  padding-top: 2%;
+}
+
+button.make-playlist-btn {
+  background-color: #1fcf5f;
+  color: #edf2f4;
+}

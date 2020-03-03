@@ -61,6 +61,36 @@ class Event extends React.Component {
             <h2>
               {startDate} - {endDate}
             </h2>
+            <div
+              className="Event-Header-Actions uk-text-center header-section"
+              uk-grid=""
+            >
+              <div>
+                <button className="uk-button uk-button-primary follow-btn">
+                  Follow
+                </button>
+              </div>
+              <div>
+                <button className="uk-button uk-button-secondary buy-tickets-btn">
+                  Buy Tickets
+                </button>
+              </div>
+            </div>
+            <div className="Event-Header-Filter header-section">
+              <button className="uk-button uk-button-default filter-btn">
+                Filter
+              </button>
+            </div>
+            <div className="Event-Header-Playlist header-section">
+              <button className="uk-button uk-button-secondary make-playlist-btn">
+                Make Playlist
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="Event-Body-Container">
+          <div className="Event-Body">
+            <h1>Cards</h1>
           </div>
         </div>
       </div>
