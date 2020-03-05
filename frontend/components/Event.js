@@ -15,7 +15,8 @@ class Event extends React.Component {
     super(props);
 
     this.state = {
-      followedArtists: [],
+      displayedArtists: [],
+      filter: '',
       loading: true
     };
 
@@ -31,18 +32,50 @@ class Event extends React.Component {
     this.loadFestival(festivalID, accessToken);
   }
 
+  getGenreGroups(artistList) {
+    const genreGroups = {};
+    // TODO: there has got to be a more efficient way to do this
+    artistList.forEach((artist, artistIndex) => {
+      artist.genres.forEach(genre => {
+        if (!genreGroups[genre]) genreGroups[genre] = [];
+        genreGroups[genre].push(artistIndex);
+      });
+    });
+
+    // console.log(genreGroups);
+    return genreGroups;
+  }
+
+  getDisplayedArtists(genreGroups, genre) {
+    const artistList = this.state.artist_data;
+    const displayedArtists = [];
+    const artistIndexes = genreGroups[genre];
+    artistIndexes.forEach(artistIndex => {
+      displayedArtists.push(artistList[artistIndex]);
+    });
+
+    return displayedArtists;
+  }
+
   loadFestival(festivalID, accessToken) {
     festivalDetails(festivalID, accessToken)
       .then(response => {
         const data = response.data;
+        // TODO: Find a more elegant way to deal with this reload..
+        if (!!data.has_new_access_token) window.location.reload();
+        const genreGroups = this.getGenreGroups(data.artist_data);
+
         this.setState(
           {
             artist_data: data.artist_data,
             festival_data: data.festival_data,
+            genreGroups,
             loading: false
           },
           () => {
             console.log(this.state);
+
+            // console.log(this.getDisplayedArtists(genreGroups, 'edm'));
           }
         );
       })

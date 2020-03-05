@@ -1,8 +1,7 @@
 import React from 'react';
 
 export const ArtistCard = props => {
-  const { _id, artist_name, genre, popularity, followers } = props;
-  console.log(artist_name, genre);
+  const { _id, artist_name, popularity, followers } = props;
   return (
     <div>
       <div className="uk-card uk-card-default">

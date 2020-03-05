@@ -99,7 +99,7 @@ router.post('/find_festivals', async (req, res) => {
 });
 
 router.post('/festival_details', validateAccessToken, async (req, res) => {
-  const { festivalID, access_token } = req.body;
+  const { festivalID, access_token, has_new_access_token } = req.body;
   spotifyApi.setAccessToken(access_token);
 
   const getEvent = bent(
@@ -138,6 +138,7 @@ router.post('/festival_details', validateAccessToken, async (req, res) => {
   })(cachedArtists);
 
   // TODO: Functionalize the following code:
+  // Issue #92
   const artist_data = [];
 
   for (let ii = 0; ii < artistList.length; ii++) {
@@ -147,30 +148,44 @@ router.post('/festival_details', validateAccessToken, async (req, res) => {
     const data = await spotifyApi.searchArtists(currentArtist.displayName);
     const returnedArtist = data.body.artists.items[0];
 
-    const newArtistData = {
+    let newArtistData;
+    const songkickProperties = {
       artist_name: currentArtist.displayName,
       songkick_id: currentArtist.artist.id,
       songkick_url: currentArtist.artist.uri
     };
 
-    if (!!returnedArtist) {
-      newArtistData.spotify_id = returnedArtist.id;
-      newArtistData.spotify_url = returnedArtist.external_urls.spotify;
-      newArtistData.genres = returnedArtist.genres;
-      newArtistData.popularity = returnedArtist.popularity;
-      newArtistData.followers = returnedArtist.followers.total;
-    }
+    let spotifyProperties = {};
+    if (!!returnedArtist)
+      spotifyProperties = {
+        spotify_id: returnedArtist.id,
+        spotify_url: returnedArtist.external_urls.spotify,
+        genres: returnedArtist.genres,
+        popularity: returnedArtist.popularity,
+        followers: returnedArtist.followers.total
+      };
+
+    newArtistData = {
+      ...songkickProperties,
+      ...spotifyProperties
+    };
     console.log(newArtistData);
     artist_data.push(newArtistData);
   }
 
-  console.log(`Inserting ${artist_data.length} new artists to the database...`);
+  console.log(
+    `Inserting ${artist_data.length} new artist(s) to the database...`
+  );
   await CachedArtists.collection.insertMany(artist_data);
   cachedArtists.push(...artist_data);
 
   return res
     .status(200)
-    .send({ artist_data: cachedArtists, festival_data: festivalData });
+    .send({
+      artist_data: cachedArtists,
+      festival_data: festivalData,
+      has_new_access_token
+    });
 });
 
 router.post('/followed_events', (req, res) => {
