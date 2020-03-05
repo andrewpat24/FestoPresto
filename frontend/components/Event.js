@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 // Services
 import { festivalDetails } from '../services/events';
 import { getArtistsYouFollow } from '../services/spotify';
+import { titleCase } from '../services/stringManipulation';
 import moment from 'moment';
 // Components
 import CardView from './CardView';
@@ -17,7 +18,8 @@ class Event extends React.Component {
     this.state = {
       displayedArtists: [],
       filter: '',
-      loading: true
+      loading: true,
+      currentFilter: 'All Genres'
     };
 
     const festivalID = props.computedMatch.params.id;
@@ -47,6 +49,8 @@ class Event extends React.Component {
   }
 
   getDisplayedArtists(genreGroups, genre) {
+    if (genre === 'all-artists') return this.state.artist_data;
+
     const artistList = this.state.artist_data;
     const displayedArtists = [];
     const artistIndexes = genreGroups[genre];
@@ -65,21 +69,64 @@ class Event extends React.Component {
         if (!!data.has_new_access_token) window.location.reload();
         const genreGroups = this.getGenreGroups(data.artist_data);
 
-        this.setState(
-          {
-            artist_data: data.artist_data,
-            festival_data: data.festival_data,
-            genreGroups,
-            loading: false
-          },
-          () => {
-            console.log(this.state);
-
-            // console.log(this.getDisplayedArtists(genreGroups, 'edm'));
-          }
-        );
+        this.setState({
+          artist_data: data.artist_data,
+          festival_data: data.festival_data,
+          displayedArtists: data.artist_data,
+          genreGroups,
+          loading: false
+        });
       })
       .catch(e => {});
+  }
+
+  onClickGenreFilter(genre) {
+    const displayedArtists = this.getDisplayedArtists(
+      this.state.genreGroups,
+      genre
+    );
+
+    this.setState({
+      displayedArtists,
+      currentFilter: genre
+    });
+  }
+
+  modalBodyMarkup(genreGroups) {
+    const genres = Object.keys(genreGroups);
+    return (
+      <div>
+        <div className="all-artists">
+          <button
+            className="uk-button uk-button-default uk-width-1-1 uk-margin-small-bottom uk-modal-close"
+            onClick={() => {
+              this.onClickGenreFilter('all-artists');
+            }}
+          >
+            All Artists
+          </button>
+        </div>
+        <div
+          className="uk-child-width-1-3@m uk-child-width-1-4@s uk-grid-small uk-grid-match uk-grid"
+          uk-grid=""
+        >
+          {genres.map(genre => {
+            return (
+              <div key={genre}>
+                <button
+                  className="uk-button uk-button-default uk-button-small uk-modal-close"
+                  onClick={() => {
+                    this.onClickGenreFilter(genre);
+                  }}
+                >
+                  {genre}
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
   }
 
   generateFestivalMarkup(festivalData, artistData) {
@@ -111,13 +158,17 @@ class Event extends React.Component {
               </div>
             </div>
             <div className="Event-Header-Filter header-section">
-              <button className="uk-button uk-button-default filter-btn">
+              <a
+                className="uk-button uk-button-default"
+                href="#modal-overflow"
+                uk-toggle=""
+              >
                 Filter
-              </button>
+              </a>
             </div>
             <div className="Event-Header-Playlist header-section">
               <GeneratePlaylist
-                eventName={festivalData.displayName}
+                eventName={`${this.state.currentFilter} at ${festivalData.displayName}`}
                 lineupArray={artistData.map(artist => {
                   return artist.spotify_id;
                 })}
@@ -127,7 +178,11 @@ class Event extends React.Component {
         </div>
         <div className="Event-Body-Container">
           <div className="Event-Body">
-            <h1>Cards</h1>
+            <div className="Event-Body-Header">
+              <h1 className="uk-heading-small uk-heading-line uk-text-center">
+                <span>{titleCase(this.state.currentFilter)}</span>
+              </h1>
+            </div>
             <CardView
               cardType="artist"
               colWidth="4"
@@ -136,6 +191,25 @@ class Event extends React.Component {
             />
           </div>
         </div>
+        {/** Turn this modal code + button into its own component */}
+        <div id="modal-overflow" uk-modal="">
+          <div className="uk-modal-dialog">
+            <button
+              className="uk-modal-close-default"
+              type="button"
+              uk-close=""
+            ></button>
+
+            <div className="uk-modal-header">
+              <h2 className="uk-modal-title">Pick a genre</h2>
+            </div>
+
+            <div className="uk-modal-body" uk-overflow-auto="">
+              {this.modalBodyMarkup(this.state.genreGroups)}
+            </div>
+          </div>
+        </div>
+        {/** */}
       </div>
     );
   }
@@ -154,7 +228,7 @@ class Event extends React.Component {
         {this.state.festival_data ? (
           this.generateFestivalMarkup(
             this.state.festival_data,
-            this.state.artist_data
+            this.state.displayedArtists
           )
         ) : (
           <span />
