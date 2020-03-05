@@ -122,10 +122,11 @@ router.post('/festival_details', validateAccessToken, async (req, res) => {
     songkick_id: { $in: [...artistIds] }
   });
 
-  if (cachedArtists.length === artistIds.length)
-    return res
-      .status(200)
-      .send({ artist_data: cachedArtists, festival_data: festivalData });
+  if (cachedArtists.length >= artistIds.length)
+    return res.status(200).send({
+      artist_data: cachedArtists,
+      festival_data: festivalData
+    });
 
   const cachedArtistIdHash = (cachedArtists => {
     const hash = {};
@@ -179,13 +180,11 @@ router.post('/festival_details', validateAccessToken, async (req, res) => {
   await CachedArtists.collection.insertMany(artist_data);
   cachedArtists.push(...artist_data);
 
-  return res
-    .status(200)
-    .send({
-      artist_data: cachedArtists,
-      festival_data: festivalData,
-      has_new_access_token
-    });
+  return res.status(200).send({
+    artist_data: cachedArtists,
+    festival_data: festivalData,
+    has_new_access_token
+  });
 });
 
 router.post('/followed_events', (req, res) => {

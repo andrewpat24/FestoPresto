@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 // Services
 import { festivalDetails } from '../services/events';
-import { getArtistsYouFollow } from '../services/spotify';
 import { titleCase } from '../services/stringManipulation';
 import moment from 'moment';
 // Components
@@ -38,10 +37,11 @@ class Event extends React.Component {
     const genreGroups = {};
     // TODO: there has got to be a more efficient way to do this
     artistList.forEach((artist, artistIndex) => {
-      artist.genres.forEach(genre => {
-        if (!genreGroups[genre]) genreGroups[genre] = [];
-        genreGroups[genre].push(artistIndex);
-      });
+      if (!!artist.genres)
+        artist.genres.forEach(genre => {
+          if (!genreGroups[genre]) genreGroups[genre] = [];
+          genreGroups[genre].push(artistIndex);
+        });
     });
 
     // console.log(genreGroups);
@@ -49,7 +49,7 @@ class Event extends React.Component {
   }
 
   getDisplayedArtists(genreGroups, genre) {
-    if (genre === 'all-artists') return this.state.artist_data;
+    if (genre === 'all genres') return this.state.artist_data;
 
     const artistList = this.state.artist_data;
     const displayedArtists = [];
@@ -62,20 +62,25 @@ class Event extends React.Component {
   }
 
   loadFestival(festivalID, accessToken) {
+    console.log('Loading festival..');
+    const genreGroupsFunc = this.getGenreGroups;
     festivalDetails(festivalID, accessToken)
       .then(response => {
         const data = response.data;
         // TODO: Find a more elegant way to deal with this reload..
         if (!!data.has_new_access_token) window.location.reload();
-        const genreGroups = this.getGenreGroups(data.artist_data);
+        const genreGroups = genreGroupsFunc(data.artist_data);
 
-        this.setState({
-          artist_data: data.artist_data,
-          festival_data: data.festival_data,
-          displayedArtists: data.artist_data,
-          genreGroups,
-          loading: false
-        });
+        this.setState(
+          {
+            artist_data: data.artist_data,
+            festival_data: data.festival_data,
+            displayedArtists: data.artist_data,
+            genreGroups,
+            loading: false
+          },
+          () => {}
+        );
       })
       .catch(e => {});
   }
@@ -100,10 +105,10 @@ class Event extends React.Component {
           <button
             className="uk-button uk-button-default uk-width-1-1 uk-margin-small-bottom uk-modal-close"
             onClick={() => {
-              this.onClickGenreFilter('all-artists');
+              this.onClickGenreFilter('all genres');
             }}
           >
-            All Artists
+            All Genres
           </button>
         </div>
         <div
@@ -219,6 +224,12 @@ class Event extends React.Component {
       <section className="Event-container" component="Event">
         {this.state.loading ? (
           <div className="festival-page-loader">
+            <h1 className="uk-heading-small uk-heading-center">
+              Refresh the page if it's taking a while to load.
+              <br />
+              The server's probably busy loading artist data from spotify.
+            </h1>
+
             <Loading />
           </div>
         ) : (
