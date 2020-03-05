@@ -225,9 +225,9 @@ class Event extends React.Component {
         {this.state.loading ? (
           <div className="festival-page-loader">
             <h1 className="uk-heading-small uk-heading-center">
-              Refresh the page if it's taking a while to load.
+              If it's taking a bit to load sit tight..
               <br />
-              The server's probably busy loading artist data from spotify.
+              The server's busy loading artist data from spotify.
             </h1>
 
             <Loading />
