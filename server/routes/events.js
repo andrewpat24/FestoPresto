@@ -59,6 +59,13 @@ router.post('/find_festivals', async (req, res) => {
 
   const response_getLocationID = await getLocationID();
   const locations = response_getLocationID.resultsPage.results.location;
+  if (!locations)
+    return res
+      .status(200)
+      .send({
+        location_name: `Sorry, we couldn't find ${location}. `,
+        festivals: []
+      });
   const locationData = {
     id: locations[0].metroArea.id,
     displayName: locations[0].metroArea.displayName
