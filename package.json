@@ -5,6 +5,7 @@
   "scripts": {
     "build:dev": "webpack",
     "build:prod": "webpack -p --env production",
+    "build": "webpack -p --env production",
     "dev:frontend": "webpack-dev-server",
     "dev:backend": "nodemon server/server.js | pino-colada",
     "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
