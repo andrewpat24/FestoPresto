@@ -58,9 +58,9 @@ const authRouter = require('./routes/auth');
 const spotifyRouter = require('./routes/spotify');
 const eventsRouter = require('./routes/events');
 
-app.use('/auth', authRouter);
-app.use('/spotify', spotifyRouter);
-app.use('/events', eventsRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/spotify', spotifyRouter);
+app.use('/api/events', eventsRouter);
 
 // React routes
 const publicPath = path.join(__dirname, '../public');

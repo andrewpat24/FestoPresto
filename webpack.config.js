@@ -71,19 +71,9 @@ module.exports = env => {
       historyApiFallback: true,
       publicPath: '/dist/',
       proxy: {
-        '/api': isProduction
-          ? {
-              target: 'http://localhost:3000',
-              pathRewrite: {
-                '^/api': ''
-              }
-            }
-          : {
-              target: 'https://festivus-music.herokuapp.com',
-              pathRewrite: {
-                '^/api': ''
-              }
-            }
+        '/api': {
+          target: 'http://localhost:3000'
+        }
       }
     }
   };
