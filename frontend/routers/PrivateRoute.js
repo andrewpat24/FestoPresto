@@ -1,6 +1,6 @@
-import React from "react";
-import { connect } from "react-redux";
-import { Route, Redirect } from "react-router-dom";
+import React from 'react';
+import { connect } from 'react-redux';
+import { Route, Redirect } from 'react-router-dom';
 // Components
 
 export const PrivateRoute = ({
@@ -9,16 +9,15 @@ export const PrivateRoute = ({
   component: Component,
   ...rest
 }) => {
+  // console.log('PROPSSSSS', { ...rest });
   return (
     <Route
       {...rest}
       component={props =>
         isAuthenticated || uid === undefined ? (
-          <div>
-            <Component {...props} />
-          </div>
+          <Component {...props} />
         ) : (
-          <Redirect to="/" />
+          <Redirect to="/login" />
         )
       }
     />
@@ -27,7 +26,7 @@ export const PrivateRoute = ({
 
 const mapStateToProps = state => ({
   uid: state.auth.uid,
-  isAuthenticated: state.auth.uid !== "logged out"
+  isAuthenticated: state.auth.uid !== 'logged out'
 });
 
 export default connect(mapStateToProps)(PrivateRoute);

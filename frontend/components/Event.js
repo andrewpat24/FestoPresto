@@ -20,9 +20,9 @@ class Event extends React.Component {
       loading: true,
       currentFilter: 'All Genres'
     };
-
-    const festivalID = props.computedMatch.params.id;
+    const festivalID = props.match.params.id;
     const accessToken = props.access_token;
+
     if (!!accessToken) this.loadFestival(festivalID, accessToken);
   }
 
@@ -175,7 +175,9 @@ class Event extends React.Component {
             </div>
             <div className="Event-Header-Playlist header-section">
               <GeneratePlaylist
-                eventName={`${this.state.currentFilter} at ${festivalData.displayName}`}
+                eventName={`${titleCase(this.state.currentFilter)} at ${
+                  festivalData.displayName
+                }`}
                 lineupArray={artistData.map(artist => {
                   return artist.spotify_id;
                 })}
