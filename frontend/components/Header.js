@@ -1,8 +1,8 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { connect } from "react-redux";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-import { logout } from "../actions/auth";
+import { logout } from '../actions/auth';
 
 export const Header = ({ logout, isAuthenticated }) => (
   <header className="header">
@@ -11,6 +11,11 @@ export const Header = ({ logout, isAuthenticated }) => (
         <Link className="header__title" to="/">
           <h1>Festivus</h1>
         </Link>
+
+        <Link className="btn transparent-bg md" to="/search">
+          Search
+        </Link>
+
         {isAuthenticated ? (
           <button className="btn transparent-bg md" onClick={logout}>
             Logout
@@ -20,16 +25,6 @@ export const Header = ({ logout, isAuthenticated }) => (
             Login
           </Link>
         )}
-        {isAuthenticated ? (
-          <Link className="btn transparent-bg md" to="/profile">
-            Profile
-          </Link>
-        ) : (
-          <div></div>
-        )}
-        <Link className="btn transparent-bg md" to="/search">
-          Search
-        </Link>
       </div>
     </div>
   </header>
@@ -41,7 +36,7 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = state => {
   return {
-    isAuthenticated: state.auth.uid !== "logged out"
+    isAuthenticated: state.auth.uid !== 'logged out'
   };
 };
 

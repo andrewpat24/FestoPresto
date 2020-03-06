@@ -1,12 +1,12 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
 // Spotify dependencies
-const SpotifyWebApi = require("spotify-web-api-node");
+const SpotifyWebApi = require('spotify-web-api-node');
 // Middleware
-const validateAccessToken = require("../middleware/spotify/validate_access_token");
+const validateAccessToken = require('../middleware/spotify/validate_access_token');
 // Mongoose
-const mongoose = require("mongoose");
-const FollowedArtists = mongoose.model("followed_Artists");
+const mongoose = require('mongoose');
+const FollowedArtists = mongoose.model('followed_Artists');
 
 // .env imports
 const clientId = process.env.SPOTIFY_CLIENT_ID; // Your client id
@@ -20,7 +20,7 @@ const spotifyApi = new SpotifyWebApi({
 });
 
 router.post(
-  "/refresh_followed_artists",
+  '/refresh_followed_artists',
   validateAccessToken,
   async (req, res) => {
     const { access_token, spotify_uid, has_new_access_token } = req.body;
@@ -29,7 +29,7 @@ router.post(
     await FollowedArtists.deleteMany({ spotify_uid }, err => {
       if (err)
         res.status(500).send({
-          message: "An error occurred while deleting old followed artists!",
+          message: 'An error occurred while deleting old followed artists!',
           err
         });
     });
@@ -44,21 +44,21 @@ router.post(
           artist_id: id,
           name,
           spotify_uid,
-          identifier: spotify_uid + "_" + id
+          identifier: spotify_uid + '_' + id
         });
       });
 
       FollowedArtists.create(followedArtistArray, err => {
         if (err)
           res.status(500).send({
-            path: "/refresh_followed_artists",
-            message: "An error occurred while refreshing followed artists",
+            path: '/refresh_followed_artists',
+            message: 'An error occurred while refreshing followed artists',
             err
           });
 
         res.status(201).send({
-          path: "/refresh_followed_artists",
-          message: "Followed artists successfully populated!",
+          path: '/refresh_followed_artists',
+          message: 'Followed artists successfully populated!',
           access_token,
           has_new_access_token
         });
@@ -67,17 +67,17 @@ router.post(
   }
 );
 
-router.post("/followed_artists", async (req, res) => {
+router.post('/followed_artists', async (req, res) => {
   const { spotify_uid } = req.body;
   const followerList = await FollowedArtists.find({ spotify_uid });
   res.send({
-    path: "/followed_artists",
+    path: '/followed_artists',
     artists: followerList.artists,
     followerList
   });
 });
 
-router.post("/get_matching_followed_artists", (req, res) => {
+router.post('/get_matching_followed_artists', (req, res) => {
   const { identifiers } = req.body;
   FollowedArtists.find(
     {
@@ -88,27 +88,27 @@ router.post("/get_matching_followed_artists", (req, res) => {
     (err, artists) => {
       if (err)
         res.status(500).send({
-          path: "/get_matching_followed_artists",
-          message: "Failed retrieving matching followed artists!",
+          path: '/get_matching_followed_artists',
+          message: 'Failed retrieving matching followed artists!',
           err
         });
 
       res.status(200).send({
-        path: "/get_matching_followed_artists",
-        message: "Artists successfully recieved!",
+        path: '/get_matching_followed_artists',
+        message: 'Artists successfully recieved!',
         artists
       });
     }
   );
 });
 
-router.post("/get_artist_by_id", validateAccessToken, async (req, res) => {
+router.post('/get_artist_by_id', validateAccessToken, async (req, res) => {
   const { access_token, artist_id, has_new_access_token } = req.body;
 
   spotifyApi.setAccessToken(access_token);
   spotifyApi.getArtist(artist_id, function(err, data) {
     res.send({
-      path: "/get_artist_by_id",
+      path: '/get_artist_by_id',
       response: {
         access_token,
         has_new_access_token,
@@ -119,7 +119,7 @@ router.post("/get_artist_by_id", validateAccessToken, async (req, res) => {
   });
 });
 
-router.post("/generate_playlist", validateAccessToken, async (req, res) => {
+router.post('/generate_playlist', validateAccessToken, async (req, res) => {
   const {
     access_token,
     spotify_uid,
@@ -129,15 +129,17 @@ router.post("/generate_playlist", validateAccessToken, async (req, res) => {
   } = req.body;
   spotifyApi.setAccessToken(access_token);
   const trackList = [];
+  let topTrackAmount = 5;
 
   for (let ii = 0; ii < artist_list.length; ii++) {
     const artistId = artist_list[ii];
+    if (!artistId) continue;
     try {
-      let artistTopTracks = await spotifyApi.getArtistTopTracks(artistId, "GB");
+      let artistTopTracks = await spotifyApi.getArtistTopTracks(artistId, 'GB');
       artistTopTracks = artistTopTracks.body.tracks;
 
-      for (let jj = 0; jj < 5; jj++) {
-        trackList.push(artistTopTracks[jj].uri);
+      for (let jj = 0; jj < topTrackAmount; jj++) {
+        if (!!artistTopTracks[jj]) trackList.push(artistTopTracks[jj].uri);
       }
     } catch (e) {
       console.log(e);
@@ -148,19 +150,38 @@ router.post("/generate_playlist", validateAccessToken, async (req, res) => {
     public: true
   });
   const newPlaylistId = newPlaylist.body.id;
-  spotifyApi
-    .addTracksToPlaylist(newPlaylistId, trackList)
-    .then(() => {
-      res.send({
-        path: "/generate_playlists",
-        message: `Playlist '${event_name}' has been successfully created with ${trackList.length} songs!`,
-        access_token,
-        has_new_access_token
-      });
-    })
-    .catch(e => {
+  console.log(trackList.length);
+  // TODO: Make your own request instead of relying on spotify-web-api-node.
+  // Need to pass the tracks in the request body which spotify-web-api-node is doing...
+  // https://developer.spotify.com/documentation/web-api/reference/playlists/add-tracks-to-playlist/
+
+  // We have to add tracks in chunks of 90 otherwise we exceed spotify-web-api-node's track limit size when adding songs to a playlist.
+  // This is a.. janky workaround.
+
+  const chunkSize = 50;
+  for (let ii = 0; ii < trackList.length; ii = ii + chunkSize) {
+    const trackChunk = [];
+    for (let jj = ii; jj < ii + chunkSize && jj < trackList.length; jj++) {
+      counter = jj;
+      trackChunk.push(trackList[jj]);
+    }
+    try {
+      console.log('CHUNK SIZE:', trackChunk.length);
+      await spotifyApi.addTracksToPlaylist(newPlaylistId, trackChunk);
+    } catch (e) {
       console.log(e);
-    });
+      return res.status(401).send({
+        message: 'Could not create playlist'
+      });
+    }
+  }
+
+  return res.status(200).send({
+    path: '/generate_playlists',
+    message: `Playlist '${event_name}' has been successfully created with ${trackList.length} songs!`,
+    access_token,
+    has_new_access_token
+  });
 });
 
 module.exports = router;

@@ -18,3 +18,40 @@
   height: 80vh;
   width: 100vw;
 }
+
+.festival-page-loader h1 {
+  text-align: center;
+  padding-top: 5%;
+}
+
+.Event-Header-Container {
+  padding: 5%;
+}
+
+.Event-Header {
+  text-align: center;
+}
+
+.Event-Header-Actions.uk-grid {
+  display: flex;
+  justify-content: center;
+}
+
+.Event-Body {
+  padding: 2%;
+}
+
+button.buy-tickets-btn {
+  background-color: #f80046;
+  color: #edf2f4;
+}
+
+.header-section {
+  padding-top: 2%;
+}
+
+button.make-playlist-btn {
+  background-color: #1fcf5f;
+  color: #edf2f4;
+  border-radius: 25px;
+}

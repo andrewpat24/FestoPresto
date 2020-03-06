@@ -1,5 +1,6 @@
 node_modules
 Notes.md
+Notes.json
 package-lock.json
 .env*
 public/dist

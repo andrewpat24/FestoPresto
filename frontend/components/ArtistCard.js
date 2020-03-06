@@ -1,8 +1,7 @@
-import React from "react";
+import React from 'react';
 
 export const ArtistCard = props => {
-  const { _id, name, genre } = props;
-
+  const { _id, artist_name, popularity, followers } = props;
   return (
     <div>
       <div className="uk-card uk-card-default">
@@ -11,12 +10,12 @@ export const ArtistCard = props => {
         </div>
         <div className="uk-card-body">
           <div className="card-title-area uk-flex-center uk-flex">
-            <h3 className="uk-card-title ">{name}</h3>
+            <h3 className="uk-card-title ">{artist_name}</h3>
           </div>
           <div className="card-detail-area uk-flex uk-flex-center">
-            <div>{genre}</div>
+            <div>Popularity: {popularity}</div>
             <span className="spacer" />
-            <div>{genre}</div>
+            <div>Followers: {followers}</div>
           </div>
         </div>
       </div>

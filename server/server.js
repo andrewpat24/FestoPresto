@@ -29,6 +29,7 @@ require('./models/Users');
 require('./models/Events');
 require('./models/FollowedArtists');
 require('./models/FollowedEvents');
+require('./models/CachedArtists');
 
 // Logging
 const pino = require('express-pino-logger')();
