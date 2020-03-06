@@ -129,18 +129,17 @@ router.post('/generate_playlist', validateAccessToken, async (req, res) => {
   } = req.body;
   spotifyApi.setAccessToken(access_token);
   const trackList = [];
-  console.log({
-    artist_list
-  });
+  let topTrackAmount = 5;
 
   for (let ii = 0; ii < artist_list.length; ii++) {
     const artistId = artist_list[ii];
+    if (!artistId) continue;
     try {
       let artistTopTracks = await spotifyApi.getArtistTopTracks(artistId, 'GB');
       artistTopTracks = artistTopTracks.body.tracks;
 
-      for (let jj = 0; jj < 5; jj++) {
-        trackList.push(artistTopTracks[jj].uri);
+      for (let jj = 0; jj < topTrackAmount; jj++) {
+        if (!!artistTopTracks[jj]) trackList.push(artistTopTracks[jj].uri);
       }
     } catch (e) {
       console.log(e);
@@ -151,19 +150,38 @@ router.post('/generate_playlist', validateAccessToken, async (req, res) => {
     public: true
   });
   const newPlaylistId = newPlaylist.body.id;
-  spotifyApi
-    .addTracksToPlaylist(newPlaylistId, trackList)
-    .then(() => {
-      res.send({
-        path: '/generate_playlists',
-        message: `Playlist '${event_name}' has been successfully created with ${trackList.length} songs!`,
-        access_token,
-        has_new_access_token
-      });
-    })
-    .catch(e => {
+  console.log(trackList.length);
+  // TODO: Make your own request instead of relying on spotify-web-api-node.
+  // Need to pass the tracks in the request body which spotify-web-api-node is doing...
+  // https://developer.spotify.com/documentation/web-api/reference/playlists/add-tracks-to-playlist/
+
+  // We have to add tracks in chunks of 90 otherwise we exceed spotify-web-api-node's track limit size when adding songs to a playlist.
+  // This is a.. janky workaround.
+
+  const chunkSize = 50;
+  for (let ii = 0; ii < trackList.length; ii = ii + chunkSize) {
+    const trackChunk = [];
+    for (let jj = ii; jj < ii + chunkSize && jj < trackList.length; jj++) {
+      counter = jj;
+      trackChunk.push(trackList[jj]);
+    }
+    try {
+      console.log('CHUNK SIZE:', trackChunk.length);
+      await spotifyApi.addTracksToPlaylist(newPlaylistId, trackChunk);
+    } catch (e) {
       console.log(e);
-    });
+      return res.status(401).send({
+        message: 'Could not create playlist'
+      });
+    }
+  }
+
+  return res.status(200).send({
+    path: '/generate_playlists',
+    message: `Playlist '${event_name}' has been successfully created with ${trackList.length} songs!`,
+    access_token,
+    has_new_access_token
+  });
 });
 
 module.exports = router;
