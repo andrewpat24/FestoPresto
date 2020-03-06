@@ -137,6 +137,7 @@ class Event extends React.Component {
   generateFestivalMarkup(festivalData, artistData) {
     const startDate = moment(festivalData.start.date).format('MMM Do YYYY');
     const endDate = moment(festivalData.end.date).format('MMM Do YYYY');
+    console.log({ artistData });
     return (
       <div className="Event">
         <div className="Event-Header-Container">
