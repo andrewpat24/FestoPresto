@@ -28,7 +28,7 @@ class Event extends React.Component {
 
   // Necessary if a user refreshes the page or navigates to it directly from the browser.
   componentWillReceiveProps(nextProps) {
-    const festivalID = nextProps.computedMatch.params.id;
+    const festivalID = nextProps.match.params.id;
     const accessToken = nextProps.access_token;
     this.loadFestival(festivalID, accessToken);
   }
