@@ -12,16 +12,16 @@ const testEventName = 'testName';
 eventData.creator_uid = testUserID;
 eventData.name = testEventName;
 
-// describe('Should test / Route', () => {
-//   it.only('should GET JSON and 200 response.', done => {
-//     return request(server)
-//       .get('/events/')
-//       .set('Accept', 'application/json')
-//       .expect(200)
-//       .end((err, res) => {
-//         if (err) throw err;
-//         console.log(res.body);
-//         done();
-//       });
-//   });
-// });
+describe('Should test / Route', () => {
+  it.only('should GET JSON and 200 response.', done => {
+    return request(server)
+      .get('/api/events/')
+      .set('Accept', 'application/json')
+      .expect(200)
+      .end((err, res) => {
+        if (err) throw err;
+        console.log(res.body);
+        done();
+      });
+  });
+});
