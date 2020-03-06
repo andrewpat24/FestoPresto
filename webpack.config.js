@@ -79,6 +79,7 @@ module.exports = env => {
               }
             }
           : {
+              target: 'https://festivus-music.herokuapp.com',
               pathRewrite: {
                 '^/api': ''
               }
