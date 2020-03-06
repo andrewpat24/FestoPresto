@@ -61,7 +61,7 @@ router.post('/find_festivals', async (req, res) => {
   const locations = response_getLocationID.resultsPage.results.location;
   if (!locations)
     return res.status(200).send({
-      location_name: `Sorry, we couldn't find ${location}. `,
+      location_name: `Sorry, we couldn't find a city named ${location}. `,
       festivals: []
     });
 
