@@ -62,17 +62,17 @@ app.use('/api/auth', authRouter);
 app.use('/api/spotify', spotifyRouter);
 app.use('/api/events', eventsRouter);
 
-app.get('/*', function(req, res) {
-  res.sendFile(path.join(__dirname, '../public/index.html'), function(err) {
-    if (err) {
-      res.status(500).send(err);
-    }
-  });
-});
-
 // React routes
 const publicPath = path.join(__dirname, '../public');
 app.use(express.static(publicPath));
+
+// app.get('/*', function(req, res) {
+//   res.sendFile(path.join(__dirname, '../public/index.html'), function(err) {
+//     if (err) {
+//       res.status(500).send(err);
+//     }
+//   });
+// });
 
 // Port
 const port = process.env.PORT || 3000;
