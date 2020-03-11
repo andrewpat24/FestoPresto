@@ -64,17 +64,11 @@ app.use('/api/events', eventsRouter);
 
 // React routes
 
-// app.use(express.static(publicPath));
-
 if (process.env.NODE_ENV === 'production') {
   const publicPath = path.join(__dirname, '../public');
   app.use(express.static(publicPath));
   app.use('*', express.static(publicPath));
 }
-
-// app.get('*', (req, res) => {
-//   res.sendFile(path.resolve(__dirname, '../frontend', '../public/index.html'));
-// });
 
 // Port
 const port = process.env.PORT || 3000;
