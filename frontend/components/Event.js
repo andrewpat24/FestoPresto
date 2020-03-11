@@ -35,6 +35,8 @@ class Event extends React.Component {
 
   getGenreGroups(artistList) {
     const genreGroups = {};
+    // The minimum amount of artists required to display a genre group.
+    const artistGenreMin = 2;
     // TODO: there has got to be a more efficient way to do this
     artistList.forEach((artist, artistIndex) => {
       if (!!artist.genres)
@@ -44,7 +46,10 @@ class Event extends React.Component {
         });
     });
 
-    // console.log(genreGroups);
+    for (let [genre, artists] of Object.entries(genreGroups)) {
+      if (artists.length < artistGenreMin) delete genreGroups[genre];
+    }
+
     return genreGroups;
   }
 
