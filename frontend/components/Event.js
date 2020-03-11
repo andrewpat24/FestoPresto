@@ -68,6 +68,7 @@ class Event extends React.Component {
       .then(response => {
         const data = response.data;
         // TODO: Find a more elegant way to deal with this reload..
+        console.log({ artist_data: data.artist_data });
         if (!!data.has_new_access_token) window.location.reload();
         const genreGroups = genreGroupsFunc(data.artist_data);
 
@@ -137,7 +138,6 @@ class Event extends React.Component {
   generateFestivalMarkup(festivalData, artistData) {
     const startDate = moment(festivalData.start.date).format('MMM Do YYYY');
     const endDate = moment(festivalData.end.date).format('MMM Do YYYY');
-    console.log({ artistData });
     return (
       <div className="Event">
         <div className="Event-Header-Container">

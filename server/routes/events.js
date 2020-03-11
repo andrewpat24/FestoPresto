@@ -124,24 +124,40 @@ router.post('/festival_details', validateAccessToken, async (req, res) => {
     return artist.artist.id;
   });
 
-  const cachedArtists = await CachedArtists.find({
+  let cachedArtists = await CachedArtists.find({
     songkick_id: { $in: [...artistIds] }
   });
+
+  const removeCachedDuplicateArtists = (cachedArtists => {
+    const hash = {};
+    const newList = [];
+    cachedArtists.forEach(artist => {
+      if (hash[artist.songkick_id]) console.log('DUPLICATE FOUND:', { artist });
+      else {
+        newList.push(artist);
+        hash[artist.songkick_id] = true;
+      }
+    });
+    return newList;
+  })(cachedArtists);
+
+  cachedArtists = removeCachedDuplicateArtists;
 
   if (cachedArtists.length >= artistIds.length)
     return res.status(200).send({
       artist_data: cachedArtists,
-      festival_data: festivalData
+      festival_data: festivalData,
+      has_new_access_token
     });
 
   const cachedArtistIdHash = (cachedArtists => {
-    const hash = {};
+    const artistHashSet = {};
 
     cachedArtists.forEach(artist => {
-      hash[artist.songkick_id] = true;
+      artistHashSet[artist.songkick_id] = true;
     });
 
-    return hash;
+    return artistHashSet;
   })(cachedArtists);
 
   // TODO: Functionalize the following code:
