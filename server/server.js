@@ -57,12 +57,12 @@ app.use(passport.session());
 const authRouter = require('./routes/auth');
 const spotifyRouter = require('./routes/spotify');
 const eventsRouter = require('./routes/events');
-const sslRouter = require('./routes/ssl');
+// const sslRouter = require('./routes/ssl');
 
 app.use('/api/auth', authRouter);
 app.use('/api/spotify', spotifyRouter);
 app.use('/api/events', eventsRouter);
-app.use('/', sslRouter);
+// app.use('/', sslRouter);
 
 // React routes
 
