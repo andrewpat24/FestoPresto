@@ -9,7 +9,6 @@ export const PrivateRoute = ({
   component: Component,
   ...rest
 }) => {
-  // console.log('PROPSSSSS', { ...rest });
   return (
     <Route
       {...rest}
@@ -17,7 +16,11 @@ export const PrivateRoute = ({
         isAuthenticated || uid === undefined ? (
           <Component {...props} />
         ) : (
-          <Redirect to="/login" />
+          <Redirect
+            to={{
+              pathname: '/login'
+            }}
+          />
         )
       }
     />

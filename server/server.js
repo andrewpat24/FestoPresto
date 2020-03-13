@@ -57,17 +57,19 @@ app.use(passport.session());
 const authRouter = require('./routes/auth');
 const spotifyRouter = require('./routes/spotify');
 const eventsRouter = require('./routes/events');
+const sslRouter = require('./routes/ssl');
 
 app.use('/api/auth', authRouter);
 app.use('/api/spotify', spotifyRouter);
 app.use('/api/events', eventsRouter);
+app.use('/', sslRouter);
 
 // React routes
 
 if (process.env.NODE_ENV === 'production') {
   const publicPath = path.join(__dirname, '../public');
   app.use(express.static(publicPath));
-  app.use('*', express.static(publicPath));
+  app.use(/^\/(?!.well-known).*/, express.static(publicPath));
 }
 
 // Port
