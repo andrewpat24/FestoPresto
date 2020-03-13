@@ -1,31 +1,42 @@
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
 }
 
 html {
-    font-size: 62.5%;
-    font-style: 'Muli';
+  font-size: 62.5%;
+  font-style: 'Muli';
+}
+
+section {
+  background-color: $dark-blue;
 }
 
 body {
-    color: $dark-grey;
-    font-family: Helvetica, Arial, sans-serif;
-    background-color: #fefefa;
-    line-height: 1.6;
+  color: $dark-grey;
+  background-color: $dark-blue;
+
+  font-family: Helvetica, Arial, sans-serif;
+  line-height: 1.6;
 }
 
 button {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 button:disabled {
-    cursor: default;
+  cursor: default;
 }
 
 .is-active {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 span.spacer {
-    padding: 10px;
+  padding: 10px;
 }

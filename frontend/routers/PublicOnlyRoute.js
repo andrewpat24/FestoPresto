@@ -8,18 +8,11 @@ export const PublicOnlyRoute = ({
   component: Component,
   ...rest
 }) => {
-  const returnRedirect = rest.location.state.redirect
-    ? rest.location.state.redirect
-    : '/';
   return (
     <Route
       {...rest}
       component={() =>
-        isAuthenticated ? (
-          <Redirect to={returnRedirect} />
-        ) : (
-          <Component {...rest} />
-        )
+        isAuthenticated ? <Redirect to="/" /> : <Component {...rest} />
       }
     />
   );

@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 
 export const Loading = () => (
   <div className="loader">
-    <img className="loader__img" src="/images/loader.gif" />
+    <span className="svg-spinner" uk-spinner="ratio: 4.5"></span>
   </div>
 );
 

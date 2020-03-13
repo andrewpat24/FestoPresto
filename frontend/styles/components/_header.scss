@@ -1,19 +1,15 @@
-.header {
-  background: $dark-blue;
+nav.uk-navbar-container.uk-margin.uk-navbar {
+  background-color: $black-primary;
 }
 
-.header__content {
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
-  padding: $s-size 0;
+a.uk-navbar-item.uk-logo {
+  color: $blue-primary;
 }
 
-.header__title h1 {
-  color: #ffffff;
-  text-decoration: none;
-  h1 {
-    margin: 0;
-    font-size: $font-size-xl;
-  }
+ul li a.nav-sub-item {
+  color: $blue-secondary;
+}
+
+ul li a.nav-sub-item:hover {
+  color: $blue-primary;
 }
