@@ -20,7 +20,7 @@ export const Header = ({ logout, isAuthenticated }) => (
           </div>
         </div>
         <Link className="uk-navbar-item uk-logo" to="/">
-          FestoPresto
+          Festivus
         </Link>
         <div className="uk-navbar-center-right">
           <div>
