@@ -1,6 +1,6 @@
 # Festivus
 
-[![Festivus-Music](https://circleci.com/gh/Festivus-Music/web-app.svg?style=shield)](https://circleci.com/gh/festivus-music/web-app)
+[![Festivus-Music](https://circleci.com/gh/andrewpat24/FestoPresto.svg?style=shield)](https://circleci.com/gh/festivus-music/web-app)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 Let's make some playlists for your favorite festivals!
