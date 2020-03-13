@@ -147,8 +147,8 @@ class Event extends React.Component {
       <div className="Event">
         <div className="Event-Header-Container">
           <div className="Event-Header">
-            <h1>{festivalData.displayName}</h1>
-            <h2>
+            <h1 className="white-text">{festivalData.displayName}</h1>
+            <h2 className="white-text ">
               {startDate} - {endDate}
             </h2>
             <div
@@ -172,7 +172,7 @@ class Event extends React.Component {
             </div>
             <div className="Event-Header-Filter header-section">
               <a
-                className="uk-button uk-button-default"
+                className="white-text uk-button uk-button-default"
                 href="#modal-overflow"
                 uk-toggle=""
               >
@@ -194,7 +194,7 @@ class Event extends React.Component {
         <div className="Event-Body-Container">
           <div className="Event-Body">
             <div className="Event-Body-Header">
-              <h1 className="uk-heading-small uk-heading-line uk-text-center">
+              <h1 className="white-text uk-heading-small uk-heading-line uk-text-center">
                 <span>{titleCase(this.state.currentFilter)}</span>
               </h1>
             </div>

@@ -3,7 +3,7 @@ $grey: #666;
 $dark-grey: #333333;
 $dark-blue: #1f2833;
 $black-primary: #0b0c10;
-$main-white: #ffffff;
+$main-white: #efefef;
 $off-white: #c5c6c7;
 $blue: #288fc3;
 $blue-primary: #66fcf1;
@@ -19,3 +19,7 @@ $l-size: 3.2rem;
 $m-size: 1.6rem;
 $s-size: 1.2rem;
 $desktop-breakpoint: 45rem;
+// Font rules
+.white-text {
+  color: $main-white !important;
+}
