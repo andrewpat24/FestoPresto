@@ -1,6 +1,6 @@
 # Festivus
 
-[![FestoPresto](https://circleci.com/gh/andrewpat24/FestoPresto.svg?style=shield)](https://circleci.com/gh/andrewpat24/FestoPresto)
+[![FestoPresto](https://circleci.com/gh/andrewpat24/FestoPresto.svg?style=shield&circle-token=cb4a28ca038221252fc4c3f4d321550d4b1fc748)](https://circleci.com/gh/andrewpat24/FestoPresto)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 Let's make some playlists for your favorite festivals!
