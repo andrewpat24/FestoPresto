@@ -1,13 +1,15 @@
 import React from 'react';
 
 export const ArtistCard = props => {
-  const { _id, artist_name, songkick_url, popularity, followers } = props;
+  const { _id, artist_name, songkick_url, popularity, followers, img } = props;
+  console.log(img);
+  const artistImage = !!img ? img : '/images/uikit-test-img.jpg';
   return (
     <div>
       <a href={songkick_url} target="_blank">
         <div className="uk-card uk-card-default">
           <div className="uk-card-media-top">
-            <img src="/images/uikit-test-img.jpg" alt="" />
+            <img className="artist-image" src={artistImage} />
           </div>
           <div className="uk-card-body">
             <div className="card-title-area uk-flex-center uk-flex">

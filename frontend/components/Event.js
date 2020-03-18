@@ -155,13 +155,6 @@ class Event extends React.Component {
               className="Event-Header-Actions uk-text-center header-section"
               uk-grid=""
             >
-              {/**(
-              <div>
-                <button className="uk-button uk-button-primary follow-btn">
-                  Follow
-    </button>
-              </div>
-              )**/}
               <div>
                 <a href={festivalData.uri} target="_blank">
                   <button className="uk-button uk-button-secondary buy-tickets-btn">

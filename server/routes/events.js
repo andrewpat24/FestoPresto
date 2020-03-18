@@ -181,18 +181,7 @@ router.post('/festival_details', validateAccessToken, async (req, res) => {
     let spotifyProperties = {};
 
     if (!!returnedArtist) {
-      const artistImages = returnedArtist.images;
-      let artistImage;
-
-      for (index in artistImages) {
-        if (
-          artistImages[index].height <= 320 &&
-          artistImages[index].height >= 280
-        ) {
-          artistImage = artistImages[index];
-          break;
-        }
-      }
+      const artistImage = returnedArtist.images[0];
 
       spotifyProperties = {
         spotify_id: returnedArtist.id,
@@ -202,7 +191,7 @@ router.post('/festival_details', validateAccessToken, async (req, res) => {
         followers: returnedArtist.followers.total
       };
 
-      if (!!artistImage.url) spotifyProperties.img = artistImage.url;
+      if (!!artistImage) spotifyProperties.img = artistImage.url;
     }
     newArtistData = {
       ...songkickProperties,
