@@ -179,7 +179,21 @@ router.post('/festival_details', validateAccessToken, async (req, res) => {
     };
 
     let spotifyProperties = {};
-    if (!!returnedArtist)
+
+    if (!!returnedArtist) {
+      const artistImages = returnedArtist.images;
+      let artistImage;
+
+      for (index in artistImages) {
+        if (
+          artistImages[index].height <= 320 &&
+          artistImages[index].height >= 280
+        ) {
+          artistImage = artistImages[index];
+          break;
+        }
+      }
+
       spotifyProperties = {
         spotify_id: returnedArtist.id,
         spotify_url: returnedArtist.external_urls.spotify,
@@ -188,17 +202,21 @@ router.post('/festival_details', validateAccessToken, async (req, res) => {
         followers: returnedArtist.followers.total
       };
 
+      if (!!artistImage.url) spotifyProperties.img = artistImage.url;
+    }
     newArtistData = {
       ...songkickProperties,
       ...spotifyProperties
     };
     console.log(newArtistData);
+
     artist_data.push(newArtistData);
   }
 
   console.log(
     `Inserting ${artist_data.length} new artist(s) to the database...`
   );
+
   await CachedArtists.collection.insertMany(artist_data);
   cachedArtists.push(...artist_data);
 
