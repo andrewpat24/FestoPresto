@@ -4,7 +4,7 @@ export const ArtistCard = props => {
   const { artist_name, songkick_url, followers, img, genres } = props;
 
   const artistImage = !!img ? img : '/images/uikit-test-img.jpg';
-  const genre = !!genres[0] ? genres[0] : 'No genre';
+  const genre = !!genres ? genres[0] : 'No genre';
   const readableFollowerCount = (followers => {
     let response = '';
 
