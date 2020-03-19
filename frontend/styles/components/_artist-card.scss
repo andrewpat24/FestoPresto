@@ -1,5 +1,5 @@
 a.artist-card-link {
-  padding: 0 25px;
+  padding: 0 7%;
 }
 
 img.artist-image {
@@ -12,10 +12,26 @@ img.mobile-artist-image {
   object-fit: contain;
 }
 
+.mobile-artist-name {
+  font-size: 1.3em;
+  font-weight: 400;
+}
+
 .uk-card-default.artist-card {
   background: #183859;
   color: white;
   border-radius: 25px;
+}
+
+.uk-card-default.mobile-artist-card {
+  border-radius: 0 10px 10px 0;
+  padding: 10px 10px 10px 15px;
+  background: #183859;
+  color: white;
+}
+
+.col.uk-background-cover {
+  border-radius: 10px 0 0 10px;
 }
 
 h3.uk-card-title.artist-title {

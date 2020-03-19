@@ -56,13 +56,21 @@ export const ArtistCard = props => {
       href={songkick_url}
       target="_blank"
     >
-      <div className="flex-grid">
+      <div className="flex-grid uk-border-rounded">
         <div
           className="col uk-background-cover"
           style={{ backgroundImage: `url(${artistImage})` }}
         ></div>
-        <div className="big-col">
-          <div className="uk-card uk-card-default uk-card-body">1-3</div>
+        <div className="big-col uk-card uk-card-body uk-card-default mobile-artist-card">
+          <div className="mobile-artist-name">{artist_name}</div>
+          {!!genres[0] || !!followers ? (
+            <div>
+              <div>{genre}</div>
+              <div>{readableFollowerCount}</div>
+            </div>
+          ) : (
+            <div />
+          )}
         </div>
       </div>
     </a>
