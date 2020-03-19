@@ -13,3 +13,17 @@ img.artist-image {
 h3.uk-card-title.artist-title {
   color: white;
 }
+
+a.artist-card-link:hover {
+  text-decoration: none;
+}
+
+.col-right {
+  position: relative;
+  left: 20px;
+}
+
+.col-left {
+  position: relative;
+  right: 20px;
+}
