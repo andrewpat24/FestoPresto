@@ -23,31 +23,54 @@ export const ArtistCard = props => {
     return response;
   })(followers);
 
-  if (!genres[0] && !followers) {
-  }
+  const desktopMarkup = (() => (
+    <a
+      className="artist-card-link desktop-card-artist-markup uk-visible@s"
+      href={songkick_url}
+      target="_blank"
+    >
+      <div className="uk-card uk-card-default artist-card">
+        <div className="uk-card-media-top">
+          <img className="artist-image" src={artistImage} />
+        </div>
+        <div className="uk-card-body">
+          <div className="card-title-area uk-flex-center uk-flex">
+            <h3 className="uk-card-title artist-title">{artist_name}</h3>
+          </div>
+          {!!genres[0] || !!followers ? (
+            <div className="card-detail-area uk-flex uk-flex-center">
+              <div className="col-left">{genre}</div>
+              <div className="col-right">{readableFollowerCount}</div>
+            </div>
+          ) : (
+            <div className="card-detail-area uk-flex uk-flex-center" />
+          )}
+        </div>
+      </div>
+    </a>
+  ))();
+
+  const mobileMarkup = (() => (
+    <a
+      className="artist-card-link mobile-card-artist-markup uk-hidden@s"
+      href={songkick_url}
+      target="_blank"
+    >
+      <div className="flex-grid">
+        <div
+          className="col uk-background-cover"
+          style={{ backgroundImage: `url(${artistImage})` }}
+        ></div>
+        <div className="big-col">
+          <div className="uk-card uk-card-default uk-card-body">1-3</div>
+        </div>
+      </div>
+    </a>
+  ))();
 
   return (
     <div>
-      <a className="artist-card-link" href={songkick_url} target="_blank">
-        <div className="uk-card uk-card-default artist-card">
-          <div className="uk-card-media-top">
-            <img className="artist-image" src={artistImage} />
-          </div>
-          <div className="uk-card-body">
-            <div className="card-title-area uk-flex-center uk-flex">
-              <h3 className="uk-card-title artist-title">{artist_name}</h3>
-            </div>
-            {!!genres[0] || !!followers ? (
-              <div className="card-detail-area uk-flex uk-flex-center">
-                <div className="col-left">{genre}</div>
-                <div className="col-right">{readableFollowerCount}</div>
-              </div>
-            ) : (
-              <div className="card-detail-area uk-flex uk-flex-center" />
-            )}
-          </div>
-        </div>
-      </a>
+      {desktopMarkup} {mobileMarkup}
     </div>
   );
 };

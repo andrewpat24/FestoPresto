@@ -40,3 +40,15 @@ button:disabled {
 span.spacer {
   padding: 10px;
 }
+
+.flex-grid {
+  display: flex;
+}
+
+.flex-grid .col {
+  flex: 2;
+}
+
+.flex-grid .big-col {
+  flex: 3;
+}
