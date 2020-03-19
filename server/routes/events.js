@@ -166,8 +166,7 @@ router.post('/festival_details', validateAccessToken, async (req, res) => {
 
   for (let ii = 0; ii < artistList.length; ii++) {
     const currentArtist = artistList[ii];
-    if (!!cachedArtistIdHash[currentArtist.id]) continue;
-
+    if (cachedArtistIdHash[currentArtist.artist.id]) continue;
     const data = await spotifyApi.searchArtists(currentArtist.displayName);
     const returnedArtist = data.body.artists.items[0];
 

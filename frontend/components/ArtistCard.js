@@ -37,7 +37,7 @@ export const ArtistCard = props => {
           <div className="card-title-area uk-flex-center uk-flex">
             <h3 className="uk-card-title artist-title">{artist_name}</h3>
           </div>
-          {!!genres[0] || !!followers ? (
+          {!!genres || !!followers ? (
             <div className="card-detail-area uk-flex uk-flex-center">
               <div className="col-left">{genre}</div>
               <div className="col-right">{readableFollowerCount}</div>
