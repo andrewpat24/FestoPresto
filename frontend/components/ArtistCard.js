@@ -63,7 +63,7 @@ export const ArtistCard = props => {
         ></div>
         <div className="big-col uk-card uk-card-body uk-card-default mobile-artist-card">
           <div className="mobile-artist-name">{artist_name}</div>
-          {!!genres[0] || !!followers ? (
+          {!!genres || !!followers ? (
             <div>
               <div>{genre}</div>
               <div>{readableFollowerCount}</div>
