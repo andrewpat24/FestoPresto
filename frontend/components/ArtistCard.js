@@ -9,7 +9,7 @@ export const ArtistCard = props => {
     let response = '';
 
     if (!followers) {
-      return 'No data';
+      return;
     }
 
     if (followers > 1000000) {
