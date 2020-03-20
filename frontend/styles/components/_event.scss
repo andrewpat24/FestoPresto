@@ -21,7 +21,7 @@
 
 .festival-page-loader h1 {
   text-align: center;
-  color: $main-white;
+  color: $color6;
   padding-top: 5%;
 }
 
@@ -44,7 +44,7 @@
 
 button.buy-tickets-btn {
   background-color: #f80046;
-  color: #edf2f4;
+  color: $color4;
 }
 
 .header-section {
@@ -53,6 +53,6 @@ button.buy-tickets-btn {
 
 button.make-playlist-btn {
   background-color: #1fcf5f;
-  color: #edf2f4;
+  color: $color4;
   border-radius: 25px;
 }
