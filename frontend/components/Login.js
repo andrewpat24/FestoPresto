@@ -6,7 +6,7 @@ export const Login = ({ startLogin }) => (
   <section className="box-layout">
     <div className="box-layout__box">
       <h1 className="box-layout__title">Festivus</h1>
-      <p>Find your vibe.</p>
+      <p>Make playlists from festival lineups</p>
       <button className=" btn md blue-bg" onClick={startLogin}>
         Login with Spotify
       </button>
