@@ -103,8 +103,34 @@ class Event extends React.Component {
     });
   }
 
-  modalBodyMarkup(genreGroups) {
-    const genres = Object.keys(genreGroups);
+  // TODO: Make better sorting algorithm. Uses trash tier bubblesort right now.
+  sortFilters(genreGroups) {
+    const sortedFilters = [];
+    const returnedFilters = [];
+    for (let [genre, artistArray] of Object.entries(genreGroups)) {
+      sortedFilters.push({ genre, artistLength: artistArray.length });
+    }
+
+    for (let ii = 0; ii < sortedFilters.length; ii++) {
+      for (let jj = ii + 1; jj < sortedFilters.length; jj++) {
+        if (sortedFilters[ii].artistLength < sortedFilters[jj].artistLength) {
+          const temp = sortedFilters[ii];
+          sortedFilters[ii] = sortedFilters[jj];
+          sortedFilters[jj] = temp;
+        }
+      }
+    }
+
+    for (let filterIndex in sortedFilters) {
+      returnedFilters.push(sortedFilters[filterIndex].genre);
+    }
+
+    return returnedFilters;
+  }
+
+  modalFilterMarkup(genreGroups) {
+    const genres = this.sortFilters(genreGroups);
+
     return (
       <div>
         <div className="all-artists">
@@ -213,7 +239,7 @@ class Event extends React.Component {
             </div>
 
             <div className="uk-modal-body" uk-overflow-auto="">
-              {this.modalBodyMarkup(this.state.genreGroups)}
+              {this.modalFilterMarkup(this.state.genreGroups)}
             </div>
           </div>
         </div>
