@@ -81,7 +81,7 @@ class Search extends React.Component {
                     <input
                       className="uk-search-input"
                       type="search"
-                      placeholder="Name the city.."
+                      placeholder="Name of closest metro area..."
                       name="searchInput"
                       onChange={this.onChange}
                     />
