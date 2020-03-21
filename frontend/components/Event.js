@@ -76,10 +76,10 @@ class Event extends React.Component {
         console.log({ artist_data: data.artist_data });
         if (!!data.has_new_access_token) window.location.reload();
         const genreGroups = genreGroupsFunc(data.artist_data);
-
+        const artist_data = this.sortArtists(data.artist_data);
         this.setState(
           {
-            artist_data: data.artist_data,
+            artist_data,
             festival_data: data.festival_data,
             displayedArtists: data.artist_data,
             genreGroups,
@@ -126,6 +126,20 @@ class Event extends React.Component {
     }
 
     return returnedFilters;
+  }
+
+  sortArtists(artistData) {
+    for (let ii = 0; ii < artistData.length; ii++) {
+      for (let jj = ii + 1; jj < artistData.length; jj++) {
+        if (artistData[ii].followers < artistData[jj].followers) {
+          const temp = artistData[ii];
+          artistData[ii] = artistData[jj];
+          artistData[jj] = temp;
+        }
+      }
+    }
+
+    return artistData;
   }
 
   modalFilterMarkup(genreGroups) {
