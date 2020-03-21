@@ -163,15 +163,6 @@ class Event extends React.Component {
                 </a>
               </div>
             </div>
-            <div className="Event-Header-Filter header-section">
-              <a
-                className="white-text uk-button uk-button-default"
-                href="#modal-overflow"
-                uk-toggle=""
-              >
-                Filter
-              </a>
-            </div>
             <div className="Event-Header-Playlist header-section">
               <GeneratePlaylist
                 eventName={`${titleCase(this.state.currentFilter)} at ${
@@ -187,9 +178,14 @@ class Event extends React.Component {
         <div className="Event-Body-Container">
           <div className="Event-Body">
             <div className="Event-Body-Header">
-              <h1 className="white-text uk-heading-small uk-heading-line uk-text-center">
-                <span>{titleCase(this.state.currentFilter)}</span>
-              </h1>
+              <a
+                  href="#modal-overflow"
+                  uk-toggle=""
+                >
+                <h1 className="white-text uk-heading-small uk-heading-line uk-text-center">
+                  <span>{titleCase(this.state.currentFilter)}</span>
+                </h1>
+              </a>
             </div>
             <CardView
               cardType="artist"
