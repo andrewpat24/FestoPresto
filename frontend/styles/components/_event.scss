@@ -56,3 +56,19 @@ button.make-playlist-btn {
   color: $color6;
   border-radius: 25px;
 }
+
+.Event-Header-Playlist {
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  position: absolute;
+}
+
+.Event-Body-Header {
+  margin: 0 15px;
+  position: relative;
+}
+
+.genre-heading {
+  width: calc(100% - 170px);
+}

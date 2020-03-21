@@ -163,16 +163,6 @@ class Event extends React.Component {
                 </a>
               </div>
             </div>
-            <div className="Event-Header-Playlist header-section">
-              <GeneratePlaylist
-                eventName={`${titleCase(this.state.currentFilter)} at ${
-                  festivalData.displayName
-                }`}
-                lineupArray={artistData.map(artist => {
-                  return artist.spotify_id;
-                })}
-              />
-            </div>
           </div>
         </div>
         <div className="Event-Body-Container">
@@ -182,10 +172,20 @@ class Event extends React.Component {
                   href="#modal-overflow"
                   uk-toggle=""
                 >
-                <h1 className="white-text uk-heading-small uk-heading-line uk-text-center">
-                  <span>{titleCase(this.state.currentFilter)}</span>
+                <h1 className="white-text genre-heading">
+                  <span>{titleCase(this.state.currentFilter)}▼</span>
                 </h1>
               </a>
+              <div className="Event-Header-Playlist">
+                <GeneratePlaylist
+                  eventName={`${titleCase(this.state.currentFilter)} at ${
+                    festivalData.displayName
+                  }`}
+                  lineupArray={artistData.map(artist => {
+                    return artist.spotify_id;
+                  })}
+                />
+              </div>
             </div>
             <CardView
               cardType="artist"
