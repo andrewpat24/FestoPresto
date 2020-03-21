@@ -75,8 +75,8 @@ class Event extends React.Component {
         // TODO: Find a more elegant way to deal with this reload..
         console.log({ artist_data: data.artist_data });
         if (!!data.has_new_access_token) window.location.reload();
-        const genreGroups = genreGroupsFunc(data.artist_data);
         const artist_data = this.sortArtists(data.artist_data);
+        const genreGroups = genreGroupsFunc(data.artist_data);
         this.setState(
           {
             artist_data,
