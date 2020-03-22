@@ -207,7 +207,7 @@ class Event extends React.Component {
         </div>
         <div className="Event-Body-Container">
           <div className="Event-Body">
-            <div className="Event-Body-Header">
+            <div className="Event-Body-Header" uk-grid="">
               <div className="filter-container">
                 <a className="filter-modal" href="#modal-overflow" uk-toggle="">
                   <div uk-grid="">
@@ -216,13 +216,14 @@ class Event extends React.Component {
                     </div>
                     <div className="genre-heading-container">
                       <h1 className="white-text genre-heading">
-                        <span>{titleCase(this.state.currentFilter)}</span>
+                        {titleCase(this.state.currentFilter)}
                       </h1>
                     </div>
                   </div>
                 </a>
               </div>
-              <div className="Event-Header-Playlist ">
+              <div className="uk-width-expand middle-uk-column"></div>
+              <div className="generate-playlist-container">
                 <GeneratePlaylist
                   eventName={`${titleCase(this.state.currentFilter)} at ${
                     festivalData.displayName

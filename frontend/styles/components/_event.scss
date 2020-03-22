@@ -61,13 +61,6 @@ button.make-playlist-btn {
   border-radius: 25px;
 }
 
-.Event-Header-Playlist {
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  position: absolute;
-}
-
 .Event-Body-Header {
   margin: 0 15px;
   position: relative;
@@ -78,10 +71,25 @@ a.filter-modal:hover {
   text-decoration-color: white;
 }
 
-.genre-heading {
-  // width: calc(100% - 170px);
-}
-
 div.genre-heading-container {
   padding-left: 10px;
+}
+
+@media (min-width: 639px) {
+  div.generate-playlist-container {
+    margin-right: 2%;
+  }
+}
+
+@media (max-width: 639px) {
+  .genre-heading {
+    min-width: 200px;
+    max-width: 200px;
+  }
+}
+
+@media (max-width: 507px) {
+  .middle-uk-column {
+    display: none;
+  }
 }

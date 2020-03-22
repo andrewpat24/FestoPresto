@@ -13,7 +13,7 @@ export class GeneratePlaylist extends React.Component {
 
   render() {
     return (
-      <div className="Generate-Playlist-Container">
+      <div className="Generate-Playlist">
         <button
           className="uk-button uk-button-secondary make-playlist-btn"
           onClick={async () => {
