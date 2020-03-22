@@ -9,7 +9,7 @@ export const ArtistCard = props => {
     let response = '';
 
     if (!followers) {
-      return 'No data';
+      return;
     }
 
     if (followers > 1000000) {
@@ -23,46 +23,19 @@ export const ArtistCard = props => {
     return response;
   })(followers);
 
-  const desktopMarkup = (() => (
+  const singleMarkup = (() => (
     <a
-      className="artist-card-link desktop-card-artist-markup uk-visible@s"
+      className="artist-card-link"
       href={songkick_url}
       target="_blank"
     >
-      <div className="uk-card uk-card-default artist-card">
-        <div className="uk-card-media-top">
-          <img className="artist-image" src={artistImage} />
-        </div>
-        <div className="uk-card-body">
-          <div className="card-title-area uk-flex-center uk-flex">
-            <h3 className="uk-card-title artist-title">{artist_name}</h3>
-          </div>
-          {!!genres || !!followers ? (
-            <div className="card-detail-area uk-flex uk-flex-center">
-              <div className="col-left">{genre}</div>
-              <div className="col-right">{readableFollowerCount}</div>
-            </div>
-          ) : (
-            <div className="card-detail-area uk-flex uk-flex-center" />
-          )}
-        </div>
-      </div>
-    </a>
-  ))();
-
-  const mobileMarkup = (() => (
-    <a
-      className="artist-card-link mobile-card-artist-markup uk-hidden@s"
-      href={songkick_url}
-      target="_blank"
-    >
-      <div className="flex-grid uk-border-rounded">
+      <div className="artist-card">
         <div
-          className="col uk-background-cover"
+          className="artist-image"
           style={{ backgroundImage: `url(${artistImage})` }}
         ></div>
-        <div className="big-col uk-card uk-card-body uk-card-default mobile-artist-card">
-          <div className="mobile-artist-name">{artist_name}</div>
+        <div className="artist-info">
+          <div className="artist-name">{artist_name}</div>
           {!!genres || !!followers ? (
             <div>
               <div>{genre}</div>
@@ -78,7 +51,7 @@ export const ArtistCard = props => {
 
   return (
     <div>
-      {desktopMarkup} {mobileMarkup}
+      {singleMarkup}
     </div>
   );
 };
