@@ -14,6 +14,10 @@
   text-align: center;
 }
 
+.genre-filter-icon {
+  font-size: 2.75rem;
+}
+
 .festival-page-loader .loader {
   height: 80vh;
   width: 100vw;
@@ -67,8 +71,17 @@ button.make-playlist-btn {
 .Event-Body-Header {
   margin: 0 15px;
   position: relative;
+  padding-bottom: 2%;
+}
+
+a.filter-modal:hover {
+  text-decoration-color: white;
 }
 
 .genre-heading {
-  width: calc(100% - 170px);
+  // width: calc(100% - 170px);
+}
+
+div.genre-heading-container {
+  padding-left: 10px;
 }

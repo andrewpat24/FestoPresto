@@ -208,15 +208,21 @@ class Event extends React.Component {
         <div className="Event-Body-Container">
           <div className="Event-Body">
             <div className="Event-Body-Header">
-              <a href="#modal-overflow" uk-toggle="">
-                <div uk-grid="">
-                  <i class="uk-icon-filter"></i>
-                  <h1 className="white-text genre-heading">
-                    <span>{titleCase(this.state.currentFilter)}</span>
-                  </h1>
-                </div>
-              </a>
-              <div className="Event-Header-Playlist">
+              <div className="filter-container">
+                <a className="filter-modal" href="#modal-overflow" uk-toggle="">
+                  <div uk-grid="">
+                    <div>
+                      <i className="fas fa-filter genre-filter-icon white-text"></i>
+                    </div>
+                    <div className="genre-heading-container">
+                      <h1 className="white-text genre-heading">
+                        <span>{titleCase(this.state.currentFilter)}</span>
+                      </h1>
+                    </div>
+                  </div>
+                </a>
+              </div>
+              <div className="Event-Header-Playlist ">
                 <GeneratePlaylist
                   eventName={`${titleCase(this.state.currentFilter)} at ${
                     festivalData.displayName
