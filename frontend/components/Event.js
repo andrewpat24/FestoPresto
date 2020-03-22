@@ -75,11 +75,11 @@ class Event extends React.Component {
         // TODO: Find a more elegant way to deal with this reload..
         console.log({ artist_data: data.artist_data });
         if (!!data.has_new_access_token) window.location.reload();
+        const artist_data = this.sortArtists(data.artist_data);
         const genreGroups = genreGroupsFunc(data.artist_data);
-
         this.setState(
           {
-            artist_data: data.artist_data,
+            artist_data,
             festival_data: data.festival_data,
             displayedArtists: data.artist_data,
             genreGroups,
@@ -103,8 +103,48 @@ class Event extends React.Component {
     });
   }
 
-  modalBodyMarkup(genreGroups) {
-    const genres = Object.keys(genreGroups);
+  // TODO: Make better sorting algorithm. Uses trash tier bubblesort right now.
+  sortFilters(genreGroups) {
+    const sortedFilters = [];
+    const returnedFilters = [];
+    for (let [genre, artistArray] of Object.entries(genreGroups)) {
+      sortedFilters.push({ genre, artistLength: artistArray.length });
+    }
+
+    for (let ii = 0; ii < sortedFilters.length; ii++) {
+      for (let jj = ii + 1; jj < sortedFilters.length; jj++) {
+        if (sortedFilters[ii].artistLength < sortedFilters[jj].artistLength) {
+          const temp = sortedFilters[ii];
+          sortedFilters[ii] = sortedFilters[jj];
+          sortedFilters[jj] = temp;
+        }
+      }
+    }
+
+    for (let filterIndex in sortedFilters) {
+      returnedFilters.push(sortedFilters[filterIndex].genre);
+    }
+
+    return returnedFilters;
+  }
+
+  sortArtists(artistData) {
+    for (let ii = 0; ii < artistData.length; ii++) {
+      for (let jj = ii + 1; jj < artistData.length; jj++) {
+        if (artistData[ii].followers < artistData[jj].followers) {
+          const temp = artistData[ii];
+          artistData[ii] = artistData[jj];
+          artistData[jj] = temp;
+        }
+      }
+    }
+
+    return artistData;
+  }
+
+  modalFilterMarkup(genreGroups) {
+    const genres = this.sortFilters(genreGroups);
+
     return (
       <div>
         <div className="all-artists">
@@ -209,7 +249,7 @@ class Event extends React.Component {
             </div>
 
             <div className="uk-modal-body" uk-overflow-auto="">
-              {this.modalBodyMarkup(this.state.genreGroups)}
+              {this.modalFilterMarkup(this.state.genreGroups)}
             </div>
           </div>
         </div>

@@ -1,17 +1,19 @@
-import React from "react";
-import { connect } from "react-redux";
-import { startLogin } from "../actions/auth";
+import React from 'react';
+import { connect } from 'react-redux';
+import { startLogin } from '../actions/auth';
 
 export const Login = ({ startLogin }) => (
-  <div className="box-layout">
+  <section className="box-layout">
     <div className="box-layout__box">
       <h1 className="box-layout__title">Festivus</h1>
+
       <p>Generate festival playlists. Find your vibe.</p>
       <button className=" btn md make-playlist-btn" onClick={startLogin}>
+
         Login with Spotify
       </button>
     </div>
-  </div>
+  </section>
 );
 
 const mapDispatchToProps = dispatch => ({

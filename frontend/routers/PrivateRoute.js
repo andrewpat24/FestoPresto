@@ -18,7 +18,7 @@ export const PrivateRoute = ({
         ) : (
           <Redirect
             to={{
-              pathname: '/login'
+              pathname: '/'
             }}
           />
         )

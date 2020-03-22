@@ -8,17 +8,6 @@ export const Header = ({ logout, isAuthenticated }) => (
   <header className="header">
     <nav className="uk-navbar-container uk-margin" uk-navbar="true">
       <div className="uk-navbar-center">
-        <div className="uk-navbar-center-left">
-          <div>
-            <ul className="uk-navbar-nav">
-              <li>
-                <Link className="nav-sub-item" to="/search">
-                  Search
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </div>
         <Link className="uk-navbar-item uk-logo" to="/">
           Festivus
         </Link>
@@ -31,9 +20,7 @@ export const Header = ({ logout, isAuthenticated }) => (
                     Logout
                   </a>
                 ) : (
-                  <Link className="nav-sub-item" to="/login">
-                    Login
-                  </Link>
+                  <div className="nav-sub-item"></div>
                 )}
               </li>
             </ul>

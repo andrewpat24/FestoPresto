@@ -12,7 +12,7 @@ export const PublicOnlyRoute = ({
     <Route
       {...rest}
       component={() =>
-        isAuthenticated ? <Redirect to="/" /> : <Component {...rest} />
+        isAuthenticated ? <Redirect to="/search" /> : <Component {...rest} />
       }
     />
   );
