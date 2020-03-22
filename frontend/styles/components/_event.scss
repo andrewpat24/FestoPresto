@@ -83,7 +83,6 @@ div.genre-heading-container {
 
 @media (max-width: 655px) {
   .genre-heading {
-    min-width: 200px;
     max-width: 200px;
   }
 }
@@ -91,5 +90,15 @@ div.genre-heading-container {
 @media (max-width: 507px) {
   .middle-uk-column {
     display: none;
+  }
+  h1.white-text.genre-heading {
+    font-size: 1.25rem;
+  }
+  .genre-heading {
+    max-width: 100px;
+  }
+
+  .genre-filter-icon.white-text {
+    font-size: 2rem;
   }
 }
