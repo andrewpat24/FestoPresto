@@ -208,13 +208,13 @@ class Event extends React.Component {
         <div className="Event-Body-Container">
           <div className="Event-Body">
             <div className="Event-Body-Header">
-              <a
-                  href="#modal-overflow"
-                  uk-toggle=""
-                >
-                <h1 className="white-text genre-heading">
-                  <span>{titleCase(this.state.currentFilter)}▼</span>
-                </h1>
+              <a href="#modal-overflow" uk-toggle="">
+                <div uk-grid="">
+                  <i class="uk-icon-filter"></i>
+                  <h1 className="white-text genre-heading">
+                    <span>{titleCase(this.state.currentFilter)}</span>
+                  </h1>
+                </div>
               </a>
               <div className="Event-Header-Playlist">
                 <GeneratePlaylist

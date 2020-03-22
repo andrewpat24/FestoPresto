@@ -38,7 +38,7 @@ a.artist-card-link:hover {
   .artist-image {
     width: 100%;
     padding-top: 100%;
-    border-radius: 25px;
+    border-radius: 25px 25px 0 0;
   }
   .artist-card {
     text-align: center;
@@ -55,7 +55,7 @@ a.artist-card-link:hover {
   }
   .artist-image {
     width: 30%;
-    border-radius: 10px;
+    border-radius: 10px 0 0 10px;
     height: auto;
   }
   .artist-info {
