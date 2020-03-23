@@ -83,7 +83,7 @@ div.genre-heading-container {
 
 @media (max-width: 655px) {
   .genre-heading {
-    max-width: 200px;
+    width: 200px;
   }
 }
 
@@ -95,7 +95,7 @@ div.genre-heading-container {
     font-size: 1.25rem;
   }
   .genre-heading {
-    max-width: 100px;
+    width: 100px;
   }
 
   .genre-filter-icon.white-text {
