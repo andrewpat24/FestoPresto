@@ -105,8 +105,20 @@ router.post('/find_festivals', async (req, res) => {
 });
 
 router.post('/festival_details', validateAccessToken, async (req, res) => {
-  const { festivalID, access_token, has_new_access_token } = req.body;
+  const {
+    festivalID,
+    spotify_uid,
+    access_token,
+    has_new_access_token
+  } = req.body;
   spotifyApi.setAccessToken(access_token);
+
+  const followEventResponse = await FollowedEvents.findOne({
+    spotify_uid,
+    songkick_event_id: festivalID
+  });
+
+  const followStatus = !!followEventResponse;
 
   const getEvent = bent(
     `https://api.songkick.com/api/3.0/events/${festivalID}.json?apikey=${process.env.SONGKICK_KEY}`,
@@ -117,6 +129,7 @@ router.post('/festival_details', validateAccessToken, async (req, res) => {
 
   const response_getEvent = await getEvent();
   festivalData = response_getEvent.resultsPage.results.event;
+  festivalData.followStatus = followStatus;
 
   const artistList = response_getEvent.resultsPage.results.event.performance;
 

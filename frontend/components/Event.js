@@ -21,9 +21,10 @@ class Event extends React.Component {
       currentFilter: 'All Genres'
     };
     const festivalID = props.match.params.id;
+    const spotify_uid = props.spotify_uid;
     const accessToken = props.access_token;
 
-    if (!!accessToken) this.loadFestival(festivalID, accessToken);
+    if (!!accessToken) this.loadFestival(festivalID, spotify_uid, accessToken);
   }
 
   // Necessary if a user refreshes the page or navigates to it directly from the browser.
@@ -66,14 +67,17 @@ class Event extends React.Component {
     return displayedArtists;
   }
 
-  loadFestival(festivalID, accessToken) {
+  loadFestival(festivalID, spotify_uid, accessToken) {
     console.log('Loading festival..');
     const genreGroupsFunc = this.getGenreGroups;
-    festivalDetails(festivalID, accessToken)
+    festivalDetails(festivalID, spotify_uid, accessToken)
       .then(response => {
         const data = response.data;
         // TODO: Find a more elegant way to deal with this reload..
-        console.log({ artist_data: data.artist_data });
+        console.log({
+          artist_data: data.artist_data,
+          festival_data: data.festival_data
+        });
         if (!!data.has_new_access_token) window.location.reload();
         const artist_data = this.sortArtists(data.artist_data);
         const genreGroups = genreGroupsFunc(data.artist_data);
