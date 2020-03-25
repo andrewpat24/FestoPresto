@@ -1,17 +1,21 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const followedEventsSchema = new Schema({
   spotify_uid: {
     type: String
   },
-  event_id: {
+  spotify_email: {
     type: String
   },
-  identifier: {
-    unique: true,
-    type: String
+  songkick_event_id: {
+    type: Number
   }
 });
 
-mongoose.model("followed_events", followedEventsSchema);
+followedEventsSchema.index(
+  { spotify_uid: 1, songkick_event_id: 1 },
+  { unique: true }
+);
+
+mongoose.model('followed_events', followedEventsSchema);

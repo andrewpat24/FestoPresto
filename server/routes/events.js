@@ -228,44 +228,41 @@ router.post('/followed_events', (req, res) => {
 });
 
 router.post('/follow_event', async (req, res) => {
-  const { spotify_uid, event_id } = req.body;
-  if (event_id === undefined)
-    res.status(500).send({
-      message: 'event_id must not be undefined.'
-    });
-
-  const identifier = spotify_uid + '_' + event_id;
+  const { spotify_uid, spotify_email, songkick_event_id } = req.body;
 
   const newFollowedEvent = new FollowedEvents({
     spotify_uid,
-    event_id,
-    identifier
+    spotify_email,
+    songkick_event_id
   });
 
   try {
-    const saveFollowedEvent = await newFollowedEvent.save();
-    res.status(201).send(saveFollowedEvent);
-  } catch (error) {
-    res.status(500).send({
-      error,
-      message: 'An error occurred or the user has already followed this event.'
+    const response_savedEvent = await newFollowedEvent.save();
+    return res.status(200).send({ response_savedEvent });
+  } catch (e) {
+    console.log(e);
+    // If the event is already followed, the user cannot follow it again.
+    return res.status(403).send({
+      response_message: 'user already follows event',
+      response_code: -1
     });
   }
 });
 
 router.post('/unfollow_event', async (req, res) => {
-  const { spotify_uid, event_id } = req.body;
+  const { spotify_uid, songkick_event_id } = req.body;
   const unfollowedEvent = await FollowedEvents.deleteOne({
     spotify_uid,
-    event_id
+    songkick_event_id
   });
 
   if (unfollowedEvent.deletedCount === 0)
-    res
-      .status(500)
-      .send({ message: 'The event has not been unfollowed', unfollowedEvent });
+    return res.status(403).send({
+      response_message: 'The event has not been unfollowed',
+      response_code: -1
+    });
 
-  res.status(200).send({ unfollowedEvent });
+  return res.status(200).send({ unfollowedEvent });
 });
 
 module.exports = router;
