@@ -115,7 +115,7 @@ router.post('/festival_details', validateAccessToken, async (req, res) => {
 
   const followResponse = await Follows.findOne({
     spotify_uid,
-    songkick_event_id: festivalID
+    songkick_id: festivalID
   });
 
   const followStatus = !!followResponse;
@@ -240,42 +240,27 @@ router.post('/followed_festivals', (req, res) => {
   });
 });
 
-router.post('/follow_festival', async (req, res) => {
-  const { spotify_uid, spotify_email, songkick_event_id } = req.body;
+router.post('/follow_action', async (req, res) => {
+  const { songkick_id, spotify_uid, spotify_email, follow_type } = req.body;
+  const response_Follow = await Follows.findOne({ spotify_uid, songkick_id });
 
-  const newFollow = new Follows({
-    spotify_uid,
-    spotify_email,
-    songkick_event_id
+  // If the user has never followed this item, their follow status is true.
+  // If the user was following  this item and calls this route, set the follow status to the opposite of their old follow status
+  // true -> false and false -> true
+  const new_follow_status = !!response_Follow
+    ? !response_Follow.follow_status
+    : true;
+
+  const filter = { songkick_id, spotify_uid, spotify_email, follow_type };
+  const update = { follow_status: new_follow_status };
+  const response_updateFollow = await Follows.findOneAndUpdate(filter, update, {
+    new: true,
+    upsert: true
   });
 
-  try {
-    const response_savedFollow = await newFollow.save();
-    return res.status(200).send({ response_savedFollow });
-  } catch (e) {
-    console.log(e);
-    // If the event is already followed, the user cannot follow it again.
-    return res.status(403).send({
-      response_message: 'user already follows festival',
-      response_code: -1
-    });
-  }
-});
-
-router.post('/unfollow_festival', async (req, res) => {
-  const { spotify_uid, songkick_event_id } = req.body;
-  const unfollow = await Follow.deleteOne({
-    spotify_uid,
-    songkick_event_id
+  res.status(200).send({
+    response_updateFollow
   });
-
-  if (unfollow.deletedCount === 0)
-    return res.status(403).send({
-      response_message: 'The festival has not been unfollowed',
-      response_code: -1
-    });
-
-  return res.status(200).send({ unfollow });
 });
 
 module.exports = router;

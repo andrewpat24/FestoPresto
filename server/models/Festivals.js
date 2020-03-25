@@ -3,10 +3,12 @@ const Schema = mongoose.Schema;
 
 const festivalSchema = new Schema({
   songkick_id: {
-    type: Number
+    type: Number,
+    unique: true
   },
-  num_likes: {
-    type: Number
+  follow_count: {
+    type: Number,
+    default: 0
   }
 });
 
