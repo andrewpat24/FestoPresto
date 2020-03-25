@@ -16,6 +16,20 @@ export const festivalDetails = async (
   });
 };
 
+export const followFestivalAction = async (
+  songkick_id,
+  spotify_uid,
+  spotify_email,
+  follow_type
+) => {
+  return axios.post('/api/events/follow_action', {
+    songkick_id,
+    spotify_uid,
+    spotify_email,
+    follow_type
+  });
+};
+
 // export const getEventById = async (event_id = "0") => {
 //   const event = await axios.post("/api/events/get_event_by_id", { event_id });
 //   return event;

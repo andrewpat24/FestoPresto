@@ -35,7 +35,7 @@ followsSchema.post('save', async follow => {
   });
 });
 
-followsSchema.post('update', async follow => {
+followsSchema.post('findOneAndUpdate', async follow => {
   const incAmount = !!follow.follow_status ? 1 : -1;
 
   const filter = { songkick_id: follow.songkick_id };
@@ -45,15 +45,5 @@ followsSchema.post('update', async follow => {
     upsert: true
   });
 });
-
-// const filter = { name: 'Will Riker' };
-// const update = { age: 29 };
-
-// await Character.countDocuments(filter); // 0
-
-// let doc = await Character.findOneAndUpdate(filter, update, {
-//   new: true,
-//   upsert: true // Make this update into an upsert
-// });
 
 mongoose.model('follows', followsSchema);

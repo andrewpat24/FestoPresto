@@ -245,8 +245,8 @@ router.post('/follow_action', async (req, res) => {
   const response_Follow = await Follows.findOne({ spotify_uid, songkick_id });
 
   // If the user has never followed this item, their follow status is true.
-  // If the user was following  this item and calls this route, set the follow status to the opposite of their old follow status
-  // true -> false and false -> true
+  // If the user was following  this item and calls this route,
+  // set the follow status to the opposite of their old follow status.
   const new_follow_status = !!response_Follow
     ? !response_Follow.follow_status
     : true;
