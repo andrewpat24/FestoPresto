@@ -3,8 +3,8 @@ const router = express.Router();
 
 // Mongoose
 const mongoose = require('mongoose');
-const Events = mongoose.model('events');
-const FollowedEvents = mongoose.model('followed_events');
+const Festivals = mongoose.model('festivals');
+const Follows = mongoose.model('follows');
 const CachedArtists = mongoose.model('cached_artists');
 
 // Middleware
@@ -113,12 +113,12 @@ router.post('/festival_details', validateAccessToken, async (req, res) => {
   } = req.body;
   spotifyApi.setAccessToken(access_token);
 
-  const followEventResponse = await FollowedEvents.findOne({
+  const followResponse = await Follows.findOne({
     spotify_uid,
     songkick_event_id: festivalID
   });
 
-  const followStatus = !!followEventResponse;
+  const followStatus = !!followResponse;
 
   const getEvent = bent(
     `https://api.songkick.com/api/3.0/events/${festivalID}.json?apikey=${process.env.SONGKICK_KEY}`,
@@ -228,54 +228,54 @@ router.post('/festival_details', validateAccessToken, async (req, res) => {
   });
 });
 
-router.post('/followed_events', (req, res) => {
+router.post('/followed_festivals', (req, res) => {
   const { spotify_uid } = req.body;
-  FollowedEvents.find({ spotify_uid }, (err, followedEvents) => {
+  Follows.find({ spotify_uid }, (err, follows) => {
     if (err)
       res.status(500).send({
         err,
         message: "An error occurred while retrieving a user's followed events."
       });
-    res.status(200).send(followedEvents);
+    res.status(200).send(follows);
   });
 });
 
-router.post('/follow_event', async (req, res) => {
+router.post('/follow_festival', async (req, res) => {
   const { spotify_uid, spotify_email, songkick_event_id } = req.body;
 
-  const newFollowedEvent = new FollowedEvents({
+  const newFollow = new Follows({
     spotify_uid,
     spotify_email,
     songkick_event_id
   });
 
   try {
-    const response_savedEvent = await newFollowedEvent.save();
-    return res.status(200).send({ response_savedEvent });
+    const response_savedFollow = await newFollow.save();
+    return res.status(200).send({ response_savedFollow });
   } catch (e) {
     console.log(e);
     // If the event is already followed, the user cannot follow it again.
     return res.status(403).send({
-      response_message: 'user already follows event',
+      response_message: 'user already follows festival',
       response_code: -1
     });
   }
 });
 
-router.post('/unfollow_event', async (req, res) => {
+router.post('/unfollow_festival', async (req, res) => {
   const { spotify_uid, songkick_event_id } = req.body;
-  const unfollowedEvent = await FollowedEvents.deleteOne({
+  const unfollow = await Follow.deleteOne({
     spotify_uid,
     songkick_event_id
   });
 
-  if (unfollowedEvent.deletedCount === 0)
+  if (unfollow.deletedCount === 0)
     return res.status(403).send({
-      response_message: 'The event has not been unfollowed',
+      response_message: 'The festival has not been unfollowed',
       response_code: -1
     });
 
-  return res.status(200).send({ unfollowedEvent });
+  return res.status(200).send({ unfollow });
 });
 
 module.exports = router;

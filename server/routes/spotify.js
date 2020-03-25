@@ -6,7 +6,6 @@ const SpotifyWebApi = require('spotify-web-api-node');
 const validateAccessToken = require('../middleware/spotify/validate_access_token');
 // Mongoose
 const mongoose = require('mongoose');
-const FollowedArtists = mongoose.model('followed_Artists');
 
 // .env imports
 const clientId = process.env.SPOTIFY_CLIENT_ID; // Your client id
@@ -17,89 +16,6 @@ const spotifyApi = new SpotifyWebApi({
   clientId,
   clientSecret,
   redirectUri
-});
-
-router.post(
-  '/refresh_followed_artists',
-  validateAccessToken,
-  async (req, res) => {
-    const { access_token, spotify_uid, has_new_access_token } = req.body;
-    spotifyApi.setAccessToken(access_token);
-
-    await FollowedArtists.deleteMany({ spotify_uid }, err => {
-      if (err)
-        res.status(500).send({
-          message: 'An error occurred while deleting old followed artists!',
-          err
-        });
-    });
-
-    spotifyApi.getFollowedArtists({ limit: 50 }).then(data => {
-      const items = data.body.artists.items;
-      const followedArtistArray = [];
-
-      items.forEach(artist => {
-        const { id, name } = artist;
-        followedArtistArray.push({
-          artist_id: id,
-          name,
-          spotify_uid,
-          identifier: spotify_uid + '_' + id
-        });
-      });
-
-      FollowedArtists.create(followedArtistArray, err => {
-        if (err)
-          res.status(500).send({
-            path: '/refresh_followed_artists',
-            message: 'An error occurred while refreshing followed artists',
-            err
-          });
-
-        res.status(201).send({
-          path: '/refresh_followed_artists',
-          message: 'Followed artists successfully populated!',
-          access_token,
-          has_new_access_token
-        });
-      });
-    });
-  }
-);
-
-router.post('/followed_artists', async (req, res) => {
-  const { spotify_uid } = req.body;
-  const followerList = await FollowedArtists.find({ spotify_uid });
-  res.send({
-    path: '/followed_artists',
-    artists: followerList.artists,
-    followerList
-  });
-});
-
-router.post('/get_matching_followed_artists', (req, res) => {
-  const { identifiers } = req.body;
-  FollowedArtists.find(
-    {
-      identifier: {
-        $in: [...identifiers]
-      }
-    },
-    (err, artists) => {
-      if (err)
-        res.status(500).send({
-          path: '/get_matching_followed_artists',
-          message: 'Failed retrieving matching followed artists!',
-          err
-        });
-
-      res.status(200).send({
-        path: '/get_matching_followed_artists',
-        message: 'Artists successfully recieved!',
-        artists
-      });
-    }
-  );
 });
 
 router.post('/get_artist_by_id', validateAccessToken, async (req, res) => {

@@ -26,9 +26,8 @@ app
 const mongoose = require('mongoose');
 mongoose.connect(process.env.MONGO_URI);
 require('./models/Users');
-require('./models/Events');
-require('./models/FollowedArtists');
-require('./models/FollowedEvents');
+require('./models/Festivals');
+require('./models/Follows');
 require('./models/CachedArtists');
 
 // Logging
