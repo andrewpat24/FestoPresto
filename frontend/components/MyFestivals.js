@@ -22,7 +22,6 @@ class MyFestivals extends React.Component {
     const spotify_uid = this.props.spotify_uid;
     const response_myFestivals = await myFestivals(spotify_uid);
 
-    console.log(response_myFestivals.data.followedFestivals);
     this.setState({
       festivals: response_myFestivals.data.followedFestivals
     });

@@ -19,7 +19,6 @@ import { getUserID } from './services/passport';
 const store = configureStore();
 
 getUserID().then(spotify_credentials => {
-  console.log(spotify_credentials);
   spotify_credentials.length === 0
     ? store.dispatch(login('logged out', 'no access token'))
     : store.dispatch(

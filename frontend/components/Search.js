@@ -57,7 +57,6 @@ class Search extends React.Component {
   };
 
   generateCardView(cards) {
-    console.log('GENERATECARDVIEW', cards);
     return this.state.events ? (
       <CardView cardType="event" colWidth="4" cards={cards} />
     ) : (
@@ -81,9 +80,7 @@ class Search extends React.Component {
                     <input
                       className="uk-search-input"
                       type="search"
-
                       placeholder="Manchester, TN"
-
                       name="searchInput"
                       onChange={this.onChange}
                     />
