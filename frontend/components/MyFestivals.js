@@ -38,7 +38,7 @@ class MyFestivals extends React.Component {
           <div className="my-festivals-header-container">
             <div className="my-festivals-header">
               <h1 className="uk-heading-medium uk-text-center white-text">
-                Your Festivals
+                My Festivals
               </h1>
             </div>
           </div>
