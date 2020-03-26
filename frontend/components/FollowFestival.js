@@ -14,8 +14,7 @@ export class FollowFestival extends React.Component {
 
   onClickFollow = async () => {
     if (this.state.loading) return;
-    console.log('FOLLOW STATE:', this.state);
-    console.log('FOLLOW PROPS:', this.props);
+
     this.setState(
       {
         loading: true
@@ -28,8 +27,6 @@ export class FollowFestival extends React.Component {
           this.props.email,
           follow_type
         );
-        console.log('RESPONSE:', response.data.follow_status);
-        console.log(this.state.followStatus ? 'Unfollow' : 'Follow');
         this.setState({
           loading: false,
           followStatus: response.data.follow_status
@@ -39,12 +36,12 @@ export class FollowFestival extends React.Component {
   };
 
   render() {
+    const followStatusCSSRule = this.state.followStatus
+      ? 'uk-button uk-button-danger'
+      : 'uk-button uk-button-secondary';
     return (
       <div className="Follow-Festival">
-        <button
-          className="uk-button uk-button-secondary"
-          onClick={this.onClickFollow}
-        >
+        <button className={followStatusCSSRule} onClick={this.onClickFollow}>
           {this.state.followStatus ? 'Unfollow' : 'Follow'}
           {this.state.loading ? (
             <span className="loading-spinner-spacer">

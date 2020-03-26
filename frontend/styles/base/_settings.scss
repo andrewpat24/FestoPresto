@@ -1,10 +1,10 @@
 // Colors
-$color1: #183859;
-$color2: rgba(23, 33, 33, 1);
-$color3: rgba(127, 123, 130, 1);
-$color4: #F5E6E8;
-$color5: rgba(0, 15, 8, 1);
-$color6: white;
+$dark-blue: #183859;
+$off-black: rgba(23, 33, 33, 1);
+$grey: rgba(127, 123, 130, 1);
+$off-white: #f5e6e8;
+$black: rgba(0, 15, 8, 1);
+$white: white;
 // Font size
 $font-size-xl: 2.7rem;
 $font-size-lg: 1.8rem;
@@ -17,5 +17,5 @@ $s-size: 1.2rem;
 $desktop-breakpoint: 45rem;
 // Font rules
 .white-text {
-  color: $color6;
+  color: $white;
 }

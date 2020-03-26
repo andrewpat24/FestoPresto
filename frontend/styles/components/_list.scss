@@ -1,7 +1,7 @@
 .list-header {
-  background: $color4;
-  border: 1px solid darken($color4, 7%);
-  color: $color3;
+  background: $off-white;
+  border: 1px solid darken($off-white, 7%);
+  color: $grey;
   display: flex;
   justify-content: space-between;
   padding: $s-size $m-size;
@@ -16,16 +16,16 @@
 }
 
 .list-item {
-  border: 1px solid darken($color4, 7%);
+  border: 1px solid darken($off-white, 7%);
   border-top: none;
-  color: $color2;
+  color: $off-black;
   display: flex;
   flex-direction: column;
   padding: $s-size;
   text-decoration: none;
   transition: background 0.3s ease;
   &:hover {
-    background: $color4;
+    background: $off-white;
   }
   @media (min-width: $desktop-breakpoint) {
     align-items: center;
@@ -36,7 +36,7 @@
 }
 
 .list-item--message {
-  color: $color3;
+  color: $grey;
   align-items: center;
   justify-content: center;
   padding: $m-size;
@@ -52,7 +52,7 @@
 }
 
 .list-item__subtitle {
-  color: $color3;
+  color: $grey;
   font-size: $font-size-sm;
 }
 
