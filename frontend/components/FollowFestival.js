@@ -37,7 +37,7 @@ export class FollowFestival extends React.Component {
 
   render() {
     const followStatusCSSRule = this.state.followStatus
-      ? 'uk-button uk-button-danger'
+      ? 'uk-button uk-button-danger danger-red-background'
       : 'uk-button uk-button-secondary';
     return (
       <div className="Follow-Festival">
