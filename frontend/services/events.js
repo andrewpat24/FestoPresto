@@ -20,13 +20,21 @@ export const followFestivalAction = async (
   songkick_id,
   spotify_uid,
   spotify_email,
-  follow_type
+  follow_type,
+  data
 ) => {
   return axios.post('/api/events/follow_action', {
     songkick_id,
     spotify_uid,
     spotify_email,
-    follow_type
+    follow_type,
+    data
+  });
+};
+
+export const myFestivals = async spotify_uid => {
+  return axios.post('/api/events/my_festivals', {
+    spotify_uid
   });
 };
 

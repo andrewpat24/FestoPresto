@@ -216,20 +216,46 @@ router.post('/festival_details', validateAccessToken, async (req, res) => {
   });
 });
 
-router.post('/followed_festivals', (req, res) => {
+router.post('/my_festivals', async (req, res) => {
   const { spotify_uid } = req.body;
-  Follows.find({ spotify_uid }, (err, follows) => {
-    if (err)
-      res.status(500).send({
-        err,
-        message: "An error occurred while retrieving a user's followed events."
-      });
-    res.status(200).send(follows);
-  });
+
+  try {
+    const response_findValidFollows = await Follows.find({
+      spotify_uid,
+      follow_status: true
+    });
+
+    const followedFestivals = response_findValidFollows.map(festival => {
+      // For some reason, strict:false mongoose fields don't provide the data object in a usable way
+      // unless you stringify it THEN parse it again. Otherwise you get {'$init': true, strict: undefined }..
+      const festivalData = JSON.parse(JSON.stringify(festival.data));
+
+      return {
+        id: festival.songkick_id,
+        numPerformers: festivalData.numPerformers,
+        start: festivalData.start,
+        displayName: festivalData.displayName
+      };
+    });
+
+    return res.status(200).send({ followedFestivals });
+  } catch (e) {
+    console.log(e);
+    return res.status(500).send({
+      message: 'Could not retrieve followed festivals.',
+      response_code: -1
+    });
+  }
 });
 
 router.post('/follow_action', async (req, res) => {
-  const { songkick_id, spotify_uid, spotify_email, follow_type } = req.body;
+  const {
+    songkick_id,
+    spotify_uid,
+    spotify_email,
+    follow_type,
+    data
+  } = req.body;
   const songkick_id_as_string = songkick_id.toString();
   const response_Follow = await Follows.findOne({
     spotify_uid,
@@ -243,7 +269,7 @@ router.post('/follow_action', async (req, res) => {
     ? !response_Follow.follow_status
     : true;
 
-  const filter = { songkick_id, spotify_uid, spotify_email, follow_type };
+  const filter = { songkick_id, spotify_uid, spotify_email, follow_type, data };
   const update = { follow_status: new_follow_status };
 
   try {

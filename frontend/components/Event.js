@@ -74,7 +74,6 @@ class Event extends React.Component {
     festivalDetails(festivalID, spotify_uid, accessToken)
       .then(response => {
         const data = response.data;
-
         if (!!data.has_new_access_token) window.location.reload();
         const artist_data = this.sortArtists(data.artist_data);
         const genreGroups = genreGroupsFunc(data.artist_data);
@@ -86,9 +85,7 @@ class Event extends React.Component {
             genreGroups,
             loading: false
           },
-          () => {
-            console.log('FESTIVAL DATA EVENT STUFFFFFFF:', data.festival_data);
-          }
+          () => {}
         );
       })
       .catch(e => {});
@@ -186,7 +183,6 @@ class Event extends React.Component {
   generateFestivalMarkup(festivalData, artistData) {
     const startDate = moment(festivalData.start.date).format('MMM Do YYYY');
     const endDate = moment(festivalData.end.date).format('MMM Do YYYY');
-    console.log('FOLLOW STATUS FROM EVENT:', festivalData.followStatus);
     return (
       <div className="Event">
         <div className="Event-Header-Container">
@@ -210,6 +206,9 @@ class Event extends React.Component {
                 <FollowFestival
                   songkick_id={festivalData.id}
                   followStatus={festivalData.followStatus}
+                  displayName={festivalData.displayName}
+                  start={startDate}
+                  numPerformers={festivalData.performance.length}
                 />
               </div>
             </div>

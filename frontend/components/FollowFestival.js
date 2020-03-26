@@ -15,6 +15,11 @@ export class FollowFestival extends React.Component {
   onClickFollow = async () => {
     if (this.state.loading) return;
 
+    const data = {
+      numPerformers: this.props.numPerformers,
+      start: this.props.start,
+      displayName: this.props.displayName
+    };
     this.setState(
       {
         loading: true
@@ -25,7 +30,8 @@ export class FollowFestival extends React.Component {
           this.props.songkick_id,
           this.props.uid,
           this.props.email,
-          follow_type
+          follow_type,
+          data
         );
         this.setState({
           loading: false,

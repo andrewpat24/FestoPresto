@@ -14,6 +14,9 @@ const followsSchema = new Schema({
   songkick_id: {
     type: String
   },
+  data: {
+    strict: false
+  },
   follow_type: {
     type: String,
     enum: ['festival', 'artist']
