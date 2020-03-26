@@ -27,10 +27,6 @@ class MyFestivals extends React.Component {
     });
   };
 
-  generateCardView = () => {
-    return <span>Test</span>;
-  };
-
   render() {
     return (
       <section className="my-festivals-container" component="MyFestivals">
