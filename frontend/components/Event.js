@@ -7,6 +7,7 @@ import moment from 'moment';
 // Components
 import CardView from './CardView';
 import GeneratePlaylist from './GeneratePlaylist';
+import FollowFestival from './FollowFestival';
 import Loading from './Loading';
 import Attribution from './Attribution';
 
@@ -73,11 +74,7 @@ class Event extends React.Component {
     festivalDetails(festivalID, spotify_uid, accessToken)
       .then(response => {
         const data = response.data;
-        // TODO: Find a more elegant way to deal with this reload..
-        console.log({
-          artist_data: data.artist_data,
-          festival_data: data.festival_data
-        });
+
         if (!!data.has_new_access_token) window.location.reload();
         const artist_data = this.sortArtists(data.artist_data);
         const genreGroups = genreGroupsFunc(data.artist_data);
@@ -89,7 +86,9 @@ class Event extends React.Component {
             genreGroups,
             loading: false
           },
-          () => {}
+          () => {
+            console.log('FESTIVAL DATA EVENT STUFFFFFFF:', data.festival_data);
+          }
         );
       })
       .catch(e => {});
@@ -187,6 +186,7 @@ class Event extends React.Component {
   generateFestivalMarkup(festivalData, artistData) {
     const startDate = moment(festivalData.start.date).format('MMM Do YYYY');
     const endDate = moment(festivalData.end.date).format('MMM Do YYYY');
+    console.log('FOLLOW STATUS FROM EVENT:', festivalData.followStatus);
     return (
       <div className="Event">
         <div className="Event-Header-Container">
@@ -205,6 +205,12 @@ class Event extends React.Component {
                     Buy Tickets
                   </button>
                 </a>
+              </div>
+              <div>
+                <FollowFestival
+                  songkick_id={festivalData.id}
+                  followStatus={festivalData.followStatus}
+                />
               </div>
             </div>
           </div>

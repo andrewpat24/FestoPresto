@@ -15,7 +15,11 @@ const mongoose = require('mongoose');
 const User = mongoose.model('users');
 
 passport.serializeUser((user, done) => {
-  done(null, { id: user.id, access_token: user.accessToken });
+  done(null, {
+    id: user.id,
+    access_token: user.accessToken,
+    email: user.email
+  });
 });
 
 passport.deserializeUser((spotify_user, done) => {
@@ -28,12 +32,14 @@ passport.deserializeUser((spotify_user, done) => {
     if (user === null) {
       return done(null, {
         id: '0',
-        access_token: '0'
+        access_token: '0',
+        email: '0'
       });
     }
     return done(null, {
       id: user.spotify_uid,
-      access_token: user.spotify_access_token
+      access_token: user.spotify_access_token,
+      email: user.email
     });
   });
 });

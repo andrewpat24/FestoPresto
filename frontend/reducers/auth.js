@@ -1,25 +1,26 @@
 export default (state = {}, action) => {
   switch (action.type) {
-    case "LOGIN":
+    case 'LOGIN':
+      return {
+        ...state,
+        uid: action.uid,
+        email: action.email,
+        access_token: action.access_token
+      };
+    case 'LOGOUT':
       return {
         ...state,
         uid: action.uid,
         access_token: action.access_token
       };
-    case "LOGOUT":
-      return {
-        ...state,
-        uid: action.uid,
-        access_token: action.access_token
-      };
-    case "UPDATE_ACCESS_TOKEN":
+    case 'UPDATE_ACCESS_TOKEN':
       return {
         ...state,
         access_token: action.access_token
       };
-    case "FETCH_USER":
+    case 'FETCH_USER':
       return action.payload;
-    case "SET_VALUE":
+    case 'SET_VALUE':
       return {
         value: state.value + action.value
       };

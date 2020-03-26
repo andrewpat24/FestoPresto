@@ -12,7 +12,7 @@ const followsSchema = new Schema({
     type: String
   },
   songkick_id: {
-    type: Number
+    type: String
   },
   follow_type: {
     type: String,

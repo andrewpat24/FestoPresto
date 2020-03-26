@@ -1,28 +1,33 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { Provider } from "react-redux";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 // Router
-import AppRouter, { history } from "./routers/AppRouter";
+import AppRouter, { history } from './routers/AppRouter';
 // Redux
-import configureStore from "./store/configureStore";
-import { login, logout } from "./actions/auth";
+import configureStore from './store/configureStore';
+import { login, logout } from './actions/auth';
 // Styles
-import "./styles/styles.scss";
-import "normalize.css/normalize.css";
-import "react-dates/initialize";
-import "react-dates/lib/css/_datepicker.css";
+import './styles/styles.scss';
+import 'normalize.css/normalize.css';
+import 'react-dates/initialize';
+import 'react-dates/lib/css/_datepicker.css';
 // Components
-import Loading from "./components/Loading";
+import Loading from './components/Loading';
 // Axios - debug
-import { getUserID } from "./services/passport";
+import { getUserID } from './services/passport';
 
 const store = configureStore();
 
 getUserID().then(spotify_credentials => {
+  console.log(spotify_credentials);
   spotify_credentials.length === 0
-    ? store.dispatch(login("logged out", "no access token"))
+    ? store.dispatch(login('logged out', 'no access token'))
     : store.dispatch(
-        login(spotify_credentials.id, spotify_credentials.access_token)
+        login(
+          spotify_credentials.id,
+          spotify_credentials.access_token,
+          spotify_credentials.email
+        )
       );
 });
 
@@ -35,9 +40,9 @@ const jsx = (
 let hasRendered = false;
 const renderApp = () => {
   if (!hasRendered) {
-    ReactDOM.render(jsx, document.getElementById("app"));
+    ReactDOM.render(jsx, document.getElementById('app'));
     hasRendered = true;
   }
 };
-ReactDOM.render(<Loading />, document.getElementById("app"));
+ReactDOM.render(<Loading />, document.getElementById('app'));
 renderApp();

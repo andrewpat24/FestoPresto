@@ -3,7 +3,6 @@ const router = express.Router();
 
 // Mongoose
 const mongoose = require('mongoose');
-const Festivals = mongoose.model('festivals');
 const Follows = mongoose.model('follows');
 const CachedArtists = mongoose.model('cached_artists');
 
@@ -32,19 +31,6 @@ router.get('/', (req, res) => {
     path: '/',
     message: 'Root GET working on /routes'
   });
-});
-
-router.get('/songkick_location_id', async (req, res) => {
-  const songkick_key = process.env.SONGKICK_KEY;
-  const location = 'San Francisco';
-  const get = bent(
-    `https://api.songkick.com/api/3.0/search/locations.json?query=${location}&apikey=${songkick_key}&type=festival`,
-    'GET',
-    'json',
-    200
-  );
-  const response = await get();
-  res.status(200).send({ response });
 });
 
 router.post('/find_festivals', async (req, res) => {
@@ -113,12 +99,14 @@ router.post('/festival_details', validateAccessToken, async (req, res) => {
   } = req.body;
   spotifyApi.setAccessToken(access_token);
 
-  const followResponse = await Follows.findOne({
-    spotify_uid,
-    songkick_id: festivalID
+  const response_findFollow = await Follows.findOne({
+    songkick_id: festivalID,
+    spotify_uid
   });
 
-  const followStatus = !!followResponse;
+  const followStatus = !!response_findFollow
+    ? response_findFollow.follow_status
+    : false;
 
   const getEvent = bent(
     `https://api.songkick.com/api/3.0/events/${festivalID}.json?apikey=${process.env.SONGKICK_KEY}`,
@@ -242,7 +230,11 @@ router.post('/followed_festivals', (req, res) => {
 
 router.post('/follow_action', async (req, res) => {
   const { songkick_id, spotify_uid, spotify_email, follow_type } = req.body;
-  const response_Follow = await Follows.findOne({ spotify_uid, songkick_id });
+  const songkick_id_as_string = songkick_id.toString();
+  const response_Follow = await Follows.findOne({
+    spotify_uid,
+    songkick_id: songkick_id_as_string
+  });
 
   // If the user has never followed this item, their follow status is true.
   // If the user was following  this item and calls this route,
@@ -253,14 +245,28 @@ router.post('/follow_action', async (req, res) => {
 
   const filter = { songkick_id, spotify_uid, spotify_email, follow_type };
   const update = { follow_status: new_follow_status };
-  const response_updateFollow = await Follows.findOneAndUpdate(filter, update, {
-    new: true,
-    upsert: true
-  });
 
-  res.status(200).send({
-    response_updateFollow
-  });
+  try {
+    const response_updateFollow = await Follows.findOneAndUpdate(
+      filter,
+      update,
+      {
+        new: true,
+        upsert: true
+      }
+    );
+
+    res.status(200).send({
+      follow_status: response_updateFollow.follow_status,
+      response_code: 1
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(401).send({
+      message: 'Could not change follow status',
+      response_code: -1
+    });
+  }
 });
 
 module.exports = router;

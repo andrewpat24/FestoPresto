@@ -1,23 +1,25 @@
-import { logoutUser } from "../services/passport";
+import { logoutUser } from '../services/passport';
 
 export const startLogin = () => {
   return () => {
-    window.location.href = "/api/auth/spotify";
+    window.location.href = '/api/auth/spotify';
   };
 };
 
-export const login = (uid, access_token) => ({
-  type: "LOGIN",
+export const login = (uid, access_token, email) => ({
+  type: 'LOGIN',
   uid,
+  email,
   access_token
 });
 
 export const logout = () => {
   logoutUser();
   return {
-    type: "LOGOUT",
-    uid: "logged out",
-    access_token: "no access token"
+    type: 'LOGOUT',
+    uid: 'logged out',
+    email: 'logged out',
+    access_token: 'no access token'
   };
 };
 
@@ -26,7 +28,7 @@ export const logout = () => {
 // Replace old access token in redux store with new access token.
 export const updateAccessToken = newAccessToken => {
   return {
-    type: "UPDATE_ACCESS_TOKEN",
+    type: 'UPDATE_ACCESS_TOKEN',
     access_token: newAccessToken
   };
 };
