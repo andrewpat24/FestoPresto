@@ -48,13 +48,11 @@ export class FollowFestival extends React.Component {
     return (
       <div className="Follow-Festival">
         <button className={followStatusCSSRule} onClick={this.onClickFollow}>
-          {this.state.followStatus ? 'Unfollow' : 'Follow'}
+          {this.state.followStatus ? 'Followed' : 'Follow'}
           {this.state.loading ? (
-            <span className="loading-spinner-spacer">
-              <span className="playlist-loading-spinner" uk-spinner="" />
-            </span>
+            <span className="button-loading-spinner" uk-spinner="" />
           ) : (
-            <span />
+            ''
           )}
         </button>
       </div>

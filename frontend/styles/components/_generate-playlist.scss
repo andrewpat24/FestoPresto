@@ -1,3 +1,20 @@
 span.loading-spinner-spacer {
-  padding-left: 15px;
+  position: relative;
+  left: 5px;
+  width: 20px;
+}
+
+.loading-background-container {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.6);
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1010;
+}
+
+.hide-background {
+  display: none;
 }

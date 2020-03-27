@@ -30,16 +30,15 @@
 }
 
 .Event-Header-Container {
-  padding: 5%;
+  padding: 5% 5% 1% 5%;
 }
 
 .Event-Header {
   text-align: center;
 }
 
-.Event-Header-Actions.uk-grid {
-  display: flex;
-  justify-content: center;
+.Event-Header-Actions div {
+  padding-bottom: 1%;
 }
 
 .Event-Body {

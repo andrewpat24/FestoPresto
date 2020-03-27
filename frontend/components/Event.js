@@ -191,17 +191,7 @@ class Event extends React.Component {
             <h2 className="white-text ">
               {startDate} - {endDate}
             </h2>
-            <div
-              className="Event-Header-Actions uk-text-center header-section"
-              uk-grid=""
-            >
-              <div>
-                <a href={festivalData.uri} target="_blank">
-                  <button className="uk-button uk-button-secondary buy-tickets-btn">
-                    Buy Tickets
-                  </button>
-                </a>
-              </div>
+            <div className="Event-Header-Actions uk-text-center header-section">
               <div>
                 <FollowFestival
                   songkick_id={festivalData.id}
@@ -210,6 +200,13 @@ class Event extends React.Component {
                   start={startDate}
                   numPerformers={festivalData.performance.length}
                 />
+              </div>
+              <div>
+                <a href={festivalData.uri} target="_blank">
+                  <button className="uk-button uk-button-secondary buy-tickets-btn">
+                    Buy Tickets
+                  </button>
+                </a>
               </div>
             </div>
           </div>
