@@ -27,6 +27,16 @@ class MyFestivals extends React.Component {
     });
   };
 
+  generateCardView = cards => {
+    return cards.length > 0 ? (
+      <CardView cardType="event" colWidth="4" cards={this.state.festivals} />
+    ) : (
+      <h2 className="uk-heading-small uk-text-center white-text">
+        You aren't following any festivals
+      </h2>
+    );
+  };
+
   render() {
     return (
       <section className="my-festivals-container" component="MyFestivals">
@@ -43,11 +53,7 @@ class MyFestivals extends React.Component {
               {!this.state.festivals ? (
                 <Loading />
               ) : (
-                <CardView
-                  cardType="event"
-                  colWidth="4"
-                  cards={this.state.festivals}
-                />
+                this.generateCardView(this.state.festivals)
               )}
             </div>
           </div>
