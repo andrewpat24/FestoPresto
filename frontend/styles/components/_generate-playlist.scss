@@ -6,7 +6,7 @@ span.loading-spinner-spacer {
 
 .loading-background-container {
   opacity: 1;
-  background: rgba(0, 0, 0, 0.6);
+  background: $modal-background-black;
   position: fixed;
   top: 0;
   right: 0;
