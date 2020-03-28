@@ -91,6 +91,26 @@ router.post('/find_festivals', async (req, res) => {
   });
 });
 
+router.get('/get_top_four_festivals', async (req, res) => {
+  const response_topFourFestivals = await Festivals.find({
+    follow_count: { $gt: 0 }
+  })
+    .sort({ follow_count: -1 })
+    .limit(4)
+    .exec();
+
+  const formattedTopFourFestivals = response_topFourFestivals.map(festival => {
+    return {
+      id: festival.songkick_id,
+      displayName: festival.display_name,
+      start: festival.start,
+      numPerformers: festival.num_performers
+    };
+  });
+
+  return res.status(200).send({ festivals: [...formattedTopFourFestivals] });
+});
+
 router.post('/festival_details', validateAccessToken, async (req, res) => {
   const {
     festivalID,

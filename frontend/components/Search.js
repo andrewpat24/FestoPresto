@@ -4,7 +4,7 @@ import CardView from './CardView';
 import Loading from './Loading';
 import Attribution from './Attribution';
 // Services
-import { findFestivals } from '../services/events';
+import { findFestivals, getTopFourFestivals } from '../services/events';
 
 class Search extends React.Component {
   constructor(props) {
@@ -16,6 +16,10 @@ class Search extends React.Component {
       searchValue: '',
       loading: false
     };
+  }
+
+  componentDidMount() {
+    this.loadTopFourFestivals();
   }
 
   async findFestivals(filter = {}) {
@@ -41,9 +45,7 @@ class Search extends React.Component {
               festivals: locationData.festivals,
               loading: false
             },
-            () => {
-              console.log(this.state);
-            }
+            () => {}
           );
         });
       }
@@ -56,13 +58,21 @@ class Search extends React.Component {
     });
   };
 
-  generateCardView(cards) {
-    return this.state.events ? (
-      <CardView cardType="event" colWidth="4" cards={cards} />
-    ) : (
-      <span />
+  loadTopFourFestivals = async () => {
+    this.setState(
+      {
+        loading: true
+      },
+      async () => {
+        const response_topFour = await getTopFourFestivals();
+        this.setState({
+          loading: false,
+          location_name: 'Highlighted Festivals',
+          festivals: response_topFour.data.festivals
+        });
+      }
     );
-  }
+  };
 
   render() {
     return (

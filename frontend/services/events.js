@@ -4,6 +4,10 @@ export const findFestivals = async (filters = {}) => {
   return axios.post('/api/events/find_festivals', filters);
 };
 
+export const getTopFourFestivals = async () => {
+  return axios.get('/api/events/get_top_four_festivals');
+};
+
 export const festivalDetails = async (
   festivalID,
   spotify_uid,

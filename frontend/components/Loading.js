@@ -1,7 +1,6 @@
 import React from 'react';
 
 export const Loading = props => {
-  console.log('LOADING:', props);
   let cssClasses = 'loader ';
   if (props.center) cssClasses += 'uk-position-center';
   return (
