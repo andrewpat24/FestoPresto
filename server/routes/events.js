@@ -4,6 +4,7 @@ const router = express.Router();
 // Mongoose
 const mongoose = require('mongoose');
 const Follows = mongoose.model('follows');
+const Festivals = mongoose.model('festivals');
 const CachedArtists = mongoose.model('cached_artists');
 
 // Middleware
@@ -117,12 +118,25 @@ router.post('/festival_details', validateAccessToken, async (req, res) => {
 
   const response_getEvent = await getEvent();
   festivalData = response_getEvent.resultsPage.results.event;
+  console.log(festivalData);
   festivalData.followStatus = followStatus;
 
   const artistList = response_getEvent.resultsPage.results.event.performance;
 
   const artistIds = artistList.map(artist => {
     return artist.artist.id;
+  });
+
+  const filter = {
+    songkick_id: festivalData.id,
+    display_name: festivalData.displayName,
+    start: festivalData.start.date,
+    num_performers: artistList.length
+  };
+  const update = {};
+  await Festivals.findOneAndUpdate(filter, update, {
+    new: true,
+    upsert: true
   });
 
   let cachedArtists = await CachedArtists.find({
@@ -225,16 +239,21 @@ router.post('/my_festivals', async (req, res) => {
       follow_status: true
     });
 
-    const followedFestivals = response_findValidFollows.map(festival => {
-      // For some reason, strict:false mongoose fields don't provide the data object in a usable way
-      // unless you stringify it THEN parse it again. Otherwise you get {'$init': true, strict: undefined }..
-      const festivalData = JSON.parse(JSON.stringify(festival.data));
+    const followedFestivalIDs = response_findValidFollows.map(
+      festival => festival.songkick_id
+    );
 
+    const response_festivalData = await Festivals.find({
+      songkick_id: { $in: followedFestivalIDs }
+    });
+
+    const followedFestivals = response_festivalData.map(festival => {
+      console.log(festival);
       return {
         id: festival.songkick_id,
-        numPerformers: festivalData.numPerformers,
-        start: festivalData.start,
-        displayName: festivalData.displayName
+        numPerformers: festival.num_performers,
+        start: festival.start,
+        displayName: festival.display_name
       };
     });
 
@@ -248,14 +267,21 @@ router.post('/my_festivals', async (req, res) => {
   }
 });
 
+// const followedFestivals = response_findValidFollows.map(festival => {
+//   // For some reason, strict:false mongoose fields don't provide the data object in a usable way
+//   // unless you stringify it THEN parse it again. Otherwise you get {'$init': true, strict: undefined }..
+//   const festivalData = JSON.parse(JSON.stringify(festival.data));
+
+//   return {
+// id: festival.songkick_id,
+// numPerformers: festivalData.numPerformers,
+// start: festivalData.start,
+// displayName: festivalData.displayName
+//   };
+// });
+
 router.post('/follow_action', async (req, res) => {
-  const {
-    songkick_id,
-    spotify_uid,
-    spotify_email,
-    follow_type,
-    data
-  } = req.body;
+  const { songkick_id, spotify_uid, spotify_email, follow_type } = req.body;
   const songkick_id_as_string = songkick_id.toString();
   const response_Follow = await Follows.findOne({
     spotify_uid,
@@ -269,7 +295,7 @@ router.post('/follow_action', async (req, res) => {
     ? !response_Follow.follow_status
     : true;
 
-  const filter = { songkick_id, spotify_uid, spotify_email, follow_type, data };
+  const filter = { songkick_id, spotify_uid, spotify_email, follow_type };
   const update = { follow_status: new_follow_status };
 
   try {

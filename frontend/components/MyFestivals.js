@@ -38,6 +38,7 @@ class MyFestivals extends React.Component {
   };
 
   render() {
+    console.log(this.state.festivals);
     return (
       <section className="my-festivals-container" component="MyFestivals">
         <div className="my-festivals">

@@ -196,9 +196,6 @@ class Event extends React.Component {
                 <FollowFestival
                   songkick_id={festivalData.id}
                   followStatus={festivalData.followStatus}
-                  displayName={festivalData.displayName}
-                  start={startDate}
-                  numPerformers={festivalData.performance.length}
                 />
               </div>
               <div>

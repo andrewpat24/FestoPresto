@@ -6,6 +6,15 @@ const festivalSchema = new Schema({
     type: String,
     unique: true
   },
+  num_performers: {
+    type: String
+  },
+  start: {
+    type: String
+  },
+  display_name: {
+    type: String
+  },
   follow_count: {
     type: Number,
     default: 0,

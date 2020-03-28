@@ -14,9 +14,6 @@ const followsSchema = new Schema({
   songkick_id: {
     type: String
   },
-  data: {
-    strict: false
-  },
   follow_type: {
     type: String,
     enum: ['festival', 'artist']
@@ -34,7 +31,7 @@ followsSchema.post('save', async follow => {
   const update = { $inc: { follow_count: 1 } };
   await Festivals.findOneAndUpdate(filter, update, {
     new: true,
-    upsert: true
+    upsert: false
   });
 });
 
@@ -45,7 +42,7 @@ followsSchema.post('findOneAndUpdate', async follow => {
   const update = { $inc: { follow_count: incAmount } };
   await Festivals.findOneAndUpdate(filter, update, {
     new: true,
-    upsert: true
+    upsert: false
   });
 });
 
