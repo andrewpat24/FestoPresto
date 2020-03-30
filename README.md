@@ -47,6 +47,12 @@ https://stackoverflow.com/a/35098833/2303395
 
 You can tell that devDependencies haven't been installed if during startup (kicked off by 'npm run dev') the values from process.env are undefined.
 
+## Songkick Keys and Configuration
+
+- Request songkick API key from songkick and wait two weeks, or ask me for it
+
+- This key is required in the .env otherwise the application won't work.
+
 ## Spotify Keys and Configuration
 
 - [Go to the spotify api dashboard.](https://developer.spotify.com/dashboard/)
