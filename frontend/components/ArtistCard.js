@@ -23,19 +23,15 @@ export const ArtistCard = props => {
     return response;
   })(followers);
 
-  const singleMarkup = (() => (
-    <a
-      className="artist-card-link"
-      href={songkick_url}
-      target="_blank"
-    >
-      <div className="artist-card">
+  const artistCardMarkup = (() => (
+    <a className="card-link" href={songkick_url} target="_blank">
+      <div className="card">
         <div
-          className="artist-image"
+          className="card-image"
           style={{ backgroundImage: `url(${artistImage})` }}
         ></div>
-        <div className="artist-info">
-          <div className="artist-name">{artist_name}</div>
+        <div className="card-info">
+          <div className="card-name">{artist_name}</div>
           {!!genres || !!followers ? (
             <div>
               <div>{genre}</div>
@@ -49,11 +45,7 @@ export const ArtistCard = props => {
     </a>
   ))();
 
-  return (
-    <div>
-      {singleMarkup}
-    </div>
-  );
+  return <div className="Artist-Card">{artistCardMarkup}</div>;
 };
 
 export default ArtistCard;
