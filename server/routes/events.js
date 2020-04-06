@@ -24,13 +24,13 @@ const redirectUri = process.env.SPOTIFY_REDIRECT_URI; // Your redirect uri
 const spotifyApi = new SpotifyWebApi({
   clientId,
   clientSecret,
-  redirectUri
+  redirectUri,
 });
 
 router.get('/', (req, res) => {
   res.status(200).send({
     path: '/',
-    message: 'Root GET working on /routes'
+    message: 'Root GET working on /routes',
   });
 });
 
@@ -49,12 +49,12 @@ router.post('/find_festivals', async (req, res) => {
   if (!locations)
     return res.status(200).send({
       location_name: `Sorry, we couldn't find a city named ${location}. `,
-      festivals: []
+      festivals: [],
     });
 
   const locationData = {
     id: locations[0].metroArea.id,
-    displayName: locations[0].metroArea.displayName
+    displayName: locations[0].metroArea.displayName,
   };
 
   const getLocationEventData = bent(
@@ -66,10 +66,10 @@ router.post('/find_festivals', async (req, res) => {
 
   const response_getLocationEventData = await getLocationEventData();
 
-  const festivals = (locationData => {
+  const festivals = ((locationData) => {
     const data = [];
     const festivalList = locationData.resultsPage.results.event;
-    festivalList.forEach(festival => {
+    festivalList.forEach((festival) => {
       const { id, displayName, uri, start, end, performance } = festival;
       if (performance.length > 4)
         data.push({
@@ -78,7 +78,7 @@ router.post('/find_festivals', async (req, res) => {
           uri,
           start,
           end,
-          numPerformers: performance.length
+          numPerformers: performance.length,
         });
     });
 
@@ -87,26 +87,28 @@ router.post('/find_festivals', async (req, res) => {
 
   return res.status(200).send({
     location_name: locationData.displayName,
-    festivals
+    festivals,
   });
 });
 
 router.get('/get_top_four_festivals', async (req, res) => {
   const response_topFourFestivals = await Festivals.find({
-    follow_count: { $gt: 0 }
+    follow_count: { $gt: 0 },
   })
     .sort({ follow_count: -1 })
     .limit(4)
     .exec();
 
-  const formattedTopFourFestivals = response_topFourFestivals.map(festival => {
-    return {
-      id: festival.songkick_id,
-      displayName: festival.display_name,
-      start: festival.start,
-      numPerformers: festival.num_performers
-    };
-  });
+  const formattedTopFourFestivals = response_topFourFestivals.map(
+    (festival) => {
+      return {
+        id: festival.songkick_id,
+        displayName: festival.display_name,
+        start: festival.start,
+        numPerformers: festival.num_performers,
+      };
+    }
+  );
 
   return res.status(200).send({ festivals: [...formattedTopFourFestivals] });
 });
@@ -116,13 +118,13 @@ router.post('/festival_details', validateAccessToken, async (req, res) => {
     festivalID,
     spotify_uid,
     access_token,
-    has_new_access_token
+    has_new_access_token,
   } = req.body;
   spotifyApi.setAccessToken(access_token);
 
   const response_findFollow = await Follows.findOne({
     songkick_id: festivalID,
-    spotify_uid
+    spotify_uid,
   });
 
   const followStatus = !!response_findFollow
@@ -143,30 +145,31 @@ router.post('/festival_details', validateAccessToken, async (req, res) => {
 
   const artistList = response_getEvent.resultsPage.results.event.performance;
 
-  const artistIds = artistList.map(artist => {
+  const artistIds = artistList.map((artist) => {
     return artist.artist.id;
   });
 
   const filter = {
     songkick_id: festivalData.id,
+  };
+  const update = {
     display_name: festivalData.displayName,
     start: festivalData.start.date,
-    num_performers: artistList.length
+    num_performers: artistList.length,
   };
-  const update = {};
   await Festivals.findOneAndUpdate(filter, update, {
     new: true,
-    upsert: true
+    upsert: true,
   });
 
   let cachedArtists = await CachedArtists.find({
-    songkick_id: { $in: [...artistIds] }
+    songkick_id: { $in: [...artistIds] },
   });
 
-  const removeCachedDuplicateArtists = (cachedArtists => {
+  const removeCachedDuplicateArtists = ((cachedArtists) => {
     const hash = {};
     const newList = [];
-    cachedArtists.forEach(artist => {
+    cachedArtists.forEach((artist) => {
       if (hash[artist.songkick_id]) console.log('DUPLICATE FOUND:', { artist });
       else {
         newList.push(artist);
@@ -182,13 +185,13 @@ router.post('/festival_details', validateAccessToken, async (req, res) => {
     return res.status(200).send({
       artist_data: cachedArtists,
       festival_data: festivalData,
-      has_new_access_token
+      has_new_access_token,
     });
 
-  const cachedArtistIdHash = (cachedArtists => {
+  const cachedArtistIdHash = ((cachedArtists) => {
     const artistHashSet = {};
 
-    cachedArtists.forEach(artist => {
+    cachedArtists.forEach((artist) => {
       artistHashSet[artist.songkick_id] = true;
     });
 
@@ -209,7 +212,7 @@ router.post('/festival_details', validateAccessToken, async (req, res) => {
     const songkickProperties = {
       artist_name: currentArtist.displayName,
       songkick_id: currentArtist.artist.id,
-      songkick_url: currentArtist.artist.uri
+      songkick_url: currentArtist.artist.uri,
     };
 
     let spotifyProperties = {};
@@ -222,14 +225,14 @@ router.post('/festival_details', validateAccessToken, async (req, res) => {
         spotify_url: returnedArtist.external_urls.spotify,
         genres: returnedArtist.genres,
         popularity: returnedArtist.popularity,
-        followers: returnedArtist.followers.total
+        followers: returnedArtist.followers.total,
       };
 
       if (!!artistImage) spotifyProperties.img = artistImage.url;
     }
     newArtistData = {
       ...songkickProperties,
-      ...spotifyProperties
+      ...spotifyProperties,
     };
     console.log(newArtistData);
 
@@ -246,7 +249,7 @@ router.post('/festival_details', validateAccessToken, async (req, res) => {
   return res.status(200).send({
     artist_data: cachedArtists,
     festival_data: festivalData,
-    has_new_access_token
+    has_new_access_token,
   });
 });
 
@@ -256,24 +259,24 @@ router.post('/my_festivals', async (req, res) => {
   try {
     const response_findValidFollows = await Follows.find({
       spotify_uid,
-      follow_status: true
+      follow_status: true,
     });
 
     const followedFestivalIDs = response_findValidFollows.map(
-      festival => festival.songkick_id
+      (festival) => festival.songkick_id
     );
 
     const response_festivalData = await Festivals.find({
-      songkick_id: { $in: followedFestivalIDs }
+      songkick_id: { $in: followedFestivalIDs },
     });
 
-    const followedFestivals = response_festivalData.map(festival => {
+    const followedFestivals = response_festivalData.map((festival) => {
       console.log(festival);
       return {
         id: festival.songkick_id,
         numPerformers: festival.num_performers,
         start: festival.start,
-        displayName: festival.display_name
+        displayName: festival.display_name,
       };
     });
 
@@ -282,7 +285,7 @@ router.post('/my_festivals', async (req, res) => {
     console.log(e);
     return res.status(500).send({
       message: 'Could not retrieve followed festivals.',
-      response_code: -1
+      response_code: -1,
     });
   }
 });
@@ -305,7 +308,7 @@ router.post('/follow_action', async (req, res) => {
   const songkick_id_as_string = songkick_id.toString();
   const response_Follow = await Follows.findOne({
     spotify_uid,
-    songkick_id: songkick_id_as_string
+    songkick_id: songkick_id_as_string,
   });
 
   // If the user has never followed this item, their follow status is true.
@@ -324,19 +327,19 @@ router.post('/follow_action', async (req, res) => {
       update,
       {
         new: true,
-        upsert: true
+        upsert: true,
       }
     );
 
     res.status(200).send({
       follow_status: response_updateFollow.follow_status,
-      response_code: 1
+      response_code: 1,
     });
   } catch (e) {
     console.log(e);
     res.status(401).send({
       message: 'Could not change follow status',
-      response_code: -1
+      response_code: -1,
     });
   }
 });
